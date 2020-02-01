@@ -1,4 +1,4 @@
-use crate::models::{Status, Ticket, TicketDraft};
+use crate::models::{Status, Ticket, TicketDraft, DeletedTicket, TicketId};
 use std::collections::HashMap;
 
 /// In-memory database where we store the saved [`Ticket`]s.
@@ -6,7 +6,7 @@ pub struct TicketStore {
     /// Current state of the internal sequence, used for id generation in generate_id.
     current_id: u64,
     /// The collection of stored tickets.
-    data: HashMap<u64, Ticket>,
+    data: HashMap<TicketId, Ticket>,
 }
 
 impl TicketStore {
@@ -21,7 +21,7 @@ impl TicketStore {
     /// Given a ticket draft, it generates a unique identifier, it persists
     /// the new ticket in the store (assigning it a [ToDo status](Status::ToDo)) and returns
     /// the ticket identifier.
-    pub fn create(&mut self, draft: TicketDraft) -> u64 {
+    pub fn create(&mut self, draft: TicketDraft) -> TicketId {
         let id = self.generate_id();
         let ticket = Ticket {
             id,
@@ -34,19 +34,19 @@ impl TicketStore {
     }
 
     /// Remove a [Ticket] from the store.
-    /// Returns None if the [Ticket](Ticket) is not there.
-    pub fn delete(&mut self, ticket_id: u64) -> Option<Ticket> {
-        self.data.remove(&ticket_id)
+    /// Returns None if the [Ticket](Ticket) is not there or [DeletedTicket](DeletedTicket) if there was one.
+    pub fn delete(&mut self, ticket_id: TicketId) -> Option<DeletedTicket> {
+        self.data.remove(&ticket_id).map(DeletedTicket)
     }
 
     /// Generate a unique id by incrementing monotonically a private counter.
-    fn generate_id(&mut self) -> u64 {
+    fn generate_id(&mut self) -> TicketId {
         self.current_id += 1;
         self.current_id
     }
 
     /// Retrieve a ticket given an identifier. Returns `None` if there is no ticket with such an identifier.
-    pub fn get(&self, id: &u64) -> Option<&Ticket> {
+    pub fn get(&self, id: &TicketId) -> Option<&Ticket> {
         self.data.get(id)
     }
 }
@@ -104,7 +104,7 @@ mod tests {
             .expect("There was no ticket to delete.");
 
         //assert
-        assert_eq!(deleted_ticket, inserted_ticket);
+        assert_eq!(deleted_ticket.0, inserted_ticket);
         let ticket = ticket_store.get(&ticket_id);
         assert_eq!(ticket, None);
     }
