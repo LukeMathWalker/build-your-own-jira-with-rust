@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-/// In-memory database where we store the saved [Ticket](Ticket)s.
+/// In-memory database where we store the saved [`Ticket`]s.
 pub struct TicketStore {
     /// Current state of the internal sequence, used for id generation in generate_id.
     current_id: u64,
@@ -9,7 +9,7 @@ pub struct TicketStore {
 }
 
 impl TicketStore {
-    /// Create a new empty [TicketStore](TicketStore) instance.
+    /// Create a new empty [`TicketStore`] instance.
     pub fn new() -> Self {
         Self {
             current_id: 0,
