@@ -39,8 +39,8 @@ impl TicketStore {
         self.data.remove(&ticket_id).map(DeletedTicket)
     }
 
-    //Returns list off all inserted [Ticket](Ticket)
-    //Returns an empty list of tickets is there are no tickets in the store
+    /// Returns list off all inserted [Ticket](Ticket)
+    /// Returns an empty list of tickets is there are no tickets in the store
     pub fn list(&self) -> Vec<&Ticket> {
         self.data.iter().map(|(_, ticket)| ticket).collect()
     }
