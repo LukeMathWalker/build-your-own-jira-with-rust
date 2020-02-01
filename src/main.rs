@@ -1,15 +1,15 @@
 use std::collections::HashMap;
 
-/// In-memory database where we store the saved tickets.
+/// In-memory database where we store the saved [Ticket](Ticket)s.
 pub struct TicketStore {
-    /// Current state of the internal sequence, used for id generation in `generate_id`.
+    /// Current state of the internal sequence, used for id generation in generate_id.
     current_id: u64,
     /// The collection of stored tickets.
     data: HashMap<u64, Ticket>,
 }
 
 impl TicketStore {
-    /// Create a new empty TicketStore instance.
+    /// Create a new empty [TicketStore](TicketStore) instance.
     pub fn new() -> Self {
         Self {
             current_id: 0,
@@ -18,7 +18,7 @@ impl TicketStore {
     }
 
     /// Given a ticket draft, it generates a unique identifier, it persists
-    /// the new ticket in the store (assigning it a ToDo status) and returns
+    /// the new ticket in the store (assigning it a [ToDo status](Status::ToDo)) and returns
     /// the ticket identifier.
     pub fn create(&mut self, draft: TicketDraft) -> u64 {
         let id = self.generate_id();
@@ -45,6 +45,7 @@ impl TicketStore {
 }
 
 #[derive(PartialEq, Debug, Clone)]
+/// A ticket saved in the [TicketStore](TicketStore).
 pub struct Ticket {
     pub id: u64,
     pub title: String,
@@ -53,13 +54,14 @@ pub struct Ticket {
 }
 
 #[derive(PartialEq, Debug, Clone)]
-/// The content of the ticket, not yet saved in the ticket store.
+/// The content of the ticket, not yet saved in the [TicketStore](TicketStore::create).
 pub struct TicketDraft {
     pub title: String,
     pub description: String,
 }
 
 #[derive(PartialEq, Debug, Clone)]
+/// The status of a [Ticket](Ticket).
 pub enum Status {
     ToDo,
     InProgress,
