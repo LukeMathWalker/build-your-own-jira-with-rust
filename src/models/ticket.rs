@@ -7,7 +7,6 @@ pub struct Ticket {
     pub status: Status,
 }
 
-
 #[derive(PartialEq, Debug, Clone)]
 /// The status of a [Ticket](Ticket).
 pub enum Status {
