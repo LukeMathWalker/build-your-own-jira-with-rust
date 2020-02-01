@@ -1,4 +1,4 @@
-use crate::models::{Status, Ticket, TicketDraft, DeletedTicket, TicketId};
+use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId};
 use std::collections::HashMap;
 
 /// In-memory database where we store the saved [`Ticket`]s.
@@ -39,13 +39,19 @@ impl TicketStore {
         self.data.remove(&ticket_id).map(DeletedTicket)
     }
 
+    //Returns list off all inserted [Ticket](Ticket)
+    //Returns an empty list of tickets is there are no tickets in the store
+    pub fn list(&self) -> Vec<&Ticket> {
+        self.data.iter().map(|(_, ticket)| ticket).collect()
+    }
+
     /// Generate a unique id by incrementing monotonically a private counter.
     fn generate_id(&mut self) -> TicketId {
         self.current_id += 1;
         self.current_id
     }
 
-    /// Retrieve a ticket given an identifier. Returns `None` if there is no ticket with such an identifier.
+    /// Retrieve a [Ticket] given an identifier. Returns `None` if there is no ticket with such an identifier.
     pub fn get(&self, id: &TicketId) -> Option<&Ticket> {
         self.data.get(id)
     }
@@ -53,9 +59,10 @@ impl TicketStore {
 
 #[cfg(test)]
 mod tests {
-    use crate::models::{Status, TicketDraft};
+    use crate::models::{Status, Ticket, TicketDraft};
     use crate::store::TicketStore;
     use fake::Fake;
+    use std::collections::HashSet;
 
     #[test]
     fn create_ticket_test() {
@@ -121,5 +128,51 @@ mod tests {
 
         //assert
         assert_eq!(deleted_ticket, None);
+    }
+
+    #[test]
+    fn listing_tickets_of_an_empty_store_returns_an_empty_collection() {
+        // Arrange
+        let ticket_store = TicketStore::new();
+
+        // Act
+        let tickets = ticket_store.list();
+
+        // Assert
+        assert!(tickets.is_empty())
+    }
+
+    #[test]
+    fn listing_tickets_should_return_them_all() {
+        let faker = fake::Faker;
+
+        // Arrange
+        let mut ticket_store = TicketStore::new();
+        let n_tickets = faker.fake::<u16>() as usize;
+        let tickets: HashSet<_> = (0..n_tickets)
+            .map(|_| generate_and_persist_ticket(&mut ticket_store))
+            .collect();
+
+        // Act
+        let retrieved_tickets = ticket_store.list();
+
+        // Assert
+        assert_eq!(retrieved_tickets.len(), n_tickets);
+        let retrieved_tickets: HashSet<_> = retrieved_tickets.into_iter().map(|t| t.to_owned()).collect();
+        assert_eq!(tickets, retrieved_tickets);
+    }
+
+    fn generate_and_persist_ticket(store: &mut TicketStore) -> Ticket {
+        let faker = fake::Faker;
+
+        let draft = TicketDraft {
+            title: faker.fake(),
+            description: faker.fake(),
+        };
+        let ticket_id = store.create(draft);
+        store
+            .get(&ticket_id)
+            .expect("Failed to retrieve ticket")
+            .to_owned()
     }
 }
