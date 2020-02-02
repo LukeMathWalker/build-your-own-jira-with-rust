@@ -25,8 +25,8 @@ impl TicketStore {
         let id = self.generate_id();
         let ticket = Ticket {
             id,
-            description: draft.description,
-            title: draft.title,
+            description: draft.get_description().to_string(),
+            title: draft.get_title().to_string(),
             status: Status::ToDo,
         };
         self.data.insert(ticket.id, ticket);
@@ -69,10 +69,7 @@ mod tests {
         let faker = fake::Faker;
 
         //arrange
-        let draft = TicketDraft {
-            title: faker.fake(),
-            description: faker.fake(),
-        };
+        let draft = TicketDraft::new(faker.fake(), faker.fake()).expect("TickekDraft is Created");
 
         let mut ticket_store = TicketStore::new();
 
@@ -83,8 +80,8 @@ mod tests {
         let ticket = ticket_store
             .get(&ticket_id)
             .expect("Failed to retrieve ticket.");
-        assert_eq!(ticket.title, draft.title);
-        assert_eq!(ticket.description, draft.description);
+        assert_eq!(ticket.title, draft.get_title().to_string());
+        assert_eq!(ticket.description, draft.get_description().to_string());
         assert_eq!(ticket.status, Status::ToDo);
     }
 
@@ -93,10 +90,8 @@ mod tests {
         let faker = fake::Faker;
 
         //arrange
-        let draft = TicketDraft {
-            title: faker.fake(),
-            description: faker.fake(),
-        };
+        let draft = TicketDraft::new(faker.fake(), faker.fake()).expect("TickekDraft is Created");
+
 
         let mut ticket_store = TicketStore::new();
         let ticket_id = ticket_store.create(draft.clone());
@@ -165,10 +160,8 @@ mod tests {
     fn generate_and_persist_ticket(store: &mut TicketStore) -> Ticket {
         let faker = fake::Faker;
 
-        let draft = TicketDraft {
-            title: faker.fake(),
-            description: faker.fake(),
-        };
+        let draft = TicketDraft::new(faker.fake(), faker.fake()).expect("TickekDraft is Created");
+
         let ticket_id = store.create(draft);
         store
             .get(&ticket_id)
