@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fmt;
 
-#[derive(PartialEq, Debug, Clone)]
+#[derive(PartialEq, Debug, Clone, Hash, Eq)]
 /// The title of a [Ticket](Ticket)
 /// Wraps a string and checks that it's not empty when set
 pub struct Title {
@@ -80,7 +80,7 @@ mod title_tests {
 
         let title: String = faker.fake();
 
-        let expected_title = title.to_owned();
+        let expected_title = title.clone();
 
         //act
         let new_title = Title::new("".to_string()).expect("Title should exist");

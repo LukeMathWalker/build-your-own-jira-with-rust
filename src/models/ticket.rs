@@ -1,3 +1,4 @@
+use crate::models::Title;
 pub type TicketId = u64;
 
 #[derive(PartialEq, Debug, Clone, Hash, Eq)]
@@ -8,7 +9,7 @@ pub type TicketId = u64;
 pub struct Ticket {
     /// The id of the ticket. Randomly generated from the [TicketStore](TicketStore), guaranteed to be unique.
     pub id: TicketId,
-    pub title: String,
+    pub title: Title,
     pub description: String,
     pub status: Status,
 }
