@@ -67,6 +67,13 @@ impl TicketStore {
             }
         })
     }
+
+        // Update a [Ticket] [Status] given an identifier and new [Status]. Returns `None` if there is no ticket with such an identifier.
+        pub fn update_ticket_status(&mut self, id: TicketId, status: Status) -> Option<()> {
+            self.data.get_mut(&id).map(|t| {
+                t.status = status
+            })
+        }
 }
 
 #[cfg(test)]
@@ -232,7 +239,7 @@ mod tests {
     }
 
     #[test]
-    fn updating_ticket_inf_with_no_patch_vaules_should_not_fail() {
+    fn updating_ticket_with_no_patch_vaules_should_not_fail_or_change_values() {
         let faker = fake::Faker;
 
         //arrange
@@ -261,5 +268,36 @@ mod tests {
         assert_eq!(updated_ticket.title, draft.title);
 
         assert_eq!(updated_ticket.description, draft.description);
+    }
+
+
+
+    #[test]
+    fn updating_ticket_status_should_change_ticket_to_new_status() {
+        let faker = fake::Faker;
+
+        //arrange
+        let draft = TicketDraft {
+            title: Title::new(faker.fake()).expect("Failed to get a title"),
+            description: faker.fake(),
+        };
+
+        let mut ticket_store = TicketStore::new();
+
+        let ticket_id = ticket_store.create(draft.clone());
+
+        //act
+        ticket_store.update_ticket_status(ticket_id, Status::Done);
+
+        //assert
+        let updated_ticket = ticket_store
+            .get(ticket_id)
+            .expect("Failed to retrieve ticket.");
+
+        assert_eq!(updated_ticket.title, draft.title);
+
+        assert_eq!(updated_ticket.description, draft.description);
+
+        assert_eq!(updated_ticket.status, Status::Done)
     }
 }
