@@ -42,7 +42,7 @@ impl Title {
         if title.is_empty() {
             Err(TitleError::new("Title Cannot be empty"))
         } else {
-            Ok(Title { title: title })
+            Ok(Title { title })
         }
     }
 
