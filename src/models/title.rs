@@ -45,33 +45,12 @@ impl Title {
             Ok(Title { title })
         }
     }
-
-    /// returns a title for [Ticket](Ticket)
-    pub fn get_title(&self) -> &String {
-        &self.title
-    }
 }
 
 #[cfg(test)]
 mod title_tests {
     use crate::models::Title;
-    use fake::Fake;
-
-    #[test]
-    fn creating_a_ticket_with_title_should_not_fail() {
-        //arrange
-        let faker = fake::Faker;
-
-        let title: String = faker.fake();
-
-        let expected_title = title.clone();
-
-        //act
-        let new_title = Title::new(title).expect("Title should exist");
-
-        assert_eq!(new_title.get_title().to_string(), expected_title);
-    }
-
+    
     #[test]
     fn creating_an_empty_title_should_fail() {
         //arrange
