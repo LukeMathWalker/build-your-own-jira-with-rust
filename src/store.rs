@@ -52,8 +52,8 @@ impl TicketStore {
     }
 
     /// Retrieve a [Ticket] given an identifier. Returns `None` if there is no ticket with such an identifier.
-    pub fn get(&self, id: &TicketId) -> Option<&Ticket> {
-        self.data.get(id)
+    pub fn get(&self, id: TicketId) -> Option<&Ticket> {
+        self.data.get(&id)
     }
 }
 
