@@ -1,4 +1,4 @@
-use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId};
+use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch};
 use std::collections::HashMap;
 
 /// In-memory database where we store the saved [`Ticket`]s.
@@ -55,11 +55,23 @@ impl TicketStore {
     pub fn get(&self, id: TicketId) -> Option<&Ticket> {
         self.data.get(&id)
     }
+
+    // Update a [Ticket] given an identifier and new [TicketPatch]. Returns `None` if there is no ticket with such an identifier.
+    pub fn update_ticket(&mut self, id: TicketId, patch: TicketPatch) -> Option<()> {
+        self.data.get_mut(&id).map(|t| {
+            if let Some(title) = patch.title {
+                t.title = title;
+            }
+            if let Some(description) = patch.description {
+                t.description = description;
+            }
+        })
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::models::{Status, Ticket, TicketDraft, Title};
+    use crate::models::{Status, Ticket, TicketDraft, TicketPatch, Title};
     use crate::store::TicketStore;
     use fake::Fake;
     use std::collections::HashSet;
@@ -177,5 +189,77 @@ mod tests {
             .get(ticket_id)
             .expect("Failed to retrieve ticket")
             .to_owned()
+    }
+
+    #[test]
+    fn updating_ticket_info_via_patch_should_update_ticket() {
+        let faker = fake::Faker;
+
+        //arrange
+        let draft = TicketDraft {
+            title: Title::new(faker.fake()).expect("Failed to get a title"),
+            description: faker.fake(),
+        };
+
+        let mut ticket_store = TicketStore::new();
+
+        let ticket_id = ticket_store.create(draft.clone());
+
+        let patch = TicketPatch {
+            title: Some(Title::new(faker.fake()).expect("Failed to get a title")),
+            description: Some(faker.fake()),
+        };
+
+        let expected = patch.clone();
+
+        //act
+        ticket_store.update_ticket(ticket_id, patch);
+
+        //assert
+        let updated_ticket = ticket_store
+            .get(ticket_id)
+            .expect("Failed to retrieve ticket.");
+
+        assert_eq!(
+            updated_ticket.title,
+            expected.title.expect("Failed to get a title")
+        );
+
+        assert_eq!(
+            updated_ticket.description,
+            expected.description.expect("Failed to get a Description")
+        );
+    }
+
+    #[test]
+    fn updating_ticket_inf_with_no_patch_vaules_should_not_fail() {
+        let faker = fake::Faker;
+
+        //arrange
+        let draft = TicketDraft {
+            title: Title::new(faker.fake()).expect("Failed to get a title"),
+            description: faker.fake(),
+        };
+
+        let mut ticket_store = TicketStore::new();
+
+        let ticket_id = ticket_store.create(draft.clone());
+
+        let patch = TicketPatch {
+            title: None,
+            description: None,
+        };
+
+        //act
+        ticket_store.update_ticket(ticket_id, patch);
+
+        //assert
+        let updated_ticket = ticket_store
+            .get(ticket_id)
+            .expect("Failed to retrieve ticket.");
+
+        assert_eq!(updated_ticket.title, draft.title);
+
+        assert_eq!(updated_ticket.description, draft.description);
     }
 }

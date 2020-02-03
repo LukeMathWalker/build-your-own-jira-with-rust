@@ -4,6 +4,6 @@ use crate::models::Title;
 /// The content of the ticket, to be updated in the [TicketStore](TicketStore::create).
 pub struct TicketPatch {
     // The [Title](Title) of a ticket
-    pub title: Title,
-    pub description: String,
+    pub title: Option<Title>,
+    pub description: Option<String>,
 }
