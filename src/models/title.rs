@@ -50,7 +50,7 @@ impl Title {
 #[cfg(test)]
 mod title_tests {
     use crate::models::Title;
-    
+
     #[test]
     fn creating_an_empty_title_should_fail() {
         //arrange
