@@ -1,0 +1,83 @@
+version: 2
+jobs:
+  build-and-test:
+    docker:
+      - image: circleci/rust
+    environment:
+      # Fail the build if there are warnings
+      RUSTFLAGS: '-D warnings'
+    steps:
+      - checkout
+      - run:
+          name: Version information
+          command: rustc --version; cargo --version; rustup --version
+      - run:
+          name: Calculate dependencies
+          command: cargo generate-lockfile
+      - restore_cache:
+          keys:
+            - v2-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Build all targets
+          command: cargo build
+      - save_cache:
+          paths:
+            - /usr/local/cargo/registry
+            - target/debug/.fingerprint
+            - target/debug/build
+            - target/debug/deps
+          key: v2-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Run all tests
+          command: cargo test
+
+  security:
+    docker:
+      - image: circleci/rust
+    steps:
+      - checkout
+      - run:
+          name: Version information
+          command: rustc --version; cargo --version; rustup --version
+      - run:
+          name: Install dependency auditing tool
+          command: cargo install cargo-audit
+      - run:
+          name: Check for known security issues in dependencies
+          command: cargo audit
+
+  format-and-lint:
+    docker:
+      - image: circleci/rust
+    steps:
+      - checkout
+      - run:
+          name: Version information
+          command: rustc --version; cargo --version; rustup --version
+      - run:
+          name: Install formatter
+          command: rustup component add rustfmt
+      - run:
+          name: Formatting
+          command: cargo fmt --all -- --check
+      - run:
+          name: Linting
+          command: cargo clippy -- -D warnings
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build-and-test:
+          filters:
+            tags:
+              only: /.*/
+      - security:
+          filters:
+            tags:
+              only: /.*/
+      - format-and-lint:
+          filters:
+            tags:
+              only: /.*/
+
