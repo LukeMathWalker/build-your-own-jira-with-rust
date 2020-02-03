@@ -68,12 +68,10 @@ impl TicketStore {
         })
     }
 
-        // Update a [Ticket] [Status] given an identifier and new [Status]. Returns `None` if there is no ticket with such an identifier.
-        pub fn update_ticket_status(&mut self, id: TicketId, status: Status) -> Option<()> {
-            self.data.get_mut(&id).map(|t| {
-                t.status = status
-            })
-        }
+    // Update a [Ticket] [Status] given an identifier and new [Status]. Returns `None` if there is no ticket with such an identifier.
+    pub fn update_ticket_status(&mut self, id: TicketId, status: Status) -> Option<()> {
+        self.data.get_mut(&id).map(|t| t.status = status)
+    }
 }
 
 #[cfg(test)]
@@ -269,8 +267,6 @@ mod tests {
 
         assert_eq!(updated_ticket.description, draft.description);
     }
-
-
 
     #[test]
     fn updating_ticket_status_should_change_ticket_to_new_status() {
