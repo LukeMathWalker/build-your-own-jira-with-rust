@@ -158,7 +158,10 @@ mod tests {
 
         // Assert
         assert_eq!(retrieved_tickets.len(), n_tickets);
-        let retrieved_tickets: HashSet<_> = retrieved_tickets.into_iter().map(|t| t.to_owned()).collect();
+        let retrieved_tickets: HashSet<_> = retrieved_tickets
+            .into_iter()
+            .map(|t| t.to_owned())
+            .collect();
         assert_eq!(tickets, retrieved_tickets);
     }
 

@@ -5,5 +5,5 @@ use crate::models::Title;
 pub struct TicketDraft {
     // The [Title](Title) of a ticket
     pub title: Title,
-    pub description: String
+    pub description: String,
 }
