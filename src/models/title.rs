@@ -73,18 +73,11 @@ mod title_tests {
     }
 
     #[test]
-    #[should_panic]
     fn creating_an_empty_title_should_fail() {
         //arrange
-        let faker = fake::Faker;
-
-        let title: String = faker.fake();
-
-        let expected_title = title.clone();
-
         //act
-        let new_title = Title::new("".to_string()).expect("Title should exist");
+        let new_title = Title::new("".to_string());
 
-        assert_eq!(new_title.get_title().to_string(), expected_title);
+        assert!(new_title.is_err())
     }
 }
