@@ -64,7 +64,7 @@ mod title_tests {
 
         let title: String = faker.fake();
 
-        let expected_title = title.to_owned();
+        let expected_title = title.clone();
 
         //act
         let new_title = Title::new(title).expect("Title should exist");
