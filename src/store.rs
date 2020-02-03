@@ -59,7 +59,7 @@ impl TicketStore {
 
 #[cfg(test)]
 mod tests {
-    use crate::models::{Status, Ticket, TicketDraft};
+    use crate::models::{Status, Ticket, TicketDraft, Title};
     use crate::store::TicketStore;
     use fake::Fake;
     use std::collections::HashSet;
@@ -70,7 +70,7 @@ mod tests {
 
         //arrange
         let draft = TicketDraft {
-            title: faker.fake(),
+            title: Title::new(faker.fake()).expect("Title should exist"),
             description: faker.fake(),
         };
 
@@ -81,7 +81,7 @@ mod tests {
 
         //assert
         let ticket = ticket_store
-            .get(&ticket_id)
+            .get(ticket_id)
             .expect("Failed to retrieve ticket.");
         assert_eq!(ticket.title, draft.title);
         assert_eq!(ticket.description, draft.description);
@@ -94,14 +94,14 @@ mod tests {
 
         //arrange
         let draft = TicketDraft {
-            title: faker.fake(),
+            title: Title::new(faker.fake()).expect("Title should exist"),
             description: faker.fake(),
         };
 
         let mut ticket_store = TicketStore::new();
         let ticket_id = ticket_store.create(draft.clone());
         let inserted_ticket = ticket_store
-            .get(&ticket_id)
+            .get(ticket_id)
             .expect("Failed to retrieve ticket")
             .to_owned();
 
@@ -112,7 +112,7 @@ mod tests {
 
         //assert
         assert_eq!(deleted_ticket.0, inserted_ticket);
-        let ticket = ticket_store.get(&ticket_id);
+        let ticket = ticket_store.get(ticket_id);
         assert_eq!(ticket, None);
     }
 
@@ -169,12 +169,12 @@ mod tests {
         let faker = fake::Faker;
 
         let draft = TicketDraft {
-            title: faker.fake(),
+            title: Title::new(faker.fake()).expect("Title should exist"),
             description: faker.fake(),
         };
         let ticket_id = store.create(draft);
         store
-            .get(&ticket_id)
+            .get(ticket_id)
             .expect("Failed to retrieve ticket")
             .to_owned()
     }
