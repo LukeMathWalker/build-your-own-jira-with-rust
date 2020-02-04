@@ -21,7 +21,11 @@ pub enum Command {
         title: String,
     },
     Edit,
-    Delete,
+    /// Delete a ticket from the store passing the ticket id.
+    Delete {
+        #[structopt(long)]
+        ticket_id: u64,
+    },
     List,
     Move,
 }
@@ -38,11 +42,21 @@ fn main() -> Result<(), Box<dyn Error>> {
                 description,
             };
             ticket_store.create(draft);
-            println!("{:?}", ticket_store.list());
         }
         Command::Edit => todo!(),
-        Command::Delete => todo!(),
-        Command::List => todo!(),
+        Command::Delete { ticket_id } => match ticket_store.delete(ticket_id) {
+            Some(deleted_ticket) => println!(
+                "The following ticket has been deleted:\n{:?}",
+                deleted_ticket
+            ),
+            None => println!(
+                "There was no ticket associated to the ticket id {:?}",
+                ticket_id
+            ),
+        },
+        Command::List => {
+            println!("{:?}", ticket_store.list());
+        }
         Command::Move => todo!(),
     }
     // Save the store state to disk after we have completed our action.
