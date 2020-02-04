@@ -161,9 +161,9 @@ mod tests {
 
     #[test]
     fn listing_tickets_should_return_them_all() {
+        // Arrange
         let faker = fake::Faker;
 
-        // Arrange
         let mut ticket_store = TicketStore::new();
         let n_tickets = faker.fake::<u16>() as usize;
         let tickets: HashSet<_> = (0..n_tickets)
@@ -183,10 +183,11 @@ mod tests {
     }
 
     fn generate_and_persist_ticket(store: &mut TicketStore) -> Ticket {
+        // arrange
         let faker = fake::Faker;
 
         let draft = TicketDraft {
-            title: Title::new(faker.fake()).expect("Title should exist"),
+            title: Title::new(faker.fake()).expect("Failed to get a title"),
             description: faker.fake(),
         };
         let ticket_id = store.create(draft);
@@ -198,17 +199,12 @@ mod tests {
 
     #[test]
     fn updating_ticket_info_via_patch_should_update_ticket() {
+        // arrange
         let faker = fake::Faker;
-
-        //arrange
-        let draft = TicketDraft {
-            title: Title::new(faker.fake()).expect("Failed to get a title"),
-            description: faker.fake(),
-        };
 
         let mut ticket_store = TicketStore::new();
 
-        let ticket_id = ticket_store.create(draft.clone());
+        let ticket = generate_and_persist_ticket(&mut ticket_store);
 
         let patch = TicketPatch {
             title: Some(Title::new(faker.fake()).expect("Failed to get a title")),
@@ -218,11 +214,11 @@ mod tests {
         let expected = patch.clone();
 
         //act
-        ticket_store.update_ticket(ticket_id, patch);
+        ticket_store.update_ticket(ticket.id, patch);
 
         //assert
         let updated_ticket = ticket_store
-            .get(ticket_id)
+            .get(ticket.id)
             .expect("Failed to retrieve ticket.");
 
         assert_eq!(
@@ -238,9 +234,9 @@ mod tests {
 
     #[test]
     fn updating_ticket_with_no_patch_vaules_should_not_fail_or_change_values() {
+        //arrange
         let faker = fake::Faker;
 
-        //arrange
         let draft = TicketDraft {
             title: Title::new(faker.fake()).expect("Failed to get a title"),
             description: faker.fake(),
@@ -270,29 +266,18 @@ mod tests {
 
     #[test]
     fn updating_ticket_status_should_change_ticket_to_new_status() {
-        let faker = fake::Faker;
-
         //arrange
-        let draft = TicketDraft {
-            title: Title::new(faker.fake()).expect("Failed to get a title"),
-            description: faker.fake(),
-        };
-
         let mut ticket_store = TicketStore::new();
 
-        let ticket_id = ticket_store.create(draft.clone());
+        let ticket = generate_and_persist_ticket(&mut ticket_store);
 
         //act
-        ticket_store.update_ticket_status(ticket_id, Status::Done);
+        ticket_store.update_ticket_status(ticket.id, Status::Done);
 
         //assert
         let updated_ticket = ticket_store
-            .get(ticket_id)
+            .get(ticket.id)
             .expect("Failed to retrieve ticket.");
-
-        assert_eq!(updated_ticket.title, draft.title);
-
-        assert_eq!(updated_ticket.description, draft.description);
 
         assert_eq!(updated_ticket.status, Status::Done)
     }
