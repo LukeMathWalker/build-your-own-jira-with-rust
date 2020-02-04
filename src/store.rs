@@ -1,7 +1,9 @@
 use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 /// In-memory database where we store the saved [`Ticket`]s.
+#[derive(Serialize, Deserialize)]
 pub struct TicketStore {
     /// Current state of the internal sequence, used for id generation in generate_id.
     current_id: u64,

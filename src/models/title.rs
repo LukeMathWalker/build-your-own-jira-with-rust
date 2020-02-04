@@ -1,7 +1,8 @@
+use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fmt;
 
-#[derive(PartialEq, Debug, Clone, Hash, Eq)]
+#[derive(PartialEq, Debug, Clone, Hash, Eq, Serialize, Deserialize)]
 /// The title of a [Ticket](Ticket)
 /// Wraps a string and checks that it's not empty when set
 pub struct Title {

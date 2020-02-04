@@ -1,4 +1,6 @@
 use crate::models::Title;
+use serde::{Deserialize, Serialize};
+
 pub type TicketId = u64;
 
 #[derive(PartialEq, Debug, Clone, Hash, Eq)]
@@ -6,6 +8,7 @@ pub type TicketId = u64;
 ///
 /// **Invariant**: you can only build a ticket instance by retrieving it
 /// from the [TicketStore](TicketStore).
+#[derive(Serialize, Deserialize)]
 pub struct Ticket {
     /// The id of the ticket. Randomly generated from the [TicketStore](TicketStore), guaranteed to be unique.
     pub id: TicketId,
@@ -14,8 +17,8 @@ pub struct Ticket {
     pub status: Status,
 }
 
-#[derive(PartialEq, Debug, Clone, Hash, Eq)]
 /// The status of a [Ticket](Ticket).
+#[derive(PartialEq, Debug, Clone, Hash, Eq, Serialize, Deserialize)]
 pub enum Status {
     ToDo,
     InProgress,

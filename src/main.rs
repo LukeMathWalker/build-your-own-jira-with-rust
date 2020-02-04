@@ -5,6 +5,7 @@ use crate::store::TicketStore;
 use std::error::Error;
 
 pub mod models;
+pub mod persistence;
 pub mod store;
 
 #[derive(structopt::StructOpt)]
@@ -28,7 +29,8 @@ pub enum Command {
 fn main() -> Result<(), Box<dyn Error>> {
     // Parse the command-line arguments.
     let command = <Command as paw::ParseArgs>::parse_args()?;
-    let mut ticket_store = TicketStore::new();
+    // Load the store from disk. If missing, a brand new one will be created.
+    let mut ticket_store = persistence::load();
     match command {
         Command::Create { description, title } => {
             let draft = TicketDraft {
@@ -43,5 +45,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         Command::List => todo!(),
         Command::Move => todo!(),
     }
+    // Save the store state to disk after we have completed our action.
+    persistence::save(&ticket_store);
     Ok(())
 }
