@@ -1,8 +1,8 @@
 #![allow(clippy::new_without_default)]
 
-use crate::models::{TicketDraft, Title};
-use crate::store::TicketStore;
+use crate::models::{Status, TicketDraft, TicketPatch, Title};
 use std::error::Error;
+use std::str::FromStr;
 
 pub mod models;
 pub mod persistence;
@@ -20,14 +20,42 @@ pub enum Command {
         #[structopt(long)]
         title: String,
     },
-    Edit,
+    Edit {
+        #[structopt(long)]
+        ticket_id: u64,
+        #[structopt(long)]
+        title: Option<String>,
+        #[structopt(long)]
+        description: Option<String>,
+    },
     /// Delete a ticket from the store passing the ticket id.
     Delete {
         #[structopt(long)]
         ticket_id: u64,
     },
     List,
-    Move,
+    Move {
+        #[structopt(long)]
+        ticket_id: u64,
+        #[structopt(long)]
+        status: Status,
+    },
+}
+
+impl FromStr for Status {
+    type Err = Box<dyn Error>;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let s = s.to_lowercase();
+        let status = match s.as_str() {
+            "todo" | "to-do" => Status::ToDo,
+            "inprogress" | "in-progress" => Status::InProgress,
+            "blocked" => Status::Blocked,
+            "done" => Status::Done,
+            _ => panic!("The status you specified is not valid. Valid values: todo, inprogress, blocked and done.")
+        };
+        Ok(status)
+    }
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -43,7 +71,21 @@ fn main() -> Result<(), Box<dyn Error>> {
             };
             ticket_store.create(draft);
         }
-        Command::Edit => todo!(),
+        Command::Edit {
+            ticket_id,
+            title,
+            description,
+        } => {
+            let title = title.map(Title::new).transpose()?;
+            let ticket_patch = TicketPatch { title, description };
+            match ticket_store.update_ticket(ticket_id, ticket_patch) {
+                Some(_) => println!("Ticket {:?} was updated.", ticket_id),
+                None => println!(
+                    "There was no ticket associated to the ticket id {:?}",
+                    ticket_id
+                ),
+            }
+        }
         Command::Delete { ticket_id } => match ticket_store.delete(ticket_id) {
             Some(deleted_ticket) => println!(
                 "The following ticket has been deleted:\n{:?}",
@@ -57,7 +99,18 @@ fn main() -> Result<(), Box<dyn Error>> {
         Command::List => {
             println!("{:?}", ticket_store.list());
         }
-        Command::Move => todo!(),
+        Command::Move { ticket_id, status } => {
+            match ticket_store.update_ticket_status(ticket_id, status) {
+                Some(_) => println!(
+                    "Status of ticket {:?} was updated to {:?}",
+                    ticket_id, status
+                ),
+                None => println!(
+                    "There was no ticket associated to the ticket id {:?}",
+                    ticket_id
+                ),
+            }
+        }
     }
     // Save the store state to disk after we have completed our action.
     persistence::save(&ticket_store);

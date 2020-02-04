@@ -18,7 +18,7 @@ pub struct Ticket {
 }
 
 /// The status of a [Ticket](Ticket).
-#[derive(PartialEq, Debug, Clone, Hash, Eq, Serialize, Deserialize)]
+#[derive(PartialEq, Debug, Copy, Clone, Hash, Eq, Serialize, Deserialize)]
 pub enum Status {
     ToDo,
     InProgress,
