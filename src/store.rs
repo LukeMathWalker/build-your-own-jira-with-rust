@@ -233,7 +233,7 @@ mod tests {
     }
 
     #[test]
-    fn updating_ticket_with_no_patch_vaules_should_not_fail_or_change_values() {
+    fn updating_ticket_with_no_patch_values_should_not_fail_or_change_values() {
         //arrange
         let faker = fake::Faker;
 
