@@ -13,3 +13,6 @@
 /target
 #**/*.rs.bk
 .idea
+
+# ignore VS Code launch.json file
+**/launch.json
