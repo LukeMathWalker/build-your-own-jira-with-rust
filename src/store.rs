@@ -1,4 +1,4 @@
-use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch};
+use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch, Comment, };
 use std::collections::HashMap;
 
 /// In-memory database where we store the saved [`Ticket`]s.
@@ -28,6 +28,7 @@ impl TicketStore {
             description: draft.description,
             title: draft.title,
             status: Status::ToDo,
+            comments: Vec::new(),
         };
         self.data.insert(ticket.id, ticket);
         id
@@ -71,6 +72,11 @@ impl TicketStore {
     // Update a [Ticket] [Status] given an identifier and new [Status]. Returns `None` if there is no ticket with such an identifier.
     pub fn update_ticket_status(&mut self, id: TicketId, status: Status) -> Option<()> {
         self.data.get_mut(&id).map(|t| t.status = status)
+    }
+
+    pub fn add_comment_to_ticket(&mut self, id: TicketId, comment: String) -> Option<()> {
+        let new_comment = Comment::new(comment).unwrap();
+        self.data.get_mut(&id).map(|t| t.comments.push(new_comment))
     }
 }
 
@@ -280,5 +286,47 @@ mod tests {
             .expect("Failed to retrieve ticket.");
 
         assert_eq!(updated_ticket.status, Status::Done)
+    }
+
+    #[test]
+    fn add_comment_to_ticket() {
+        //arrange
+        let mut ticket_store = TicketStore::new();
+        let ticket = generate_and_persist_ticket(&mut ticket_store);
+
+        //act
+        let result = ticket_store.add_comment_to_ticket(ticket.id, "Test Comment".to_string());
+        
+        //assert
+        assert!(result.is_some());
+        let ticket = ticket_store.get(ticket.id).unwrap();
+        assert_eq!(ticket.comments.len(), 1);
+    }
+
+    #[test]
+    fn add_comment_to_invalid_ticket_id_returns_none() {
+        let faker = fake::Faker;
+
+        //arrange
+        let mut ticket_store = TicketStore::new();
+
+        //act
+        let result = ticket_store.add_comment_to_ticket(faker.fake(), faker.fake());
+
+        //assert
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn add_comment_to_ticket_with_empty_comment() {
+        //arrange
+        let mut ticket_store = TicketStore::new();
+        let ticket = generate_and_persist_ticket(&mut ticket_store);
+
+        //act
+        let result = ticket_store.add_comment_to_ticket(ticket.id, "".to_string());
+        
+        //assert
+        // TODO: Need to assert that the error from Comment is sent back
     }
 }

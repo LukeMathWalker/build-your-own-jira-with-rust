@@ -1,4 +1,4 @@
-use crate::models::Title;
+use crate::models::{Title, Comment};
 pub type TicketId = u64;
 
 #[derive(PartialEq, Debug, Clone, Hash, Eq)]
@@ -12,6 +12,7 @@ pub struct Ticket {
     pub title: Title,
     pub description: String,
     pub status: Status,
+    pub comments: Vec<Comment>,
 }
 
 #[derive(PartialEq, Debug, Clone, Hash, Eq)]
