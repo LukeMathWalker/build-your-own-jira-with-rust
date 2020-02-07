@@ -318,15 +318,13 @@ mod tests {
     }
 
     #[test]
+    #[should_panic(expected = "Comment cannot be empty")]
     fn add_comment_to_ticket_with_empty_comment() {
         //arrange
         let mut ticket_store = TicketStore::new();
         let ticket = generate_and_persist_ticket(&mut ticket_store);
 
         //act
-        let result = ticket_store.add_comment_to_ticket(ticket.id, "".to_string());
-        
-        //assert
-        // TODO: Need to assert that the error from Comment is sent back
+        ticket_store.add_comment_to_ticket(ticket.id, "".to_string());
     }
 }
