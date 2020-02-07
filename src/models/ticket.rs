@@ -1,4 +1,4 @@
-use crate::models::{Title, Comment};
+use crate::models::{Comment, Title};
 pub type TicketId = u64;
 
 #[derive(PartialEq, Debug, Clone, Hash, Eq)]

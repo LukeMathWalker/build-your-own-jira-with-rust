@@ -45,7 +45,7 @@ impl Comment {
         } else {
             Ok(Comment { comment })
         }
-    }   
+    }
 }
 
 #[cfg(test)]
@@ -57,7 +57,6 @@ mod comment_tests {
         // arrange
         // act
         let new_comment = Comment::new("".to_string());
-
         // assert
         assert!(new_comment.is_err());
     }

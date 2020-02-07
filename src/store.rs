@@ -1,4 +1,4 @@
-use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch, Comment, };
+use crate::models::{Comment, DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch};
 use std::collections::HashMap;
 
 /// In-memory database where we store the saved [`Ticket`]s.
@@ -293,10 +293,8 @@ mod tests {
         //arrange
         let mut ticket_store = TicketStore::new();
         let ticket = generate_and_persist_ticket(&mut ticket_store);
-
         //act
         let result = ticket_store.add_comment_to_ticket(ticket.id, "Test Comment".to_string());
-        
         //assert
         assert!(result.is_some());
         let ticket = ticket_store.get(ticket.id).unwrap();
