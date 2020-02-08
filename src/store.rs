@@ -1,7 +1,9 @@
 use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 /// In-memory database where we store the saved [`Ticket`]s.
+#[derive(Serialize, Deserialize)]
 pub struct TicketStore {
     /// Current state of the internal sequence, used for id generation in generate_id.
     current_id: u64,
@@ -78,17 +80,15 @@ impl TicketStore {
 mod tests {
     use crate::models::{Status, Ticket, TicketDraft, TicketPatch, Title};
     use crate::store::TicketStore;
-    use fake::Fake;
+    use fake::{Fake, Faker};
     use std::collections::HashSet;
 
     #[test]
     fn create_ticket_test() {
-        let faker = fake::Faker;
-
         //arrange
         let draft = TicketDraft {
-            title: Title::new(faker.fake()).expect("Title should exist"),
-            description: faker.fake(),
+            title: Title::new(Faker.fake()).expect("Title should exist"),
+            description: Faker.fake(),
         };
 
         let mut ticket_store = TicketStore::new();
@@ -107,12 +107,10 @@ mod tests {
 
     #[test]
     fn delete_ticket_test() {
-        let faker = fake::Faker;
-
         //arrange
         let draft = TicketDraft {
-            title: Title::new(faker.fake()).expect("Title should exist"),
-            description: faker.fake(),
+            title: Title::new(Faker.fake()).expect("Title should exist"),
+            description: Faker.fake(),
         };
 
         let mut ticket_store = TicketStore::new();
@@ -135,13 +133,11 @@ mod tests {
 
     #[test]
     fn deleting_a_ticket_that_does_not_exist_returns_none() {
-        let faker = fake::Faker;
-
         //arrange
         let mut ticket_store = TicketStore::new();
 
         //act
-        let deleted_ticket = ticket_store.delete(faker.fake());
+        let deleted_ticket = ticket_store.delete(Faker.fake());
 
         //assert
         assert_eq!(deleted_ticket, None);
@@ -162,10 +158,8 @@ mod tests {
     #[test]
     fn listing_tickets_should_return_them_all() {
         // Arrange
-        let faker = fake::Faker;
-
         let mut ticket_store = TicketStore::new();
-        let n_tickets = faker.fake::<u16>() as usize;
+        let n_tickets = Faker.fake::<u16>() as usize;
         let tickets: HashSet<_> = (0..n_tickets)
             .map(|_| generate_and_persist_ticket(&mut ticket_store))
             .collect();
@@ -184,11 +178,9 @@ mod tests {
 
     fn generate_and_persist_ticket(store: &mut TicketStore) -> Ticket {
         // arrange
-        let faker = fake::Faker;
-
         let draft = TicketDraft {
-            title: Title::new(faker.fake()).expect("Failed to get a title"),
-            description: faker.fake(),
+            title: Title::new(Faker.fake()).expect("Failed to get a title"),
+            description: Faker.fake(),
         };
         let ticket_id = store.create(draft);
         store
@@ -200,15 +192,13 @@ mod tests {
     #[test]
     fn updating_ticket_info_via_patch_should_update_ticket() {
         // arrange
-        let faker = fake::Faker;
-
         let mut ticket_store = TicketStore::new();
 
         let ticket = generate_and_persist_ticket(&mut ticket_store);
 
         let patch = TicketPatch {
-            title: Some(Title::new(faker.fake()).expect("Failed to get a title")),
-            description: Some(faker.fake()),
+            title: Some(Title::new(Faker.fake()).expect("Failed to get a title")),
+            description: Some(Faker.fake()),
         };
 
         let expected = patch.clone();
@@ -233,13 +223,11 @@ mod tests {
     }
 
     #[test]
-    fn updating_ticket_with_no_patch_vaules_should_not_fail_or_change_values() {
+    fn updating_ticket_with_no_patch_values_should_not_fail_or_change_values() {
         //arrange
-        let faker = fake::Faker;
-
         let draft = TicketDraft {
-            title: Title::new(faker.fake()).expect("Failed to get a title"),
-            description: faker.fake(),
+            title: Title::new(Faker.fake()).expect("Failed to get a title"),
+            description: Faker.fake(),
         };
 
         let mut ticket_store = TicketStore::new();

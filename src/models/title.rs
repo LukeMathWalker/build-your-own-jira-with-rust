@@ -1,7 +1,9 @@
+use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fmt;
+use std::fmt::Formatter;
 
-#[derive(PartialEq, Debug, Clone, Hash, Eq)]
+#[derive(PartialEq, Debug, Clone, Hash, Eq, Serialize, Deserialize)]
 /// The title of a [Ticket](Ticket)
 /// Wraps a string and checks that it's not empty when set
 pub struct Title {
@@ -44,6 +46,13 @@ impl Title {
         } else {
             Ok(Title { title })
         }
+    }
+}
+
+impl std::fmt::Display for Title {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", self.title)?;
+        Ok(())
     }
 }
 
