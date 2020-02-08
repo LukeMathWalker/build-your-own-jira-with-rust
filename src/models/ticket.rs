@@ -1,4 +1,6 @@
 use crate::models::Title;
+use serde::export::fmt::Error;
+use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
 
 pub type TicketId = u64;
@@ -15,6 +17,16 @@ pub struct Ticket {
     pub title: Title,
     pub description: String,
     pub status: Status,
+}
+
+impl std::fmt::Display for Ticket {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
+        writeln!(
+            f,
+            "Ticket:\n\tId:{:?}\n\tTitle:{}\n\tDescription:{}\n\tStatus:{:?}",
+            self.id, self.title, self.description, self.status
+        )
+    }
 }
 
 /// The status of a [Ticket](Ticket).

@@ -97,7 +97,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             ),
         },
         Command::List => {
-            println!("{:?}", ticket_store.list());
+            let ticket_list = ticket_store.list().into_iter().map(|t| format!("{}", t)).collect::<Vec<String>>().join("\n\n");
+            println!("{}", ticket_list);
         }
         Command::Move { ticket_id, status } => {
             match ticket_store.update_ticket_status(ticket_id, status) {
