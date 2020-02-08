@@ -5,7 +5,7 @@ use std::fmt;
 /// Represents a comment on a [Ticket](Ticket)
 /// Wraps a string and checks that it is not empty when set
 pub struct Comment {
-    pub comment: String,
+    comment: String,
 }
 
 #[derive(PartialEq, Debug, Clone)]

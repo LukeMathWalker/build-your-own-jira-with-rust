@@ -74,15 +74,14 @@ impl TicketStore {
         self.data.get_mut(&id).map(|t| t.status = status)
     }
 
-    pub fn add_comment_to_ticket(&mut self, id: TicketId, comment: String) -> Option<()> {
-        let new_comment = Comment::new(comment).unwrap();
-        self.data.get_mut(&id).map(|t| t.comments.push(new_comment))
+    pub fn add_comment_to_ticket(&mut self, id: TicketId, comment: Comment) -> Option<()> {
+        self.data.get_mut(&id).map(|t| t.comments.push(comment))
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::models::{Status, Ticket, TicketDraft, TicketPatch, Title};
+    use crate::models::{Comment, Status, Ticket, TicketDraft, TicketPatch, Title};
     use crate::store::TicketStore;
     use fake::Fake;
     use std::collections::HashSet;
@@ -293,12 +292,16 @@ mod tests {
         //arrange
         let mut ticket_store = TicketStore::new();
         let ticket = generate_and_persist_ticket(&mut ticket_store);
+        let comment = Comment::new("Test Comment".to_string()).unwrap();
+        let expected = Comment::new("Test Comment".to_string()).unwrap();
+
         //act
-        let result = ticket_store.add_comment_to_ticket(ticket.id, "Test Comment".to_string());
+        let result = ticket_store.add_comment_to_ticket(ticket.id, comment);
         //assert
         assert!(result.is_some());
         let ticket = ticket_store.get(ticket.id).unwrap();
         assert_eq!(ticket.comments.len(), 1);
+        assert_eq!(ticket.comments[0], expected);
     }
 
     #[test]
@@ -307,22 +310,12 @@ mod tests {
 
         //arrange
         let mut ticket_store = TicketStore::new();
+        let comment = Comment::new("Test comment".to_string()).unwrap();
 
         //act
-        let result = ticket_store.add_comment_to_ticket(faker.fake(), faker.fake());
+        let result = ticket_store.add_comment_to_ticket(faker.fake(), comment);
 
         //assert
         assert!(result.is_none());
-    }
-
-    #[test]
-    #[should_panic(expected = "Comment cannot be empty")]
-    fn add_comment_to_ticket_with_empty_comment() {
-        //arrange
-        let mut ticket_store = TicketStore::new();
-        let ticket = generate_and_persist_ticket(&mut ticket_store);
-
-        //act
-        ticket_store.add_comment_to_ticket(ticket.id, "".to_string());
     }
 }
