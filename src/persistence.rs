@@ -8,11 +8,11 @@ use std::path::PathBuf;
 // according to the convention of the underlying operating system.
 //
 // `qualifier_name` is only relevant for MacOS - we leave it blank.
-const PROJECT_NAME: &'static str = "IronJIRA";
-const ORGANISATION_NAME: &'static str = "RustLDNUserGroup";
-const QUALIFIER: &'static str = "";
+const PROJECT_NAME: &str = "IronJIRA";
+const ORGANISATION_NAME: &str = "RustLDNUserGroup";
+const QUALIFIER: &str = "";
 
-const TICKET_STORE: &'static str = "ticket_store.yaml";
+const TICKET_STORE: &str = "ticket_store.yaml";
 
 fn data_store_filename() -> PathBuf {
     // Get the directory where we are supposed to store data
