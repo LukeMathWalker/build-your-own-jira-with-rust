@@ -97,7 +97,12 @@ fn main() -> Result<(), Box<dyn Error>> {
             ),
         },
         Command::List => {
-            let ticket_list = ticket_store.list().into_iter().map(|t| format!("{}", t)).collect::<Vec<String>>().join("\n\n");
+            let ticket_list = ticket_store
+                .list()
+                .into_iter()
+                .map(|t| format!("{}", t))
+                .collect::<Vec<String>>()
+                .join("\n\n");
             println!("{}", ticket_list);
         }
         Command::Move { ticket_id, status } => {
