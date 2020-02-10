@@ -112,9 +112,7 @@ mod tests {
 
     #[test]
     fn delete_ticket_test() {
-        let faker = fake::Faker;
-
-		//arrange
+        //arrange
         let draft = TicketDraft {
             title: Title::new(Faker.fake()).expect("Title should exist"),
             description: Faker.fake(),

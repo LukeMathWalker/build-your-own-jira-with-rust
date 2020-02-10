@@ -1,7 +1,9 @@
+use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fmt;
+use std::fmt::Formatter;
 
-#[derive(PartialEq, Debug, Clone, Hash, Eq)]
+#[derive(PartialEq, Debug, Clone, Hash, Eq, Serialize, Deserialize)]
 /// Represents a comment on a [Ticket](Ticket)
 /// Wraps a string and checks that it is not empty when set
 pub struct Comment {
@@ -45,6 +47,13 @@ impl Comment {
         } else {
             Ok(Comment { comment })
         }
+    }
+}
+
+impl std::fmt::Display for Comment {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", self.comment)?;
+        Ok(())
     }
 }
 
