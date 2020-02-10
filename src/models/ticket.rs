@@ -1,4 +1,4 @@
-use crate::models::Title;
+use crate::models::{Comment, Title};
 use serde::export::fmt::Error;
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
@@ -17,6 +17,7 @@ pub struct Ticket {
     pub title: Title,
     pub description: String,
     pub status: Status,
+    pub comments: Vec<Comment>,
 }
 
 impl std::fmt::Display for Ticket {

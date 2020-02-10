@@ -1,4 +1,4 @@
-use crate::models::{DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch};
+use crate::models::{Comment, DeletedTicket, Status, Ticket, TicketDraft, TicketId, TicketPatch};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -30,6 +30,7 @@ impl TicketStore {
             description: draft.description,
             title: draft.title,
             status: Status::ToDo,
+            comments: Vec::new(),
         };
         self.data.insert(ticket.id, ticket);
         id
@@ -74,11 +75,15 @@ impl TicketStore {
     pub fn update_ticket_status(&mut self, id: TicketId, status: Status) -> Option<()> {
         self.data.get_mut(&id).map(|t| t.status = status)
     }
+
+    pub fn add_comment_to_ticket(&mut self, id: TicketId, comment: Comment) -> Option<()> {
+        self.data.get_mut(&id).map(|t| t.comments.push(comment))
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::models::{Status, Ticket, TicketDraft, TicketPatch, Title};
+    use crate::models::{Comment, Status, Ticket, TicketDraft, TicketPatch, Title};
     use crate::store::TicketStore;
     use fake::{Fake, Faker};
     use std::collections::HashSet;
@@ -268,5 +273,36 @@ mod tests {
             .expect("Failed to retrieve ticket.");
 
         assert_eq!(updated_ticket.status, Status::Done)
+    }
+
+    #[test]
+    fn add_comment_to_ticket() {
+        //arrange
+        let mut ticket_store = TicketStore::new();
+        let ticket = generate_and_persist_ticket(&mut ticket_store);
+        let comment = Comment::new("Test Comment".to_string()).unwrap();
+        let expected = comment.clone();
+
+        //act
+        let result = ticket_store.add_comment_to_ticket(ticket.id, comment);
+        //assert
+        assert!(result.is_some());
+        let ticket = ticket_store.get(ticket.id).unwrap();
+        assert_eq!(ticket.comments, vec![expected]);
+    }
+
+    #[test]
+    fn add_comment_to_invalid_ticket_id_returns_none() {
+        let faker = fake::Faker;
+
+        //arrange
+        let mut ticket_store = TicketStore::new();
+        let comment = Comment::new("Test comment".to_string()).unwrap();
+
+        //act
+        let result = ticket_store.add_comment_to_ticket(faker.fake(), comment);
+
+        //assert
+        assert!(result.is_none());
     }
 }
