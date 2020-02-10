@@ -293,15 +293,14 @@ mod tests {
         let mut ticket_store = TicketStore::new();
         let ticket = generate_and_persist_ticket(&mut ticket_store);
         let comment = Comment::new("Test Comment".to_string()).unwrap();
-        let expected = Comment::new("Test Comment".to_string()).unwrap();
+        let expected = comment.clone();
 
         //act
         let result = ticket_store.add_comment_to_ticket(ticket.id, comment);
         //assert
         assert!(result.is_some());
         let ticket = ticket_store.get(ticket.id).unwrap();
-        assert_eq!(ticket.comments.len(), 1);
-        assert_eq!(ticket.comments[0], expected);
+        assert_eq!(ticket.comments, vec![expected]);
     }
 
     #[test]
