@@ -47,7 +47,7 @@ pub enum Command {
         /// Add a comment on the ticket - cannot be empty!
         #[structopt(long)]
         comment: String,
-    }
+    },
 }
 
 impl FromStr for Status {
@@ -128,10 +128,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         Command::Comment { ticket_id, comment } => {
             let new_comment = Comment::new(comment)?;
             match ticket_store.add_comment_to_ticket(ticket_id, new_comment) {
-                Some(_) => println!(
-                    "Comment has been added to ticket {:?}",
-                    ticket_id
-                ),
+                Some(_) => println!("Comment has been added to ticket {:?}", ticket_id),
                 None => println!(
                     "There was no ticket associated to the ticket id {:?}",
                     ticket_id
