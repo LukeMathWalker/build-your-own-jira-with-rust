@@ -1,6 +1,6 @@
 #![allow(clippy::new_without_default)]
 
-use crate::models::{Status, TicketDraft, TicketPatch, Title};
+use crate::models::{Comment, Status, TicketDraft, TicketPatch, Title};
 use std::error::Error;
 use std::str::FromStr;
 
@@ -39,6 +39,14 @@ pub enum Command {
         ticket_id: u64,
         #[structopt(long)]
         status: Status,
+    },
+    /// Add a comment to a ticket
+    Comment {
+        #[structopt(long)]
+        ticket_id: u64,
+        /// Add a comment on the ticket - cannot be empty!
+        #[structopt(long)]
+        comment: String,
     },
 }
 
@@ -111,6 +119,16 @@ fn main() -> Result<(), Box<dyn Error>> {
                     "Status of ticket {:?} was updated to {:?}",
                     ticket_id, status
                 ),
+                None => println!(
+                    "There was no ticket associated to the ticket id {:?}",
+                    ticket_id
+                ),
+            }
+        }
+        Command::Comment { ticket_id, comment } => {
+            let new_comment = Comment::new(comment)?;
+            match ticket_store.add_comment_to_ticket(ticket_id, new_comment) {
+                Some(_) => println!("Comment has been added to ticket {:?}", ticket_id),
                 None => println!(
                     "There was no ticket associated to the ticket id {:?}",
                     ticket_id

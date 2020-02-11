@@ -24,9 +24,13 @@ impl std::fmt::Display for Ticket {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
         writeln!(
             f,
-            "Ticket:\n\tId:{:?}\n\tTitle:{}\n\tDescription:{}\n\tStatus:{:?}",
+            "Ticket:\n\tId:{:?}\n\tTitle:{}\n\tDescription:{}\n\tStatus:{:?}\n\tComments:",
             self.id, self.title, self.description, self.status
-        )
+        )?;
+        for comment in self.comments.iter() {
+            writeln!(f, "\t- {}", comment)?;
+        }
+        Ok(())
     }
 }
 

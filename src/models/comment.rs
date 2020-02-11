@@ -52,8 +52,7 @@ impl Comment {
 
 impl std::fmt::Display for Comment {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(f, "{}", self.comment)?;
-        Ok(())
+        write!(f, "{}", self.comment)
     }
 }
 
