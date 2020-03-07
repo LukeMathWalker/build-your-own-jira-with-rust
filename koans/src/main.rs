@@ -17,7 +17,7 @@ fn main() {
 fn seek_the_path(koans: &KoanCollection) -> bool {
     print!(" \n\n");
     for koan in koans.opened() {
-        let koan_outcome = run_tests(&koans.manifest_path, Some(&koan.name));
+        let koan_outcome = run_tests(&koans.configuration().manifest_path(), Some(&koan.name));
         match koan_outcome {
             TestOutcome::Success => {
                 println!(

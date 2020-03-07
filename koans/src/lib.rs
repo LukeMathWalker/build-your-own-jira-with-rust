@@ -1,24 +1,37 @@
-#![allow(dead_code)]
-#![allow(unused_imports)]
-#![allow(unused_macros)]
-
 use regex::Regex;
 use std::ffi::OsString;
-use std::fs::{read_dir, FileType, OpenOptions};
+use std::fs::{read_dir, OpenOptions};
 use std::io::{BufRead, BufReader, ErrorKind, Write};
 
-pub struct KoanCollection {
+pub struct KoanConfiguration {
     base_path: String,
-    koans_path: String,
-    enlightenment_path: String,
-    pub manifest_path: String,
+}
+
+impl KoanConfiguration {
+    pub fn koans_path(&self) -> String {
+        format!("{}/koans", self.base_path)
+    }
+
+    pub fn enlightenment_path(&self) -> String {
+        format!("{}/path_to_enlightenment.rs", self.base_path)
+    }
+
+    pub fn manifest_path(&self) -> String {
+        format!("{}/Cargo.toml", self.base_path)
+    }
+}
+
+pub struct KoanCollection {
+    configuration: KoanConfiguration,
     koans: Vec<Koan>,
 }
 
 impl KoanCollection {
     pub fn new(path: &str) -> Self {
-        let koans_path = format!("{}/koans", path.to_string());
-        let mut koans: Vec<(OsString, OsString)> = read_dir(&koans_path)
+        let configuration = KoanConfiguration {
+            base_path: path.to_string(),
+        };
+        let mut koans: Vec<(OsString, OsString)> = read_dir(configuration.koans_path())
             .unwrap()
             .map(|f| {
                 let entry = f.unwrap();
@@ -39,16 +52,20 @@ impl KoanCollection {
         koans.sort();
 
         Self {
-            base_path: path.to_string(),
-            koans_path,
-            enlightenment_path: format!("{}/path_to_enlightenment.rs", path.to_string()),
-            manifest_path: format!("{}/Cargo.toml", path.to_string()),
+            configuration,
             koans: koans.into_iter().map(|f| f.into()).collect(),
         }
     }
 
+    pub fn configuration(&self) -> &KoanConfiguration {
+        &self.configuration
+    }
+
     pub fn n_opened(&self) -> usize {
-        match OpenOptions::new().read(true).open(&self.enlightenment_path) {
+        match OpenOptions::new()
+            .read(true)
+            .open(&self.configuration.enlightenment_path())
+        {
             Ok(f) => BufReader::new(&f).lines().count(),
             Err(e) => {
                 match e.kind() {
@@ -56,7 +73,7 @@ impl KoanCollection {
                         let file = OpenOptions::new()
                             .create_new(true)
                             .write(true)
-                            .open(&self.enlightenment_path)
+                            .open(&self.configuration.enlightenment_path())
                             .expect("Failed to open a write buffer.");
                         // Initialise as an empty file
                         write!(&file, "").expect("Failed to initialise enlightenment file.");
@@ -86,7 +103,7 @@ impl KoanCollection {
             .read(true)
             .append(true)
             .write(true)
-            .open(&self.enlightenment_path)
+            .open(&self.configuration.enlightenment_path())
             .unwrap();
 
         let koan = self.next();
