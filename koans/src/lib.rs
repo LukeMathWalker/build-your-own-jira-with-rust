@@ -2,22 +2,29 @@ use regex::Regex;
 use std::ffi::OsString;
 use std::fs::{read_dir, OpenOptions};
 use std::io::{BufRead, BufReader, ErrorKind, Write};
+use std::path::PathBuf;
 
 pub struct KoanConfiguration {
-    base_path: String,
+    pub base_path: PathBuf,
 }
 
 impl KoanConfiguration {
-    pub fn koans_path(&self) -> String {
-        format!("{}/koans", self.base_path)
+    pub fn new<P: Into<PathBuf>>(base_path: P) -> Self {
+        Self {
+            base_path: base_path.into(),
+        }
     }
 
-    pub fn enlightenment_path(&self) -> String {
-        format!("{}/path_to_enlightenment.rs", self.base_path)
+    pub fn koans_path(&self) -> PathBuf {
+        self.base_path.join("koans")
     }
 
-    pub fn manifest_path(&self) -> String {
-        format!("{}/Cargo.toml", self.base_path)
+    pub fn enlightenment_path(&self) -> PathBuf {
+        self.base_path.join("path_to_enlightenment.rs")
+    }
+
+    pub fn manifest_path(&self) -> PathBuf {
+        self.base_path.join("Cargo.toml")
     }
 }
 
@@ -27,10 +34,8 @@ pub struct KoanCollection {
 }
 
 impl KoanCollection {
-    pub fn new(path: &str) -> Self {
-        let configuration = KoanConfiguration {
-            base_path: path.to_string(),
-        };
+    pub fn new<P: Into<PathBuf>>(base_path: P) -> Self {
+        let configuration = KoanConfiguration::new(base_path);
         let mut koans: Vec<(OsString, OsString)> = read_dir(configuration.koans_path())
             .unwrap()
             .map(|f| {
@@ -38,8 +43,8 @@ impl KoanCollection {
                 // Each entry in path has to be a directory!
                 assert!(
                     entry.file_type().unwrap().is_dir(),
-                    "Each entry in {:} has to be a directory",
-                    path
+                    "Each entry in {:?} has to be a directory",
+                    &configuration.base_path
                 );
                 let directory_name = entry.file_name();
                 read_dir(entry.path())

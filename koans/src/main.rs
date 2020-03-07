@@ -1,6 +1,8 @@
 use ansi_term::Colour::{Green, Red, Yellow};
 use ansi_term::Style;
 use koans::KoanCollection;
+use std::ffi::OsString;
+use std::path::Path;
 use std::process::Command;
 
 fn main() {
@@ -60,11 +62,16 @@ fn walk_the_path(koans: &mut KoanCollection) -> bool {
     }
 }
 
-fn run_tests(manifest_path: &str, filter: Option<&str>) -> TestOutcome {
-    let mut args = vec!["test", "--manifest-path", manifest_path, "-q"];
+fn run_tests(manifest_path: &Path, filter: Option<&str>) -> TestOutcome {
+    let mut args: Vec<OsString> = vec![
+        "test".into(),
+        "--manifest-path".into(),
+        manifest_path.into(),
+        "-q".into(),
+    ];
 
     if let Some(test_filter) = filter {
-        args.push(test_filter);
+        args.push(test_filter.into());
     }
 
     let output = Command::new("cargo")
