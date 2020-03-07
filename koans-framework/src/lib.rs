@@ -1,5 +1,7 @@
+use anyhow::anyhow;
 use regex::Regex;
 use std::ffi::OsString;
+use std::fmt::Formatter;
 use std::fs::{read_dir, OpenOptions};
 use std::io::{BufRead, BufReader, ErrorKind, Write};
 use std::path::PathBuf;
@@ -9,10 +11,21 @@ pub struct KoanConfiguration {
 }
 
 impl KoanConfiguration {
-    pub fn new<P: Into<PathBuf>>(base_path: P) -> Self {
-        Self {
+    pub fn new<P: Into<PathBuf>>(base_path: P) -> Result<Self, anyhow::Error> {
+        let c = Self {
             base_path: base_path.into(),
+        };
+
+        if !c.manifest_path().exists() {
+            let error_path = if c.manifest_path().is_absolute() {
+                c.manifest_path()
+            } else {
+                std::env::current_dir().unwrap().join(c.manifest_path())
+            };
+            return Err(anyhow!("{:?} does not exist.", error_path));
         }
+
+        Ok(c)
     }
 
     pub fn koans_path(&self) -> PathBuf {
@@ -34,8 +47,8 @@ pub struct KoanCollection {
 }
 
 impl KoanCollection {
-    pub fn new<P: Into<PathBuf>>(base_path: P) -> Self {
-        let configuration = KoanConfiguration::new(base_path);
+    pub fn new<P: Into<PathBuf>>(base_path: P) -> Result<Self, anyhow::Error> {
+        let configuration = KoanConfiguration::new(base_path)?;
         let mut koans: Vec<(OsString, OsString)> = read_dir(configuration.koans_path())
             .unwrap()
             .map(|f| {
@@ -44,7 +57,7 @@ impl KoanCollection {
                 assert!(
                     entry.file_type().unwrap().is_dir(),
                     "Each entry in {:?} has to be a directory",
-                    &configuration.base_path
+                    &configuration.koans_path()
                 );
                 let directory_name = entry.file_name();
                 read_dir(entry.path())
@@ -56,10 +69,10 @@ impl KoanCollection {
         // Sort them in lexicographical order - koans are prefixed with `dd_`
         koans.sort();
 
-        Self {
+        Ok(Self {
             configuration,
             koans: koans.into_iter().map(|f| f.into()).collect(),
-        }
+        })
     }
 
     pub fn configuration(&self) -> &KoanConfiguration {
@@ -122,11 +135,22 @@ impl KoanCollection {
     }
 }
 
+#[derive(Clone)]
 pub struct Koan {
     pub parent_name: String,
     pub parent_number: String,
     pub name: String,
     pub number: usize,
+}
+
+impl std::fmt::Display for Koan {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "({:02}) {} - ({:02}) {}",
+            self.parent_number, self.parent_name, self.number, self.name
+        )
+    }
 }
 
 impl From<(OsString, OsString)> for Koan {
