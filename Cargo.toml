@@ -1,5 +1,6 @@
 [workspace]
 members = [
     "jira-cli",
-    "jira-wip"
+    "jira-wip",
+    "koans"
 ]
