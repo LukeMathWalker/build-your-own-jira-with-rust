@@ -9,7 +9,7 @@ pub mod persistence;
 pub mod store;
 
 #[derive(structopt::StructOpt)]
-/// A small command-line tool to debug connectors calls.
+/// A small command-line interface to interact with a toy Jira clone, IronJira.
 pub enum Command {
     /// Create a ticket on your board.
     Create {
@@ -20,6 +20,7 @@ pub enum Command {
         #[structopt(long)]
         title: String,
     },
+    /// Edit the details of an existing ticket.
     Edit {
         #[structopt(long)]
         ticket_id: u64,
@@ -33,7 +34,9 @@ pub enum Command {
         #[structopt(long)]
         ticket_id: u64,
     },
+    /// List all existing tickets.
     List,
+    /// Move a ticket to a new status.
     Move {
         #[structopt(long)]
         ticket_id: u64,

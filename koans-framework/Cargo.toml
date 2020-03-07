@@ -1,0 +1,21 @@
+[package]
+name = "koans"
+version = "0.1.0"
+authors = ["LukeMathWalker <rust@lpalmieri.com>"]
+edition = "2018"
+
+[dependencies]
+regex = "1"
+ansi_term = "0.12"
+read_input = "0.8"
+structopt = { version = "0.3", features = ["paw"] }
+paw = "1"
+anyhow = "1"
+
+[[bin]]
+name = "koans"
+path = "src/main.rs"
+
+[lib]
+name = "koans"
+path = "src/lib.rs"
