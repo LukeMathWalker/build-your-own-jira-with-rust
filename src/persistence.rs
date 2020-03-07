@@ -43,7 +43,7 @@ pub fn load() -> TicketStore {
             serde_yaml::from_str(&data).expect("Failed to parse serialised data.")
         }
         Err(e) => match e.kind() {
-            // The file is missing - this is the first you are using IronJira!
+            // The file is missing - this is the first time you are using IronJira!
             std::io::ErrorKind::NotFound => {
                 // Return default configuration
                 TicketStore::new()
