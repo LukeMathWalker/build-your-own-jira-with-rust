@@ -19,17 +19,17 @@ pub struct Command {
     /// Path to the koan collection you want to work on.
     /// Both absolute and relative paths are supported.
     ///
-    /// E.g. `koans --name jira-wip` if `jira-wip` is a sub-directory of your current
+    /// E.g. `koans --path jira-wip` if `jira-wip` is a sub-directory of your current
     /// working directory and `jira-wip/Cargo.toml` leads to the Cargo file of the koans
     /// collection.
     #[structopt(long, parse(from_os_str))]
-    pub name: PathBuf,
+    pub path: PathBuf,
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     let command = <Command as paw::ParseArgs>::parse_args()?;
 
-    let mut koans = KoanCollection::new(&command.name)?;
+    let mut koans = KoanCollection::new(&command.path)?;
     match seek_the_path(&koans) {
         TestOutcome::Success => {
             match koans.next() {
