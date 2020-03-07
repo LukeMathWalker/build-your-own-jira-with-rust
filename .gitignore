@@ -16,3 +16,6 @@
 
 # ignore VS Code launch.json file
 **/launch.json
+
+# Ignore Vim tag files
+tags
