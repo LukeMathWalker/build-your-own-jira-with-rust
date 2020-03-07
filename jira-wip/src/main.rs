@@ -13,3 +13,5 @@ fn main() {
         "Welcome to the Rust LDN Code Dojo!\nGet Ready to build your own Jira with Rust, IronJira!"
     );
 }
+
+mod path_to_enlightenment;
