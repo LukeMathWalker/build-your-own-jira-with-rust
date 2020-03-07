@@ -2,5 +2,5 @@
 members = [
     "jira-cli",
     "jira-wip",
-    "koans"
+    "koans-framework"
 ]

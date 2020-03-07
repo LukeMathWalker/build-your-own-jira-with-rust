@@ -3,10 +3,28 @@ use ansi_term::Style;
 use koans::KoanCollection;
 use std::ffi::OsString;
 use std::path::Path;
-use std::process::Command;
+use std::error::Error;
 
-fn main() {
-    let mut koans = KoanCollection::new("jira-wip/src");
+#[derive(structopt::StructOpt)]
+pub struct Command {
+    /// Name of the koan collection you want to work on. [e.g. `jira-wip`]
+    #[structopt(long)]
+    pub name: String,
+    #[structopt(subcommand)]
+    pub action_type: ActionType,
+}
+
+#[derive(structopt::StructOpt)]
+pub enum ActionType {
+    /// Run all koans-framework you have opened so far in a collection to check if your solutions are correct.
+    Check,
+}
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let command = <Command as paw::ParseArgs>::parse_args()?;
+    dbg!(std::env::current_dir().unwrap());
+
+    let mut koans = KoanCollection::new("jira-wip");
     let message = if !seek_the_path(&koans) || walk_the_path(&mut koans) {
         "Eternity lies ahead of us, and behind. Your path is not yet finished. 🍂"
     } else {
@@ -14,6 +32,7 @@ fn main() {
     };
 
     println!("\t{}\n", Style::default().italic().paint(message));
+    Ok(())
 }
 
 fn seek_the_path(koans: &KoanCollection) -> bool {
@@ -74,7 +93,7 @@ fn run_tests(manifest_path: &Path, filter: Option<&str>) -> TestOutcome {
         args.push(test_filter.into());
     }
 
-    let output = Command::new("cargo")
+    let output = std::process::Command::new("cargo")
         .args(args)
         .output()
         .expect("Failed to run tests");

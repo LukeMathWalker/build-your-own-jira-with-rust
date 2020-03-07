@@ -1,5 +1,5 @@
 [package]
-name = "ndarray-koans"
+name = "koans"
 version = "0.1.0"
 authors = ["LukeMathWalker <rust@lpalmieri.com>"]
 edition = "2018"

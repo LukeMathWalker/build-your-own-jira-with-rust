@@ -16,11 +16,11 @@ impl KoanConfiguration {
     }
 
     pub fn koans_path(&self) -> PathBuf {
-        self.base_path.join("koans")
+        self.base_path.join("src").join("koans")
     }
 
     pub fn enlightenment_path(&self) -> PathBuf {
-        self.base_path.join("path_to_enlightenment.rs")
+        self.base_path.join("src").join("path_to_enlightenment.rs")
     }
 
     pub fn manifest_path(&self) -> PathBuf {
