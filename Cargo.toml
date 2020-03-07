@@ -1,4 +1,5 @@
 [workspace]
 members = [
-    "jira-cli"
+    "jira-cli",
+    "jira-wip"
 ]
