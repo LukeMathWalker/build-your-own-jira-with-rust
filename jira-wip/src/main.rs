@@ -8,6 +8,7 @@
 /// command line application.
 ///
 /// Brace yourself!
+///
 fn main() {
     println!(
         "Welcome to the Rust LDN Code Dojo!\nGet Ready to build your own Jira with Rust, IronJira!"
