@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 /// The `main` function is the entry point of your application.
 ///
 /// It gets called when you invoke `cargo run --bin jira-wip` and
