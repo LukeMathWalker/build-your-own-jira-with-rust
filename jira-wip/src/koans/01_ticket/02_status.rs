@@ -65,10 +65,10 @@ mod status {
             // can also have `Backlog` as their status, the Rust compiler will highlight all code locations
             // where we need to account for the new variant. No way to forget!
             match ticket.status {
-                // Variant => Action
+                // Variant => Expression
                 Status::Blocked => println!("Great, as expected!"),
                 // If we want to take the same action for multiple variants, we can use a | to list them.
-                // Variant | Variant | ... | Variant => Action
+                // Variant | Variant | ... | Variant => Expression
                 //
                 // We are panicing in this case, thus making the test fail if this branch of our match
                 // statement gets executed.
