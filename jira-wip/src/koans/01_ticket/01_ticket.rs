@@ -50,12 +50,26 @@ mod ticket {
     /// associated diagnostics to make it easier to understand what went wrong exactly.
     #[test]
     fn your_first_ticket() {
-        let ticket_one : Ticket = Ticket {
+        /// `let` is used to create a variable: we are binding a new `Ticket` struct to the name `ticket_one`.
+        ///
+        /// We said before that Rust is strongly typed, nonetheless we haven't specified a type for `ticket_one`.
+        /// As most modern strongly typed programming languages, Rust provides type inference: the compiler
+        /// is smart enough to figure out the type of variables based on their usage and it won't bother you
+        /// unless the type is ambiguous.
+        let ticket_one = Ticket {
+            /// This `.into()` method call is here for a reason, but give us time.
+            /// We'll get there when it's the right moment.
             title: "A ticket title".into(),
             description: "A heart-breaking description".into()
         };
 
+        /// `assert_eq` is a macro (notice the ! at the end of the name).
+        /// It checks that the left argument (the expected value) is identical
+        /// to the right argument (the computed value).
+        /// If they are not, it panics - Rust's (almost) non-recoverable way to terminate a program.
+        /// In the case of tests, this is caught by the test framework and the test is marked as failed.
         assert_eq!(ticket_one.title, "A ticket title");
+        /// Field syntax: you use a dot to access the field of a struct.
         assert_eq!(ticket_one.description, "A heart-breaking description");
     }
 }
