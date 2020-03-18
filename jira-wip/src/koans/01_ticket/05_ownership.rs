@@ -117,13 +117,10 @@ mod ownership {
         use super::{create_ticket, Ticket};
         use super::super::visibility::ticket::Status;
 
-        /// Be careful though! We don't want this function to compile after you have changed visibility to make
-        /// the use statement compile!
-        /// Once you have verified that it indeed doesn't compile, comment it out.
         fn verify_without_tampering() {
             let ticket: Ticket = create_ticket("A title".into(), "A description".into(), Status::ToDo);
 
-            /// Instead of accessing the field `ticket.description` we are calling the accessor method, `ticket.description()`
+            /// Instead of accessing the field `ticket.description` we are calling the accessor method, `ticket.description()`,
             /// which returns us a reference to the field value and allows us to verify its value without having the chance
             /// to modify it.
             assert_eq!(ticket.description(), "A description");
