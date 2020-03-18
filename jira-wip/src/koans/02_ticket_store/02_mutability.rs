@@ -56,7 +56,7 @@ mod mutability {
             let mut x = 5;
             let y = &mut x;
 
-            assert_eq!(x, *y);
+            assert_eq!(5, *y);
         }
 
         // This is very basic of Rust's mutability,and there is a lot more to discover.
