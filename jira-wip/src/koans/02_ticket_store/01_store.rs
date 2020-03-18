@@ -106,7 +106,6 @@ mod store {
         #[should_panic]
         fn a_missing_ticket()
         {
-            let ticket = create_ticket("A ticket title".into(), "An enlightened description".into(), Status::ToDo);
             let ticket_store = TicketStore::new();
 
             ticket_store.get(&1);
