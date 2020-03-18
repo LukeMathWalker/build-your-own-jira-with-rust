@@ -1,16 +1,16 @@
 mod store {
-    /// So far on this journey of building our own JIRA clone we have managed to complete a quite a lot.
+    /// So far on this journey of building our own JIRA clone we have managed to complete quite a lot.
     /// From building a Ticket to updating the visibility of our modules.
     ///
     /// Now we shift focus. Our tickets are doing well, but they need a home.
     /// A place where we can store our tickets, search for them, and retrieve them.
     ///
-    /// We can use many different data structures to store and manage our tickets,
-    /// and it's wise to compare the pros and cons of data structures and select the best
+    /// We can use many different data structures to store and manage our tickets.
+    /// So it's wise to compare the pros and cons of data structures and select the best
     /// ones that fit the use case.
     ///
-    /// For us we will have a ticket and some way to identify it, say with a unique identifier.
-    /// So it makes sense for us to use a HashMap to store our tickets.
+    /// For us, we will have a ticket and some way to identify it, say with a unique identifier.
+    /// Therefore it makes sense for us to use a HashMap to store our tickets.
     /// You can read more about the HashMap in rust here: https://doc.rust-lang.org/std/collections/struct.HashMap.html
     /// They work in a similar manner to HashMaps in other languages.
     use std::collections::HashMap;
@@ -106,13 +106,6 @@ mod store {
             store.data.insert(1, ticket);
 
             assert_eq!(store.data.get(&3).expect("Could not find the ticket").title, "A ticket title");
-
-
-            /*
-            assert_eq!(store.data.get(&1).expect("Could not find the ticket").description, "An enlightened description");
-            */
-
-
         }
 
     }
