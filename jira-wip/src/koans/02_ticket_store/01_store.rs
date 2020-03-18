@@ -1,25 +1,26 @@
 mod store {
-    /// So far on this journey of building our own JIRA clone we have managed to complete quite a lot.
+    /// So far on this journey of building our own JIRA clone we have managed to achieve quite a lot.
     /// From building a Ticket to updating the visibility of our modules.
     ///
     /// Now we shift focus. Our tickets are doing well, but they need a home.
     /// A place where we can store our tickets, search for them, and retrieve them.
     ///
     /// We can use many different data structures to store and manage our tickets.
-    /// So it's wise to compare the pros and cons of data structures and select the best
-    /// ones that fit the use case.
-    ///
-    /// For us, we will have a ticket and some way to identify it, say with a unique identifier.
-    /// Therefore it makes sense for us to use a HashMap to store our tickets.
+    /// JIRA users rely heavily on ticket identifiers, e.g. RUST-2018 or COVID-19.
+    /// It's a unique label that identifies univocally a single ticket, generally `<board name>-<ticket number>`.
+    /// We don't have the concept of a board yet, so we'll roll with a simple numerical id.
+    /// 
+    /// What is the simplest data structure that allows us to fetch a ticket given its id?
+    /// It makes sense for us to use a HashMap, also known as a dictionary in other languages.
     /// You can read more about the HashMap in rust here: https://doc.rust-lang.org/std/collections/struct.HashMap.html
-    /// They work in a similar manner to HashMaps in other languages.
     use std::collections::HashMap;
+    /// Let's import what we worked on in the previous set of exercises.
+    use super::visibility::ticket::Ticket;
 
     /*
     pub struct TicketStore {
         /// The collection of stored tickets.
-        ToDo
-        data: ,
+        data: __,
     }
     */
 
@@ -38,23 +39,17 @@ mod store {
     /// with a HashMap under the data property
     fn create_ticket_store() -> TicketStore
     {
-        TicketStore{
+        TicketStore {
             // Note that the compiler can infer the
             // types for our HashMaps' key value pairs.
             data: HashMap::new()
         }
     }
 
-    struct Ticket {
-        title: String,
-        description: String
-    }
-
-
     #[cfg(test)]
     mod tests {
-
         use super::*;
+        use super::super::visibility::ticket::{create_ticket, Ticket, Status};
 
         /// Now let's put our TicketStore to use
         ///
@@ -64,10 +59,7 @@ mod store {
         #[test]
         fn a_ticket_with_a_home()
         {
-            let ticket = Ticket {
-                title: "A ticket title".into(),
-                description: "An enlightened description".into()
-            };
+            let ticket = create_ticket("A ticket title".into(), "An enlightened description".into(), Status::ToDo);
 
             // Pay special attention to the 'mut' keyword here.
             // We have not encountered this keyword before, but don't worry
@@ -81,7 +73,6 @@ mod store {
             store.data.insert(ticket_id, ticket);
 
             assert_eq!(store.data.get(&ticket_id).expect("Could not find the ticket").title, "A ticket title");
-
         }
 
         /// Like HashMaps in other languages.
