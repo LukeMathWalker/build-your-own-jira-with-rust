@@ -8,7 +8,7 @@ mod visibility {
     ///
     /// You can find out more about modules and visibility in the Rust book:
     /// https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
-    mod ticket {
+    pub mod ticket {
         /// Structs, enums and functions defined in a module are visible to all other structs, enums and functions
         /// in the same module - e.g. we can use `Ticket` in the signature of `create_ticket` as our return type.
         ///

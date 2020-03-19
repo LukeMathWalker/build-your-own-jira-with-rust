@@ -3,3 +3,8 @@ include!("koans/01_ticket/01_ticket.rs");
 include!("koans/01_ticket/02_status.rs");
 include!("koans/01_ticket/03_validation.rs");
 include!("koans/01_ticket/04_visibility.rs");
+include!("koans/01_ticket/05_ownership.rs");
+include!("koans/01_ticket/06_traits.rs");
+include!("koans/01_ticket/07_derive.rs");
+include!("koans/01_ticket/08_recap.rs");
+include!("koans/02_ticket_store/01_store.rs");
