@@ -6,7 +6,7 @@
 /// That will be the focus of the next (and last) section.
 ///
 /// Take your time to review what you did - you have come a long way!
-mod store_recap {
+pub mod store_recap {
     use std::collections::HashMap;
     use chrono::{DateTime, Utc};
     use super::id_generation::TicketId;
