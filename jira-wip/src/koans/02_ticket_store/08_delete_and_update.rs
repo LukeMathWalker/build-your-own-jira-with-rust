@@ -356,6 +356,7 @@ mod delete_and_update {
             assert_eq!(&draft.title, retrieved_ticket.title());
             assert_eq!(&draft.description, retrieved_ticket.description());
             assert_eq!(&draft.status, retrieved_ticket.status());
+            assert_eq!(retrieved_ticket.created_at(), retrieved_ticket.updated_at());
         }
 
         #[test]

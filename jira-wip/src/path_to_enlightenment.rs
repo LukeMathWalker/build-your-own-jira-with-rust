@@ -15,3 +15,4 @@ include!("koans/02_ticket_store/05_type_as_constraints.rs");
 include!("koans/02_ticket_store/06_results.rs");
 include!("koans/02_ticket_store/07_vec.rs");
 include!("koans/02_ticket_store/08_delete_and_update.rs");
+include!("koans/02_ticket_store/09_store_recap.rs");
