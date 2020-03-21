@@ -165,7 +165,7 @@ mod vec {
         #[test]
         fn list_returns_an_empty_vec_on_an_empty_store()
         {
-            let mut store = TicketStore::new();
+            let store = TicketStore::new();
 
             assert!(store.list().is_empty());
         }
