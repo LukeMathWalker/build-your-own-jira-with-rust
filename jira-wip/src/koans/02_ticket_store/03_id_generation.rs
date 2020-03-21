@@ -123,5 +123,4 @@ mod id_generation {
             create_ticket(title, description, status)
         }
     }
-
 }
