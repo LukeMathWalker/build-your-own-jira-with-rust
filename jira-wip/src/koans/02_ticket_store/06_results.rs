@@ -149,14 +149,14 @@ mod result {
             }
         }
 
-        pub fn save(&mut self, ticket: TicketDraft) -> TicketId
+        pub fn save(&mut self, draft: TicketDraft) -> TicketId
         {
             let id = self.generate_id();
             let ticket = Ticket {
                 id,
-                title: ticket.title,
-                description: ticket.description,
-                status: ticket.status,
+                title: draft.title,
+                description: draft.description,
+                status: draft.status,
                 created_at: Utc::now(),
             };
             self.data.insert(id, ticket);
