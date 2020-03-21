@@ -75,7 +75,7 @@ mod type_as_constraints {
             }
         }
 
-        pub fn save(&mut self, mut ticket: TicketDraft) -> TicketId
+        pub fn save(&mut self, ticket: TicketDraft) -> TicketId
         {
             let id = self.generate_id();
             let ticket = Ticket {

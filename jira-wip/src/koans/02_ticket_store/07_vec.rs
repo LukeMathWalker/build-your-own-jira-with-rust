@@ -1,140 +1,15 @@
-mod result {
+mod vec {
     use std::collections::HashMap;
     use chrono::{DateTime, Utc};
     use super::recap::Status;
     use super::id_generation::TicketId;
     use std::error::Error;
 
-    /// The structure of our code is coming along quite nicely: it looks and feels like idiomatic
-    /// Rust and it models appropriately the domain we are tackling, JIRA.
+
+    /// Let's turn our attention again to our `TicketStore`.
+    /// We can create a ticket, we can retrieve a ticket.
     ///
-    /// There is still something we can improve though: our validation logic when creating a new
-    /// draft.
-    /// Our previous function, `create_ticket_draft`, panicked when either the title or
-    /// the description failed our validation checks.
-    /// The caller has no idea that this can happen - the function signature looks quite innocent:
-    /// ```
-    /// pub fn create_ticket_draft(title: String, description: String, status: Status) -> TicketDraft {
-    /// ```
-    /// Panics are generally not "caught" by the caller: they are meant to be used for states
-    /// that your program cannot recover from.
-    ///
-    /// For expected error scenarios, we can do a better job using `Result`:
-    /// ```
-    /// pub fn create_ticket_draft(title: String, description: String, status: Status) -> Result<TicketDraft, ValidationError> {
-    /// ```
-    /// `Result` is an enum defined in the standard library, just like `Option`.
-    /// While `Option` encodes the possibility that some data might be missing, `Result`
-    /// encodes the idea that an operation can fail.
-    ///
-    /// Its definition looks something like this:
-    /// ```
-    /// pub enum Result<T, E> {
-    ///     Ok(T),
-    ///     Err(E)
-    /// }
-    /// ```
-    /// The `Ok` variant is used to return the outcome of the function if its execution was successful.
-    /// The `Err` variant is used to return an error describing what went wrong.
-    ///
-    /// The error type, `E`, has to implement the `Error` trait from the standard library.
-    /// Let's archive our old `create_ticket_draft` function and let's define a new
-    /// `TicketDraft::new` method returning a `Result` to better set expectations with the caller.
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct TicketDraft {
-        title: String,
-        description: String,
-        status: Status,
-    }
-
-    impl TicketDraft {
-        pub fn title(&self) -> &String { &self.title }
-        pub fn description(&self) -> &String { &self.description }
-        pub fn status(&self) -> &Status { &self.status }
-
-        pub fn new(title: String, description: String, status: Status) -> Result<TicketDraft, ValidationError> {
-            if title.is_empty() {
-                return Err(ValidationError("Title cannot be empty!".to_string()));
-            }
-            if title.len() > 50 {
-                return Err(ValidationError("A title cannot be longer than 50 characters!".to_string()));
-            }
-            if description.len() > 3000 {
-                return Err(ValidationError("A description cannot be longer than 3000 characters!".to_string()));
-            }
-
-            let draft = TicketDraft {
-                title,
-                description,
-                status,
-            };
-            Ok(draft)
-        }
-
-        /*
-        pub fn new(title: String, description: String, status: Status) -> Result<TicketDraft, ValidationError> {
-            if title.is_empty() {
-                return Err(ValidationError("Title cannot be empty!".to_string()));
-            }
-            if title.len() > 50 {
-                __
-            }
-            if description.len() > 3000 {
-                __
-            }
-
-            let draft = TicketDraft {
-                title,
-                description,
-                status,
-            };
-            Ok(draft)
-        }
-        */
-    }
-
-    /// Our error struct, to be returned when validation fails.
-    /// It's a wrapper around a string, the validation error message.
-    /// Structs without field names are called tuple structs, you can read more about them in the Rust book:
-    /// https://doc.rust-lang.org/book/ch05-01-defining-structs.html#using-tuple-structs-without-named-fields-to-create-different-types
-    #[derive(PartialEq, Debug, Clone)]
-    pub struct ValidationError(String);
-
-    impl ValidationError {
-        fn new(msg: &str) -> Self {
-            Self(msg.to_string())
-        }
-    }
-
-    /// To use `ValidationError` as the `Err` variant in a `Result` we need to implement
-    /// the `Error` trait.
-    ///
-    /// The `Error` trait also requires that our struct implements the `Debug` and `Display` traits,
-    /// because errors might be bubbled up all the way until they are shown to the end user.
-    /// We can derive `Debug`, but `Display` has to be implemented explicitly:
-    /// `Display` rules how your struct is printed out for user-facing input, hence it cannot be
-    /// derived.
-    impl Error for ValidationError {
-        fn description(&self) -> &str {
-            &self.0
-        }
-    }
-
-    impl std::fmt::Display for ValidationError {
-        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(f, "{}", self.0)
-        }
-    }
-
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct Ticket {
-        id: TicketId,
-        title: String,
-        description: String,
-        status: Status,
-        created_at: DateTime<Utc>,
-    }
-
+    /// Let's implement a `list` method to retrieve all tickets currently in the store.
     struct TicketStore {
         data: HashMap<TicketId, Ticket>,
         current_id: TicketId,
@@ -167,10 +42,85 @@ mod result {
             self.data.get(id)
         }
 
+        /*
+        pub fn list(&self) -> Vec<&Ticket> {
+            __
+        }
+        */
+
+        /// List will return a `Vec`.
+        /// Check the Rust book for a primer: https://doc.rust-lang.org/book/ch08-01-vectors.html
+        /// The Rust documentation for HashMap will also be handy: https://doc.rust-lang.org/std/collections/struct.HashMap.html
+        pub fn list(&self) -> Vec<&Ticket> {
+            self.data.values().collect()
+        }
+
         fn generate_id(&mut self) -> TicketId {
             self.current_id += 1;
             self.current_id
         }
+    }
+
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct TicketDraft {
+        title: String,
+        description: String,
+        status: Status,
+    }
+
+    impl TicketDraft {
+        pub fn title(&self) -> &String { &self.title }
+        pub fn description(&self) -> &String { &self.description }
+        pub fn status(&self) -> &Status { &self.status }
+
+        pub fn new(title: String, description: String, status: Status) -> Result<TicketDraft, ValidationError> {
+            if title.is_empty() {
+                return Err(ValidationError("Title cannot be empty!".to_string()));
+            }
+            if title.len() > 50 {
+                return Err(ValidationError("A title cannot be longer than 50 characters!".to_string()));
+            }
+            if description.len() > 3000 {
+                return Err(ValidationError("A description cannot be longer than 3000 characters!".to_string()));
+            }
+
+            let draft = TicketDraft {
+                title,
+                description,
+                status,
+            };
+            Ok(draft)
+        }
+    }
+
+    #[derive(PartialEq, Debug, Clone)]
+    pub struct ValidationError(String);
+
+    impl ValidationError {
+        fn new(msg: &str) -> Self {
+            Self(msg.to_string())
+        }
+    }
+
+    impl Error for ValidationError {
+        fn description(&self) -> &str {
+            &self.0
+        }
+    }
+
+    impl std::fmt::Display for ValidationError {
+        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+            write!(f, "{}", self.0)
+        }
+    }
+
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct Ticket {
+        id: TicketId,
+        title: String,
+        description: String,
+        status: Status,
+        created_at: DateTime<Utc>,
     }
 
     impl Ticket {
@@ -186,6 +136,39 @@ mod result {
     mod tests {
         use super::*;
         use fake::{Faker, Fake};
+
+        #[test]
+        fn list_returns_all_tickets()
+        {
+            let n_tickets = 100;
+            let mut store = TicketStore::new();
+
+            for _ in 0..n_tickets {
+                let draft = generate_ticket_draft(Status::ToDo);
+                store.save(draft);
+            }
+
+            assert_eq!(n_tickets, store.list().len());
+        }
+
+        #[test]
+        fn on_a_single_ticket_list_and_get_agree()
+        {
+            let mut store = TicketStore::new();
+
+            let draft = generate_ticket_draft(Status::ToDo);
+            let id = store.save(draft);
+
+            assert_eq!(vec![store.get(&id).unwrap()], store.list());
+        }
+
+        #[test]
+        fn list_returns_an_empty_vec_on_an_empty_store()
+        {
+            let mut store = TicketStore::new();
+
+            assert!(store.list().is_empty());
+        }
 
         #[test]
         fn title_cannot_be_empty() {
