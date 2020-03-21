@@ -14,7 +14,7 @@ mod id_generation {
     /// If we want to be sure we weren't mixing up ticket ids and `u32` variables with
     /// a different semantic meaning, we would have to create a new type, e.g. `struct TicketId(u32)`.
     /// For now this doesn't feel necessary - we don't have many u32 flying around.
-    type TicketId = u32;
+    pub type TicketId = u32;
 
     // Feel free to add more fields to `TicketStore` to solve this koan!
     struct TicketStore {

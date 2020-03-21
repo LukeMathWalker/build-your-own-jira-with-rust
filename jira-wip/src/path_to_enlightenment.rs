@@ -10,3 +10,4 @@ include!("koans/01_ticket/08_recap.rs");
 include!("koans/02_ticket_store/01_store.rs");
 include!("koans/02_ticket_store/02_option.rs");
 include!("koans/02_ticket_store/03_id_generation.rs");
+include!("koans/02_ticket_store/04_metadata.rs");
