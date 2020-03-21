@@ -8,6 +8,8 @@ edition = "2018"
 
 [dependencies]
 chrono = "0.4.11"
+structopt = { version = "0.3", features = ["paw"] }
+paw = "1"
 
 [dev-dependencies]
 fake = "2"

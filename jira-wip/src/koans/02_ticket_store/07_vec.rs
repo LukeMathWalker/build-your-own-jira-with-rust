@@ -102,11 +102,7 @@ mod vec {
         }
     }
 
-    impl Error for ValidationError {
-        fn description(&self) -> &str {
-            &self.0
-        }
-    }
+    impl Error for ValidationError { }
 
     impl std::fmt::Display for ValidationError {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {

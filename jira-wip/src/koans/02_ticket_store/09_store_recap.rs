@@ -9,12 +9,11 @@
 mod store_recap {
     use std::collections::HashMap;
     use chrono::{DateTime, Utc};
-    use super::recap::Status;
     use super::id_generation::TicketId;
     use std::error::Error;
 
 
-    struct TicketStore {
+    pub struct TicketStore {
         data: HashMap<TicketId, Ticket>,
         current_id: TicketId,
     }
@@ -141,16 +140,20 @@ mod store_recap {
         }
     }
 
-    impl Error for ValidationError {
-        fn description(&self) -> &str {
-            &self.0
-        }
-    }
+    impl Error for ValidationError { }
 
     impl std::fmt::Display for ValidationError {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
             write!(f, "{}", self.0)
         }
+    }
+
+    #[derive(PartialEq, Debug, Clone)]
+    pub enum Status {
+        ToDo,
+        InProgress,
+        Blocked,
+        Done
     }
 
     #[derive(Debug, Clone, PartialEq)]

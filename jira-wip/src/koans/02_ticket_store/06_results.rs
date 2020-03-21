@@ -109,16 +109,12 @@ mod result {
     /// To use `ValidationError` as the `Err` variant in a `Result` we need to implement
     /// the `Error` trait.
     ///
-    /// The `Error` trait also requires that our struct implements the `Debug` and `Display` traits,
+    /// The `Error` trait requires that our struct implements the `Debug` and `Display` traits,
     /// because errors might be bubbled up all the way until they are shown to the end user.
     /// We can derive `Debug`, but `Display` has to be implemented explicitly:
     /// `Display` rules how your struct is printed out for user-facing input, hence it cannot be
     /// derived.
-    impl Error for ValidationError {
-        fn description(&self) -> &str {
-            &self.0
-        }
-    }
+    impl Error for ValidationError { }
 
     impl std::fmt::Display for ValidationError {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
