@@ -44,15 +44,13 @@ mod result {
     pub struct TicketDraft {
         title: String,
         description: String,
-        status: Status,
     }
 
     impl TicketDraft {
         pub fn title(&self) -> &String { &self.title }
         pub fn description(&self) -> &String { &self.description }
-        pub fn status(&self) -> &Status { &self.status }
 
-        pub fn new(title: String, description: String, status: Status) -> Result<TicketDraft, ValidationError> {
+        pub fn new(title: String, description: String) -> Result<TicketDraft, ValidationError> {
             if title.is_empty() {
                 return Err(ValidationError("Title cannot be empty!".to_string()));
             }
@@ -66,7 +64,6 @@ mod result {
             let draft = TicketDraft {
                 title,
                 description,
-                status,
             };
             Ok(draft)
         }
@@ -131,7 +128,7 @@ mod result {
                 id,
                 title: draft.title,
                 description: draft.description,
-                status: draft.status,
+                status: Status::ToDo,
                 created_at: Utc::now(),
             };
             self.data.insert(id, ticket);
@@ -166,7 +163,7 @@ mod result {
         fn title_cannot_be_empty() {
             let description = (0..3000).fake();
 
-            let result = TicketDraft::new("".into(), description, Status::ToDo);
+            let result = TicketDraft::new("".into(), description);
             assert!(result.is_err())
         }
 
@@ -176,7 +173,7 @@ mod result {
             // Let's generate a title longer than 51 chars.
             let title = (51..10_000).fake();
 
-            let result = TicketDraft::new(title, description, Status::ToDo);
+            let result = TicketDraft::new(title, description);
             assert!(result.is_err())
         }
 
@@ -185,14 +182,14 @@ mod result {
             let description = (3001..10_000).fake();
             let title = (0..50).fake();
 
-            let result = TicketDraft::new(title, description, Status::ToDo);
+            let result = TicketDraft::new(title, description);
             assert!(result.is_err())
         }
 
         #[test]
         fn a_ticket_with_a_home()
         {
-            let draft = generate_ticket_draft(Status::ToDo);
+            let draft = generate_ticket_draft();
             let mut store = TicketStore::new();
 
             let ticket_id = store.save(draft.clone());
@@ -201,7 +198,7 @@ mod result {
             assert_eq!(&ticket_id, retrieved_ticket.id());
             assert_eq!(&draft.title, retrieved_ticket.title());
             assert_eq!(&draft.description, retrieved_ticket.description());
-            assert_eq!(&draft.status, retrieved_ticket.status());
+            assert_eq!(&Status::ToDo, retrieved_ticket.status());
         }
 
         #[test]
@@ -220,17 +217,17 @@ mod result {
             let mut store = TicketStore::new();
 
             for expected_id in 1..n_tickets {
-                let draft = generate_ticket_draft(Status::ToDo);
+                let draft = generate_ticket_draft();
                 let ticket_id = store.save(draft);
                 assert_eq!(expected_id, ticket_id);
             }
         }
 
-        fn generate_ticket_draft(status: Status) -> TicketDraft {
+        fn generate_ticket_draft() -> TicketDraft {
             let description = (0..3000).fake();
             let title = (1..50).fake();
 
-            TicketDraft::new(title, description, status).expect("Failed to create ticket")
+            TicketDraft::new(title, description).expect("Failed to create ticket")
         }
     }
 }

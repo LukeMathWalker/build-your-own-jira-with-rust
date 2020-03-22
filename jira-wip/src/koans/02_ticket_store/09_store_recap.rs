@@ -36,7 +36,7 @@ pub mod store_recap {
                 id,
                 title: draft.title,
                 description: draft.description,
-                status: draft.status,
+                status: Status::ToDo,
                 created_at: timestamp.clone(),
                 updated_at: timestamp,
             };
@@ -118,7 +118,6 @@ pub mod store_recap {
     pub struct TicketDraft {
         pub title: TicketTitle,
         pub description: TicketDescription,
-        pub status: Status,
     }
 
     #[derive(Debug, Clone, PartialEq)]

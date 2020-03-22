@@ -32,7 +32,7 @@ mod delete_and_update {
                 id,
                 title: draft.title,
                 description: draft.description,
-                status: draft.status,
+                status: Status::ToDo,
                 created_at: timestamp.clone(),
                 // A new field, to keep track of the last time a ticket has been touched.
                 // It starts in sync with `created_at`, it gets updated when a ticket is updated.
@@ -136,7 +136,6 @@ mod delete_and_update {
     pub struct TicketDraft {
         pub title: TicketTitle,
         pub description: TicketDescription,
-        pub status: Status,
     }
 
     /// A light wrapper around a deleted ticket, to store some metadata (the deletion timestamp).
@@ -200,7 +199,7 @@ mod delete_and_update {
         fn updating_nothing_leaves_the_updatable_fields_unchanged()
         {
             let mut store = TicketStore::new();
-            let draft = generate_ticket_draft(Status::ToDo);
+            let draft = generate_ticket_draft();
             let ticket_id = store.save(draft.clone());
 
             let patch = TicketPatch {
@@ -212,7 +211,7 @@ mod delete_and_update {
 
             assert_eq!(draft.title, updated_ticket.title);
             assert_eq!(draft.description, updated_ticket.description);
-            assert_eq!(draft.status, updated_ticket.status);
+            assert_eq!(Status::ToDo, updated_ticket.status);
         }
 
         #[test]
@@ -229,7 +228,7 @@ mod delete_and_update {
         fn update_works()
         {
             let mut store = TicketStore::new();
-            let draft = generate_ticket_draft(Status::ToDo);
+            let draft = generate_ticket_draft();
             let patch = generate_ticket_patch(Status::Done);
             let ticket_id = store.save(draft.clone());
 
@@ -248,7 +247,7 @@ mod delete_and_update {
         fn delete_works()
         {
             let mut store = TicketStore::new();
-            let draft = generate_ticket_draft(Status::ToDo);
+            let draft = generate_ticket_draft();
             let ticket_id = store.save(draft.clone());
             let ticket = store.get(&ticket_id).unwrap().to_owned();
 
@@ -274,7 +273,7 @@ mod delete_and_update {
             let mut store = TicketStore::new();
 
             for _ in 0..n_tickets {
-                let draft = generate_ticket_draft(Status::ToDo);
+                let draft = generate_ticket_draft();
                 store.save(draft);
             }
 
@@ -286,7 +285,7 @@ mod delete_and_update {
         {
             let mut store = TicketStore::new();
 
-            let draft = generate_ticket_draft(Status::ToDo);
+            let draft = generate_ticket_draft();
             let id = store.save(draft);
 
             assert_eq!(vec![store.get(&id).unwrap()], store.list());
@@ -323,7 +322,7 @@ mod delete_and_update {
         #[test]
         fn a_ticket_with_a_home()
         {
-            let draft = generate_ticket_draft(Status::ToDo);
+            let draft = generate_ticket_draft();
             let mut store = TicketStore::new();
 
             let ticket_id = store.save(draft.clone());
@@ -332,7 +331,7 @@ mod delete_and_update {
             assert_eq!(&ticket_id, retrieved_ticket.id());
             assert_eq!(&draft.title, retrieved_ticket.title());
             assert_eq!(&draft.description, retrieved_ticket.description());
-            assert_eq!(&draft.status, retrieved_ticket.status());
+            assert_eq!(&Status::ToDo, retrieved_ticket.status());
             assert_eq!(retrieved_ticket.created_at(), retrieved_ticket.updated_at());
         }
 
@@ -352,7 +351,7 @@ mod delete_and_update {
             let mut store = TicketStore::new();
 
             for expected_id in 1..n_tickets {
-                let draft = generate_ticket_draft(Status::ToDo);
+                let draft = generate_ticket_draft();
                 let ticket_id = store.save(draft);
                 assert_eq!(expected_id, ticket_id);
             }
@@ -365,31 +364,30 @@ mod delete_and_update {
             let mut store = TicketStore::new();
 
             for expected_id in 1..n_tickets {
-                let draft = generate_ticket_draft(Status::ToDo);
+                let draft = generate_ticket_draft();
                 let ticket_id = store.save(draft);
                 assert_eq!(expected_id, ticket_id);
                 assert!(store.delete(&ticket_id).is_some());
             }
         }
 
-        fn generate_ticket_draft(status: Status) -> TicketDraft {
+        fn generate_ticket_draft() -> TicketDraft {
             let description = TicketDescription::new((0..3000).fake()).unwrap();
             let title = TicketTitle::new((1..50).fake()).unwrap();
 
             TicketDraft {
                 title,
                 description,
-                status
             }
         }
 
         fn generate_ticket_patch(status: Status) -> TicketPatch {
-            let patch = generate_ticket_draft(status);
+            let patch = generate_ticket_draft();
 
             TicketPatch {
                 title: Some(patch.title),
                 description: Some(patch.description),
-                status: Some(patch.status),
+                status: Some(status),
             }
         }
     }

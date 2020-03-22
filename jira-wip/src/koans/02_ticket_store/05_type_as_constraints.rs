@@ -17,12 +17,13 @@ mod type_as_constraints {
     /// We can use types to better model our domain and constrain the behaviour of our code.
     ///
     /// Before `TicketStore::save` is called, we are dealing with a `TicketDraft`.
-    /// No `created_at`, no `id`.
+    /// No `created_at`, no `id`, no `status`.
     /// On the other side, `TicketStore::get` will return a `Ticket`, with a `created_at` and
     /// an `id`.
     ///
     /// There will be no way to create a `Ticket` without passing through the store:
     /// we will enforce `save` as the only way to produce a `Ticket` from a `TicketDraft`.
+    /// This will ensure as well that all tickets start in a `ToDo` status.
     ///
     /// Less room for errors, less ambiguity, you can understand the domain constraints
     /// by looking at the signatures of the functions in our code.
@@ -88,7 +89,6 @@ mod type_as_constraints {
     impl TicketDraft {
         pub fn title(&self) -> &String { todo!() }
         pub fn description(&self) -> &String { todo!() }
-        pub fn status(&self) -> &Status { todo!() }
     }
 
     impl Ticket {
@@ -99,7 +99,7 @@ mod type_as_constraints {
         pub fn id(&self) -> &TicketId { todo!() }
     }
 
-    pub fn create_ticket_draft(title: String, description: String, status: Status) -> TicketDraft {
+    pub fn create_ticket_draft(title: String, description: String) -> TicketDraft {
         if title.is_empty() {
             panic!("Title cannot be empty!");
         }
@@ -113,7 +113,6 @@ mod type_as_constraints {
         TicketDraft {
             title,
             description,
-            status,
         }
     }
 
@@ -125,7 +124,7 @@ mod type_as_constraints {
         #[test]
         fn a_ticket_with_a_home()
         {
-            let draft = generate_ticket_draft(Status::ToDo);
+            let draft = generate_ticket_draft();
             let mut store = TicketStore::new();
 
             let ticket_id = store.save(draft.clone());
@@ -134,7 +133,7 @@ mod type_as_constraints {
             assert_eq!(&ticket_id, retrieved_ticket.id());
             assert_eq!(&draft.title, retrieved_ticket.title());
             assert_eq!(&draft.description, retrieved_ticket.description());
-            assert_eq!(&draft.status, retrieved_ticket.status());
+            assert_eq!(&Status::ToDo, retrieved_ticket.status());
         }
 
         #[test]
@@ -153,17 +152,17 @@ mod type_as_constraints {
             let mut store = TicketStore::new();
 
             for expected_id in 1..n_tickets {
-                let draft = generate_ticket_draft(Status::ToDo);
+                let draft = generate_ticket_draft();
                 let ticket_id = store.save(draft);
                 assert_eq!(expected_id, ticket_id);
             }
         }
 
-        fn generate_ticket_draft(status: Status) -> TicketDraft {
+        fn generate_ticket_draft() -> TicketDraft {
             let description = (0..3000).fake();
             let title = (1..50).fake();
 
-            create_ticket_draft(title, description, status)
+            create_ticket_draft(title, description)
         }
     }
 }

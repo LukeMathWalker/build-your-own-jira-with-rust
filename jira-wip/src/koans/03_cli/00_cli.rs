@@ -38,12 +38,12 @@ pub mod cli {
             /// Title of your ticket - it cannot be empty!
             #[structopt(long)]
             title: String,
-            /// Status of the new ticket.
-            #[structopt(long)]
-            status: Status,
         },
         /// Edit the details of an existing ticket.
         Edit {
+            /// Status of the new ticket.
+            #[structopt(long)]
+            status: Status,
             __
         },
         /// Delete a ticket from the store passing the ticket id.
@@ -89,7 +89,7 @@ pub mod cli {
     /// Check its section in the Rust book if you are curious: https://doc.rust-lang.org/book/ch17-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types
     fn handle_command(ticket_store: &mut TicketStore, command: Command) -> Result<(), Box<dyn Error>> {
         match command {
-            Command::Create { description, title, status } => {
+            Command::Create { description, title } => {
                 // The ? operator can be used in functions that returns `Result` to return early
                 // if a fallible operation didn't succeed.
                 // It saves a bunch of lines of code as well as some visual branching.
@@ -101,7 +101,6 @@ pub mod cli {
                 let draft = TicketDraft {
                     title: TicketTitle::new(title)?,
                     description: TicketDescription::new(description)?,
-                    status,
                 };
                 ticket_store.save(draft);
             }

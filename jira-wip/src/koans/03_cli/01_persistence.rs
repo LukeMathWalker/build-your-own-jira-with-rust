@@ -57,7 +57,7 @@ pub mod persistence {
         #[test]
         fn load_what_you_save() {
             let mut store = TicketStore::new();
-            let draft = generate_ticket_draft(Status::ToDo);
+            let draft = generate_ticket_draft();
             store.save(draft);
 
             // We use the `tempfile` crate to generate a temporary path on the fly
@@ -76,14 +76,13 @@ pub mod persistence {
 
         }
 
-        fn generate_ticket_draft(status: Status) -> TicketDraft {
+        fn generate_ticket_draft() -> TicketDraft {
             let description = TicketDescription::new((0..3000).fake()).unwrap();
             let title = TicketTitle::new((1..50).fake()).unwrap();
 
             TicketDraft {
                 title,
                 description,
-                status
             }
         }
     }
