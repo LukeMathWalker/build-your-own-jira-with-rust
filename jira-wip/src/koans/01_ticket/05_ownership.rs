@@ -68,7 +68,8 @@ mod ownership {
         }
 
         /// Replace __ with the proper types to get accessor methods for the other two fields.
-        /// If you are asking yourself why we are returning &str instead of &String, check out: 
+        /// If you are asking yourself why we are returning &str instead of &String, check out:
+        /// https://blog.thoughtram.io/string-vs-str-in-rust/
         pub fn description(__) -> __ {
             __
         }
