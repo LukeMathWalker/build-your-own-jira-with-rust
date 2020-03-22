@@ -58,8 +58,7 @@ pub mod persistence {
         fn load_what_you_save() {
             let mut store = TicketStore::new();
             let draft = generate_ticket_draft(Status::ToDo);
-            let ticket_id = store.save(draft);
-            let ticket = store.get(&ticket_id).unwrap().to_owned();
+            store.save(draft);
 
             // We use the `tempfile` crate to generate a temporary path on the fly
             // which will be cleaned up at the end of the test.
