@@ -68,9 +68,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         TestOutcome::Failure { details } => {
             println!(
-                "\n\n\t{}\n\n{}",
-                info_style()
-                    .paint("Meditate on your approach and return. Mountains are merely mountains."),
+                "\n\t{}\n\n{}\n\n",
+                info_style().paint(
+                    "Meditate on your approach and return. Mountains are merely mountains.\n\n"
+                ),
                 cargo_style().paint(&String::from_utf8_lossy(&details).to_string())
             );
         }
@@ -89,6 +90,7 @@ fn parse_bool(s: &str) -> Option<bool> {
 fn seek_the_path(koans: &KoanCollection) -> TestOutcome {
     print!(" \n\n");
     for koan in koans.opened() {
+        println!("{}", info_style().dimmed().paint("Running tests...\n"));
         let koan_outcome = run_tests(&koans.configuration().manifest_path(), Some(&koan.name));
         match koan_outcome {
             TestOutcome::Success => {
@@ -136,7 +138,7 @@ enum TestOutcome {
 }
 
 pub fn info_style() -> yansi::Style {
-    yansi::Style::new(yansi::Color::Default).italic()
+    yansi::Style::new(yansi::Color::Default)
 }
 pub fn cargo_style() -> yansi::Style {
     yansi::Style::new(yansi::Color::Default).dimmed()
