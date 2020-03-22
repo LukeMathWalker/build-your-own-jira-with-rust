@@ -182,7 +182,7 @@ mod result {
 
         #[test]
         fn description_cannot_be_longer_than_3000_chars() {
-            let description = (3000..10_000).fake();
+            let description = (3001..10_000).fake();
             let title = (0..50).fake();
 
             let result = TicketDraft::new(title, description, Status::ToDo);
