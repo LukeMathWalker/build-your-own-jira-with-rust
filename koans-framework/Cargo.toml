@@ -6,11 +6,11 @@ edition = "2018"
 
 [dependencies]
 regex = "1"
-ansi_term = "0.12"
 read_input = "0.8"
 structopt = { version = "0.3", features = ["paw"] }
 paw = "1"
 anyhow = "1"
+yansi = "0.5"
 
 [[bin]]
 name = "koans"

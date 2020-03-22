@@ -1,10 +1,9 @@
-use ansi_term::Colour::{Green, Red, Yellow};
-use ansi_term::Style;
 use koans::KoanCollection;
 use read_input::prelude::*;
 use std::error::Error;
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
+use yansi::Paint;
 
 /// A small CLI to manage test-driven workshops and tutorials in Rust.
 ///
@@ -28,13 +27,17 @@ pub struct Command {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let command = <Command as paw::ParseArgs>::parse_args()?;
-
+    // Enable ANSI colour support on Windows, is it's supported.
+    // Disable it entirely otherwise.
+    if cfg!(windows) && !Paint::enable_windows_ascii() {
+        Paint::disable();
+    }
     let mut koans = KoanCollection::new(&command.path)?;
     match seek_the_path(&koans) {
         TestOutcome::Success => {
             match koans.next() {
                 Some(next_koan) => {
-                    println!("\t{}\n", Style::default().italic().paint("Eternity lies ahead of us, and behind. Your path is not yet finished. 🍂"));
+                    println!("\t{}\n", info_style().paint("Eternity lies ahead of us, and behind. Your path is not yet finished. 🍂"));
 
                     let open_next = input::<String>()
                         .repeat_msg(format!(
@@ -49,18 +52,16 @@ fn main() -> Result<(), Box<dyn Error>> {
                         let next_koan = koans.open_next().expect("Failed to open the next koan");
                         println!(
                             "{} {}",
-                            Yellow.normal().paint("\n\tAhead of you lies"),
-                            Yellow.bold().paint(format!("{}", &next_koan)),
+                            next_style().paint("\n\tAhead of you lies"),
+                            next_style().bold().paint(format!("{}", &next_koan)),
                         );
                     }
                 }
                 None => {
                     println!(
                         "{}\n\t{}\n",
-                        Green.normal().paint("\n\tThere will be no more tasks."),
-                        Style::default()
-                            .italic()
-                            .paint("What is the sound of one hand clapping (for you)? 🌟")
+                        success_style().paint("\n\tThere will be no more tasks."),
+                        info_style().paint("What is the sound of one hand clapping (for you)? 🌟")
                     );
                 }
             }
@@ -68,12 +69,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         TestOutcome::Failure { details } => {
             println!(
                 "\n\n\t{}\n\n{}",
-                Style::default()
-                    .italic()
+                info_style()
                     .paint("Meditate on your approach and return. Mountains are merely mountains."),
-                Style::default()
-                    .dimmed()
-                    .paint(&String::from_utf8_lossy(&details).to_string())
+                cargo_style().paint(&String::from_utf8_lossy(&details).to_string())
             );
         }
     };
@@ -94,10 +92,10 @@ fn seek_the_path(koans: &KoanCollection) -> TestOutcome {
         let koan_outcome = run_tests(&koans.configuration().manifest_path(), Some(&koan.name));
         match koan_outcome {
             TestOutcome::Success => {
-                println!("{}", Green.normal().paint(format!("\t🚀 {}", &koan)));
+                println!("{}", success_style().paint(format!("\t🚀 {}", &koan)));
             }
             TestOutcome::Failure { details } => {
-                println!("{}", Red.normal().paint(format!("\t❌ {}", &koan)));
+                println!("{}", failure_style().paint(format!("\t❌ {}", &koan)));
                 return TestOutcome::Failure { details };
             }
         }
@@ -135,4 +133,20 @@ fn run_tests(manifest_path: &Path, filter: Option<&str>) -> TestOutcome {
 enum TestOutcome {
     Success,
     Failure { details: Vec<u8> },
+}
+
+pub fn info_style() -> yansi::Style {
+    yansi::Style::new(yansi::Color::Default).italic()
+}
+pub fn cargo_style() -> yansi::Style {
+    yansi::Style::new(yansi::Color::Default).dimmed()
+}
+pub fn next_style() -> yansi::Style {
+    yansi::Style::new(yansi::Color::Yellow)
+}
+pub fn success_style() -> yansi::Style {
+    yansi::Style::new(yansi::Color::Green)
+}
+pub fn failure_style() -> yansi::Style {
+    yansi::Style::new(yansi::Color::Red)
 }
