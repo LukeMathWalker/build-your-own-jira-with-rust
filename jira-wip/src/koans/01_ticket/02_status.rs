@@ -57,7 +57,7 @@ mod status {
                 // If we want to take the same action for multiple variants, we can use a | to list them.
                 // Variant | Variant | ... | Variant => Expression
                 //
-                // We are panicing in this case, thus making the test fail if this branch of our match
+                // We are panicking in this case, thus making the test fail if this branch of our match
                 // statement gets executed.
                 Status::ToDo | Status::InProgress | Status::Done => panic!("The ticket is not blocked!")
             }
