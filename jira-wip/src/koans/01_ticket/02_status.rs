@@ -34,17 +34,10 @@ mod status {
         #[test]
         fn a_blocked_ticket() {
             // Let's create a blocked ticket.
-            /*
-                let ticket = Ticket {
-                    title: "A ticket title".into(),
-                    description: "A heart-breaking description".into(),
-                    status:
-                };
-            */
             let ticket = Ticket {
                 title: "A ticket title".into(),
                 description: "A heart-breaking description".into(),
-                status: Status::Blocked,
+                status: __
             };
 
             // Let's check that the status corresponds to what we expect.
@@ -56,6 +49,8 @@ mod status {
             // This is extremely useful when working evolving codebases: if tomorrow we decide that tickets
             // can also have `Backlog` as their status, the Rust compiler will highlight all code locations
             // where we need to account for the new variant. No way to forget!
+            //
+            // Checkout the Rust Book for more details: https://doc.rust-lang.org/book/ch06-02-match.html
             match ticket.status {
                 // Variant => Expression
                 Status::Blocked => println!("Great, as expected!"),
