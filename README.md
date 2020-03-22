@@ -8,10 +8,17 @@ You can get started with
 ```bash
 git clone git@github.com:LukeMathWalker/build-your-own-jira-with-rust.git
 cargo install -f --path koans-framework 
+git checkout -b my-solution
 koans --path jira-wip
 ```
 
 Follow the instructions shown in the terminal to get started with the first koan.
+
+Run this command from the top-level folder
+```bash
+koans --path jira-wip
+```
+to verify your current solutions and move forward in the workshop.
 
 Enjoy!
 

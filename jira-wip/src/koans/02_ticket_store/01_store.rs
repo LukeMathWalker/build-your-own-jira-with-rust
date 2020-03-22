@@ -70,6 +70,7 @@ mod store {
     mod tests {
         use super::*;
         use super::super::recap::{create_ticket, Status};
+        use fake::{Fake, Faker};
 
         /// Now let's put our TicketStore to use
         ///
@@ -79,14 +80,13 @@ mod store {
         #[test]
         fn a_ticket_with_a_home()
         {
-            let ticket = create_ticket("A ticket title".into(), "An enlightened description".into(), Status::ToDo);
+            let ticket = generate_ticket(Status::ToDo);
 
             // Pay special attention to the 'mut' keyword here: variables are immutable by default in Rust.
             // The `mut` keyword is used to signal that you must pay special attention to the variable as it's likely to change later on
             // in the function body.
             let mut store = TicketStore::new();
-            // For now just note that if we wish to store anything in our HashMap
-            let ticket_id = 1;
+            let ticket_id = Faker.fake();
 
             // Here we need to create a clone of our `ticket` because `save` takes the `ticket` argument as value, 
             // thus taking ownership of its value out of the caller function into the method.
@@ -107,8 +107,33 @@ mod store {
         fn a_missing_ticket()
         {
             let ticket_store = TicketStore::new();
+            let ticket_id = Faker.fake();
 
-            ticket_store.get(&1);
+            ticket_store.get(&ticket_id);
+        }
+
+        /// This is not our desired behaviour for the final version of the ticket store
+        /// but it will do for now.
+        #[test]
+        fn inserting_a_ticket_with_an_existing_id_overwrites_previous_ticket()
+        {
+            let first_ticket = generate_ticket(Status::ToDo);
+            let second_ticket = generate_ticket(Status::ToDo);
+            let ticket_id = Faker.fake();
+            let mut store = TicketStore::new();
+
+            store.save(first_ticket.clone(), ticket_id);
+            assert_eq!(store.get(&ticket_id), &first_ticket);
+
+            store.save(second_ticket.clone(), ticket_id);
+            assert_eq!(store.get(&ticket_id), &second_ticket);
+        }
+
+        fn generate_ticket(status: Status) -> Ticket {
+            let description = (0..3000).fake();
+            let title = (1..50).fake();
+
+            create_ticket(title, description, status)
         }
     }
 }

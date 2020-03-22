@@ -1,4 +1,3 @@
-
 mod option {
     use std::collections::HashMap;
     use super::recap::Ticket;
@@ -65,6 +64,7 @@ mod option {
     mod tests {
         use super::*;
         use super::super::recap::{create_ticket, Status};
+        use fake::{Faker, Fake};
 
         /// Now let's put our TicketStore to use
         ///
@@ -74,9 +74,9 @@ mod option {
         #[test]
         fn a_ticket_with_a_home()
         {
-            let ticket = create_ticket("A ticket title".into(), "An enlightened description".into(), Status::ToDo);
+            let ticket = generate_ticket(Status::ToDo);
             let mut store = TicketStore::new();
-            let ticket_id = 1;
+            let ticket_id = Faker.fake();
 
             store.save(ticket.clone(), ticket_id);
 
@@ -91,8 +91,33 @@ mod option {
         fn a_missing_ticket()
         {
             let ticket_store = TicketStore::new();
+            let ticket_id = Faker.fake();
 
-            assert_eq!(ticket_store.get(&1), None);
+            assert_eq!(ticket_store.get(&ticket_id), None);
+        }
+
+        /// This is not our desired behaviour for the final version of the ticket store
+        /// but it will do for now.
+        #[test]
+        fn inserting_a_ticket_with_an_existing_id_overwrites_previous_ticket()
+        {
+            let first_ticket = generate_ticket(Status::ToDo);
+            let second_ticket = generate_ticket(Status::ToDo);
+            let mut store = TicketStore::new();
+            let ticket_id = Faker.fake();
+
+            store.save(first_ticket.clone(), ticket_id);
+            assert_eq!(store.get(&ticket_id), Some(&first_ticket));
+
+            store.save(second_ticket.clone(), ticket_id);
+            assert_eq!(store.get(&ticket_id), Some(&second_ticket));
+        }
+
+        fn generate_ticket(status: Status) -> Ticket {
+            let description = (0..3000).fake();
+            let title = (1..50).fake();
+
+            create_ticket(title, description, status)
         }
     }
 }
