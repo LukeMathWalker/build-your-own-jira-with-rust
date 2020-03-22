@@ -311,7 +311,7 @@ mod delete_and_update {
 
         #[test]
         fn description_cannot_be_longer_than_3000_chars() {
-            let description = (3000..10_000).fake();
+            let description = (3001..10_000).fake();
 
             assert!(TicketDescription::new(description).is_err())
         }
