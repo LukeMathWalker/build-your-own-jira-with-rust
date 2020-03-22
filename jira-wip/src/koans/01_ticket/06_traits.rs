@@ -55,7 +55,9 @@ mod traits {
     /// 
     /// Let's implement it for Status!
     impl PartialEq for Status {
-        fn eq(&self, other: &Status) -> bool { 
+        fn eq(&self, other: &Status) -> bool {
+            // If you need to refresh the `match` syntax, checkout
+            // https://doc.rust-lang.org/book/ch06-02-match.html
             match (self, other) {
                 __
             }
