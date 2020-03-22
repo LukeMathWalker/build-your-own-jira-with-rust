@@ -13,8 +13,7 @@ mod the_end {
     mod the_end {
         #[test]
         fn the_end_of_your_journey() {
-            // let i_am_done = __;
-            let i_am_done = true;
+            let i_am_done = __;
 
             assert!(i_am_done);
         }

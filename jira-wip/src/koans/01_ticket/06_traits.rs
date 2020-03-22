@@ -57,20 +57,10 @@ mod traits {
     impl PartialEq for Status {
         fn eq(&self, other: &Status) -> bool { 
             match (self, other) {
-                (Status::ToDo, Status::ToDo) | (Status::Done, Status::Done) | (Status::InProgress, Status::InProgress) | (Status::Blocked, Status::Blocked) => true,
-                _ => false,
-            }
-        }
-    }
-    /*
-    impl PartialEq for Status {
-        fn eq(&self, other: &Status) -> bool { 
-            match (self, other) {
                 __
             }
         }
     }
-    */
 
     #[cfg(test)]
     mod tests {

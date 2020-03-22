@@ -57,26 +57,6 @@ mod result {
                 return Err(ValidationError("Title cannot be empty!".to_string()));
             }
             if title.len() > 50 {
-                return Err(ValidationError("A title cannot be longer than 50 characters!".to_string()));
-            }
-            if description.len() > 3000 {
-                return Err(ValidationError("A description cannot be longer than 3000 characters!".to_string()));
-            }
-
-            let draft = TicketDraft {
-                title,
-                description,
-                status,
-            };
-            Ok(draft)
-        }
-
-        /*
-        pub fn new(title: String, description: String, status: Status) -> Result<TicketDraft, ValidationError> {
-            if title.is_empty() {
-                return Err(ValidationError("Title cannot be empty!".to_string()));
-            }
-            if title.len() > 50 {
                 __
             }
             if description.len() > 3000 {
@@ -90,7 +70,6 @@ mod result {
             };
             Ok(draft)
         }
-        */
     }
 
     /// Our error struct, to be returned when validation fails.

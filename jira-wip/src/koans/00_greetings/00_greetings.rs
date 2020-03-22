@@ -39,8 +39,7 @@ mod greetings {
     ///
     /// If you get stuck, don't hesitate to ping us!
     fn the_beginning_of_your_journey() {
-        // let i_am_ready_to_start = __;
-        let i_am_ready_to_start = true;
+        let i_am_ready_to_start = __;
 
         assert!(i_am_ready_to_start);
     }

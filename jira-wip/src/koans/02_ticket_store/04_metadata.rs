@@ -32,25 +32,12 @@ mod metadata {
             }
         }
 
-        pub fn save(&mut self, mut ticket: Ticket) -> TicketId
-        {
-            let id = self.generate_id();
-
-            ticket.id = Some(id);
-            ticket.created_at = Some(Utc::now());
-
-            self.data.insert(id, ticket);
-            id
-        }
-
-        /*
         pub fn save(&mut self, ticket: Ticket) -> TicketId
         {
             let id = self.generate_id();
             self.data.insert(id, ticket);
             id
         }
-        */
 
         pub fn get(&self, id: &TicketId) -> Option<&Ticket> {
             self.data.get(id)
@@ -66,19 +53,8 @@ mod metadata {
     pub struct Ticket {
         title: String,
         description: String,
-        status: Status,
-        id: Option<TicketId>,
-        created_at: Option<DateTime<Utc>>
-    }
-
-    /*
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct Ticket {
-        title: String,
-        description: String,
         status: Status
     }
-    */
 
     impl Ticket {
         pub fn title(&self) -> &String {
@@ -94,24 +70,14 @@ mod metadata {
         }
 
         // The datetime when the ticket was saved in the store, if it was saved.
-        pub fn created_at(&self) -> Option<&DateTime<Utc>> {
-            self.created_at.as_ref()
-        }
-
-        // The id associated with the ticket when it was saved in the store, if it was saved.
-        pub fn id(&self) -> Option<&TicketId> {
-            self.id.as_ref()
-        }
-
-        /*
         pub fn created_at(&self) -> __ {
             __
         }
 
+        // The id associated with the ticket when it was saved in the store, if it was saved.
         pub fn id(&self) -> __ {
             __
         }
-        */
     }
 
     pub fn create_ticket(title: String, description: String, status: Status) -> Ticket {
@@ -129,30 +95,8 @@ mod metadata {
             title,
             description,
             status,
-            created_at: None,
-            id: None,
         }
     }
-
-    /*
-    pub fn create_ticket(title: String, description: String, status: Status) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty!");
-        }
-        if title.len() > 50 {
-            panic!("A title cannot be longer than 50 characters!");
-        }
-        if description.len() > 3000 {
-            panic!("A description cannot be longer than 3000 characters!");
-        }
-
-        Ticket {
-            title,
-            description,
-            status,
-        }
-    }
-    */
 
     #[cfg(test)]
     mod tests {

@@ -50,14 +50,8 @@ mod option {
         /// For more details on `Option`, there is an exhaustive introduction in the Rust book: 
         /// https://doc.rust-lang.org/1.29.0/book/2018-edition/ch06-01-defining-an-enum.html#the-option-enum-and-its-advantages-over-null-values
         pub fn get(&self, id: &u32) -> Option<&Ticket> {
-            self.data.get(id)
-        }
-
-        /*
-        pub fn get(&self, id: &u32) -> Option<&Ticket> {
             todo!()
         }
-        */
     }
 
     #[cfg(test)]

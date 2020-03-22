@@ -42,17 +42,11 @@ mod vec {
             self.data.get(id)
         }
 
-        /*
-        pub fn list(&self) -> Vec<&Ticket> {
-            __
-        }
-        */
-
         /// List will return a `Vec`.
         /// Check the Rust book for a primer: https://doc.rust-lang.org/book/ch08-01-vectors.html
         /// The Rust documentation for HashMap will also be handy: https://doc.rust-lang.org/std/collections/struct.HashMap.html
         pub fn list(&self) -> Vec<&Ticket> {
-            self.data.values().collect()
+            __
         }
 
         fn generate_id(&mut self) -> TicketId {
