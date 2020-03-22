@@ -17,3 +17,4 @@ include!("koans/02_ticket_store/07_vec.rs");
 include!("koans/02_ticket_store/08_delete_and_update.rs");
 include!("koans/02_ticket_store/09_store_recap.rs");
 include!("koans/03_cli/00_cli.rs");
+include!("koans/03_cli/01_persistence.rs");

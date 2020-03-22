@@ -252,7 +252,6 @@ pub mod cli {
     #[cfg(test)]
     mod tests {
         use super::*;
-        use fake::{Faker, Fake};
 
         #[test]
         fn invalid_status_fails_to_be_parsed()
