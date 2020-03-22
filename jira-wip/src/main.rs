@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+#![allow(unused_doc_comments)]
 use directories::ProjectDirs;
 use std::error::Error;
 use std::path::PathBuf;
