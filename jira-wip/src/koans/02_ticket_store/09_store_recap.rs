@@ -14,19 +14,10 @@ pub mod store_recap {
     use serde::{Serialize, Deserialize};
 
     #[derive(Debug, PartialEq)]
-    #[derive(Serialize, Deserialize)]
     pub struct TicketStore {
         data: HashMap<TicketId, Ticket>,
         current_id: TicketId,
     }
-
-    /*
-    #[derive(Debug, PartialEq)]
-    pub struct TicketStore {
-        data: HashMap<TicketId, Ticket>,
-        current_id: TicketId,
-    }
-    */
 
     impl TicketStore {
         pub fn new() -> TicketStore
@@ -89,13 +80,7 @@ pub mod store_recap {
     }
 
     #[derive(Debug, Clone, PartialEq)]
-    #[derive(Serialize, Deserialize)]
     pub struct TicketTitle(String);
-
-    /*
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct TicketTitle(String);
-    */
 
     impl TicketTitle {
         pub fn new(title: String) -> Result<Self, ValidationError> {
@@ -110,13 +95,7 @@ pub mod store_recap {
     }
 
     #[derive(Debug, Clone, PartialEq)]
-    #[derive(Serialize, Deserialize)]
     pub struct TicketDescription(String);
-
-    /*
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct TicketDescription(String);
-    */
 
     impl TicketDescription {
         pub fn new(description: String) -> Result<Self, ValidationError> {
@@ -171,7 +150,6 @@ pub mod store_recap {
     }
 
     #[derive(PartialEq, Debug, Clone)]
-    #[derive(Serialize, Deserialize)]
     pub enum Status {
         ToDo,
         InProgress,
@@ -179,28 +157,6 @@ pub mod store_recap {
         Done
     }
 
-    /*
-    #[derive(PartialEq, Debug, Clone)]
-    pub enum Status {
-        ToDo,
-        InProgress,
-        Blocked,
-        Done
-    }
-    */
-
-    #[derive(Debug, Clone, PartialEq)]
-    #[derive(Serialize, Deserialize)]
-    pub struct Ticket {
-        id: TicketId,
-        title: TicketTitle,
-        description: TicketDescription,
-        status: Status,
-        created_at: DateTime<Utc>,
-        updated_at: DateTime<Utc>,
-    }
-
-    /*
     #[derive(Debug, Clone, PartialEq)]
     pub struct Ticket {
         id: TicketId,
@@ -210,7 +166,6 @@ pub mod store_recap {
         created_at: DateTime<Utc>,
         updated_at: DateTime<Utc>,
     }
-    */
 
     impl Ticket {
         pub fn title(&self) -> &TicketTitle { &self.title }

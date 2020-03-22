@@ -11,7 +11,7 @@
 /// `Deserialize`, instead, is needed for the opposite journey.
 ///
 /// You don't need to implement this manually: just add `#[derive(Serialize, Deserialize)]`
-/// where needed, and the `load` and `save` functions should just work!
+/// where needed in `store_recap` - the `load` and `save` functions should just work afterwards!
 pub mod persistence {
     use std::fs::read_to_string;
     use std::path::Path;

@@ -33,7 +33,6 @@ mod type_as_constraints {
     /// - https://www.youtube.com/watch?v=PLFl95c-IiU
     ///
 
-    /*
     #[derive(Debug, Clone, PartialEq)]
     pub struct TicketDraft {
         __
@@ -42,23 +41,6 @@ mod type_as_constraints {
     #[derive(Debug, Clone, PartialEq)]
     pub struct Ticket {
         __
-    }
-    */
-
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct TicketDraft {
-        title: String,
-        description: String,
-        status: Status,
-    }
-
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct Ticket {
-        id: TicketId,
-        title: String,
-        description: String,
-        status: Status,
-        created_at: DateTime<Utc>,
     }
 
     struct TicketStore {
@@ -78,21 +60,6 @@ mod type_as_constraints {
         pub fn save(&mut self, draft: TicketDraft) -> TicketId
         {
             let id = self.generate_id();
-            let ticket = Ticket {
-                id,
-                title: draft.title,
-                description: draft.description,
-                status: draft.status,
-                created_at: Utc::now(),
-            };
-            self.data.insert(id, ticket);
-            id
-        }
-
-        /*
-        pub fn save(&mut self, draft: TicketDraft) -> TicketId
-        {
-            let id = self.generate_id();
 
             // We can use the "raw" constructor for `Ticket` here because the
             // store is defined in the same module of `Ticket`.
@@ -107,7 +74,6 @@ mod type_as_constraints {
             self.data.insert(id, ticket);
             id
         }
-        */
 
         pub fn get(&self, id: &TicketId) -> Option<&Ticket> {
             self.data.get(id)
@@ -119,21 +85,6 @@ mod type_as_constraints {
         }
     }
 
-    impl TicketDraft {
-        pub fn title(&self) -> &String { &self.title }
-        pub fn description(&self) -> &String { &self.description }
-        pub fn status(&self) -> &Status { &self.status }
-    }
-
-    impl Ticket {
-        pub fn title(&self) -> &String { &self.title }
-        pub fn description(&self) -> &String { &self.description }
-        pub fn status(&self) -> &Status { &self.status }
-        pub fn created_at(&self) -> &DateTime<Utc> { &self.created_at }
-        pub fn id(&self) -> &TicketId { &self.id }
-    }
-
-    /*
     impl TicketDraft {
         pub fn title(&self) -> &String { todo!() }
         pub fn description(&self) -> &String { todo!() }
@@ -147,7 +98,6 @@ mod type_as_constraints {
         pub fn created_at(&self) -> &DateTime<Utc> { todo!() }
         pub fn id(&self) -> &TicketId { todo!() }
     }
-    */
 
     pub fn create_ticket_draft(title: String, description: String, status: Status) -> TicketDraft {
         if title.is_empty() {

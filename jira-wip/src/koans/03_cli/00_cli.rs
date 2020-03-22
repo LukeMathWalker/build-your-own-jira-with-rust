@@ -27,7 +27,6 @@ pub mod cli {
     use std::str::FromStr;
     use std::fmt::Formatter;
 
-    /*
     #[derive(structopt::StructOpt, Clone)]
     /// A small command-line interface to interact with a toy Jira clone, IronJira.
     pub enum Command {
@@ -50,47 +49,6 @@ pub mod cli {
         /// Delete a ticket from the store passing the ticket id.
         Delete {
             __
-        },
-        /// List all existing tickets.
-        List,
-    }
-    */
-
-    #[derive(structopt::StructOpt, Clone)]
-    /// A small command-line interface to interact with a toy Jira clone, IronJira.
-    pub enum Command {
-        /// Create a ticket on your board.
-        Create {
-            /// Description of the ticket.
-            #[structopt(long)]
-            description: String,
-            /// Title of your ticket - it cannot be empty!
-            #[structopt(long)]
-            title: String,
-            /// Status of the new ticket.
-            #[structopt(long)]
-            status: Status,
-        },
-        /// Edit the details of an existing ticket.
-        Edit {
-            /// Id of the ticket you want to edit.
-            #[structopt(long)]
-            ticket_id: TicketId,
-            /// New title for the ticket (optional).
-            #[structopt(long)]
-            title: Option<String>,
-            /// New description for the ticket (optional).
-            #[structopt(long)]
-            description: Option<String>,
-            /// New status for the ticket (optional).
-            #[structopt(long)]
-            status: Option<Status>,
-        },
-        /// Delete a ticket from the store passing the ticket id.
-        Delete {
-            /// Id of the ticket you want to delete.
-            #[structopt(long)]
-            ticket_id: TicketId,
         },
         /// List all existing tickets.
         List,
@@ -105,21 +63,8 @@ pub mod cli {
         type Err = ParsingError;
 
         fn from_str(s: &str) -> Result<Self, Self::Err> {
-            let s = s.to_lowercase();
-            match s.as_str() {
-                "todo" | "to-do" => Ok(Status::ToDo),
-                "inprogress" | "in-progress" => Ok(Status::InProgress),
-                "blocked" => Ok(Status::Blocked),
-                "done" => Ok(Status::Done),
-                _ => Err(ParsingError("The status you specified is not valid. Valid values: todo, inprogress, blocked and done.".into())),
-            }
-        }
-
-        /*
-        fn from_str(s: &str) -> Result<Self, Self::Err> {
             __
         }
-        */
     }
 
     /// Our error struct for parsing failures.
@@ -142,7 +87,6 @@ pub mod cli {
     /// `dyn Error` is the syntax of a trait object, a more advanced topic that we will not be
     /// touching in this workshop.
     /// Check its section in the Rust book if you are curious: https://doc.rust-lang.org/book/ch17-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types
-    /*
     fn handle_command(ticket_store: &mut TicketStore, command: Command) -> Result<(), Box<dyn Error>> {
         match command {
             Command::Create { description, title, status } => {
@@ -181,69 +125,6 @@ pub mod cli {
             },
             Command::List => {
                 __
-            }
-        }
-        Ok(())
-    }
-    */
-
-    pub fn handle_command(ticket_store: &mut TicketStore, command: Command) -> Result<(), Box<dyn Error>> {
-        match command {
-            Command::Create { description, title, status } => {
-                // The ? operator can be used in functions that returns `Result` to return early
-                // if a fallible operation didn't succeed.
-                // It saves a bunch of lines of code as well as some visual branching.
-                //
-                // It might take a bit to get used to, but it will eventually become second-nature
-                // if you keep writing and reading Rust code.
-                // See https://doc.rust-lang.org/1.29.0/book/2018-edition/ch09-02-recoverable-errors-with-result.html#the--operator-can-only-be-used-in-functions-that-return-result
-                // for more details.
-                let draft = TicketDraft {
-                    title: TicketTitle::new(title)?,
-                    description: TicketDescription::new(description)?,
-                    status,
-                };
-                ticket_store.save(draft);
-            }
-            Command::Edit {
-                ticket_id,
-                title,
-                description,
-                status,
-            } => {
-                let title = title.map(TicketTitle::new).transpose()?;
-                let description = description.map(TicketDescription::new).transpose()?;
-                let ticket_patch = TicketPatch {
-                    title,
-                    description,
-                    status,
-                };
-                match ticket_store.update(&ticket_id, ticket_patch) {
-                    Some(_) => println!("Ticket {:?} was updated.", ticket_id),
-                    None => println!(
-                        "There was no ticket associated to the ticket id {:?}",
-                        ticket_id
-                    ),
-                }
-            }
-            Command::Delete { ticket_id } => match ticket_store.delete(&ticket_id) {
-                Some(deleted_ticket) => println!(
-                    "The following ticket has been deleted:\n{:?}",
-                    deleted_ticket
-                ),
-                None => println!(
-                    "There was no ticket associated to the ticket id {:?}",
-                    ticket_id
-                ),
-            },
-            Command::List => {
-                let ticket_list = ticket_store
-                    .list()
-                    .into_iter()
-                    .map(|t| format!("{:?}", t))
-                    .collect::<Vec<String>>()
-                    .join("\n\n");
-                println!("{}", ticket_list);
             }
         }
         Ok(())

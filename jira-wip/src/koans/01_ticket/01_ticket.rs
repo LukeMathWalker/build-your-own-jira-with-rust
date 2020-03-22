@@ -1,10 +1,4 @@
 mod ticket {
-    /*
-    pub struct Ticket {
-        title: String,
-        __
-    }
-    */
 
     /// We will begin our journey of building our own JIRA clone defining
     /// the cornerstone of JIRA's experience: the ticket.
@@ -21,9 +15,9 @@ mod ticket {
     /// and the tests below succeed?
     ///
     /// You can find more about structs in the Rust Book: https://doc.rust-lang.org/book/ch05-01-defining-structs.html
-    struct Ticket {
+    pub struct Ticket {
         title: String,
-        description: String
+        __
     }
 
     /// `cfg` stands for configuration flag.

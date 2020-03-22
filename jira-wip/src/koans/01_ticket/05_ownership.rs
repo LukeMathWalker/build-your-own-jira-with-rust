@@ -69,21 +69,6 @@ mod ownership {
 
         /// Replace __ with the proper types to get accessor methods for the other two fields.
         /// If you are asking yourself why we are returning &str instead of &String, check out: 
-        pub fn description(&self) -> &String {
-            &self.description
-        }
-
-        pub fn status(&self) -> &Status {
-            &self.status
-        }
-    }
-
-    /*
-    impl Ticket {
-        pub fn title(&self) -> &String {
-            &self.title
-        }
-
         pub fn description(__) -> __ {
             __
         }
@@ -92,7 +77,6 @@ mod ownership {
             __
         }
     }
-    */
 
     pub fn create_ticket(title: String, description: String, status: Status) -> Ticket {
         if title.is_empty() {

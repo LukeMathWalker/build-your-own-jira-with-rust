@@ -50,39 +50,6 @@ mod visibility {
                 status,
             }
         }
-
-        /*
-            enum Status {
-                ToDo,
-                InProgress,
-                Blocked,
-                Done
-            }
-
-            struct Ticket {
-                title: String,
-                description: String,
-                status: Status
-            }
-
-            fn create_ticket(title: String, description: String, status: Status) -> Ticket {
-                if title.is_empty() {
-                    panic!("Title cannot be empty!");
-                }
-                if title.len() > 50 {
-                    panic!("A title cannot be longer than 50 characters!");
-                }
-                if description.len() > 3000 {
-                    panic!("A description cannot be longer than 3000 characters!");
-                }
-
-                Ticket {
-                    title,
-                    description,
-                    status,
-                }
-            }
-        */
     }
 
     #[cfg(test)]
@@ -95,7 +62,7 @@ mod visibility {
         /// the use statement compile!
         /// Once you have verified that it indeed doesn't compile, comment it out.
         fn should_not_be_possible() {
-            let _ticket: Ticket = create_ticket("A title".into(), "A description".into(), Status::ToDo);
+            let ticket: Ticket = create_ticket("A title".into(), "A description".into(), Status::ToDo);
 
             // You should be seeing this error when trying to run this koan:
             //
@@ -106,9 +73,7 @@ mod visibility {
             //    |                         ^^^^^^^^^^^^^^^^^^
             //
             // If that is the case, comment the next line out and move on to the next koan!
-            /*
             assert_eq!(ticket.description, "A description");
-            */
         }
 
         fn encapsulation_cannot_be_violated() {
@@ -120,13 +85,11 @@ mod visibility {
             // It's impossible to create a ticket with an illegal title or description!
             //
             // Once you have verified that it does not compile, comment it out and move on to the next koan!
-            /*
             let ticket = Ticket {
                title: "A title".into(),
                description: "A description".into(),
                status: Status::ToDo
             };
-            */
         }
     }
 }

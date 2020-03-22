@@ -1,11 +1,4 @@
 mod status {
-    /*
-    pub struct Status {
-        ToDo,
-        __
-    }
-    */
-
     /// Ticket have two purposes in JIRA: capturing information about a task and tracking the completion of
     /// the task itself.
     ///
@@ -28,12 +21,11 @@ mod status {
     /// Check out the Rust book for more details on enums: https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html
     ///
     /// Let's create a variant for each of the allowed statuses of our tickets.
-    enum Status {
+    pub struct Status {
         ToDo,
-        InProgress,
-        Blocked,
-        Done
+        __
     }
+
 
     #[cfg(test)]
     mod tests {

@@ -19,22 +19,13 @@ mod id_generation {
     // Feel free to add more fields to `TicketStore` to solve this koan!
     struct TicketStore {
         data: HashMap<TicketId, Ticket>,
-        current_id: TicketId,
     }
-
-    /*
-    // Feel free to add more fields to `TicketStore` to solve this koan!
-    struct TicketStore {
-        data: HashMap<TicketId, Ticket>,
-    }
-    */
 
     impl TicketStore {
         pub fn new() -> TicketStore
         {
             TicketStore {
                 data: HashMap::new(),
-                current_id: 0,
             }
         }
 
@@ -64,16 +55,9 @@ mod id_generation {
             self.data.get(id)
         }
 
-        fn generate_id(&mut self) -> TicketId {
-            self.current_id += 1;
-            self.current_id
-        }
-
-        /*
         fn generate_id(__) -> TicketId {
             __
         }
-        */
     }
 
     #[cfg(test)]

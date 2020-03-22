@@ -84,7 +84,10 @@ impl KoanCollection {
             .read(true)
             .open(&self.configuration.enlightenment_path())
         {
-            Ok(f) => BufReader::new(&f).lines().count(),
+            Ok(f) => BufReader::new(&f)
+                .lines()
+                .filter(|l| !l.as_ref().unwrap().is_empty())
+                .count(),
             Err(e) => {
                 match e.kind() {
                     ErrorKind::NotFound => {

@@ -1,7 +1,7 @@
 #![allow(dead_code)]
+use directories::ProjectDirs;
 use std::error::Error;
 use std::path::PathBuf;
-use directories::ProjectDirs;
 
 /// The `main` function is the entry point of your application.
 ///
@@ -15,24 +15,32 @@ use directories::ProjectDirs;
 /// Brace yourself!
 fn main() -> Result<(), Box<dyn Error>> {
     // Uncomment these lines after 02_ticket_store/09_store_recap
-        // Comment these line after 03_cli/01_persistence
-        // use path_to_enlightenment::store_recap::TicketStore;
-        // let mut ticket_store = TicketStore::new();
+    /*
+       // Comment these line after 03_cli/01_persistence
+       use path_to_enlightenment::store_recap::TicketStore;
+       let mut ticket_store = TicketStore::new();
+    */
 
     // Uncomment these lines after 03_cli/01_persistence
+    /*
         use path_to_enlightenment::persistence::{save, load};
         // Load the store from disk. If missing, a brand new one will be created.
         let mut ticket_store = load(&data_store_filename());
+    */
 
     // Uncomment these lines after 03_cli/00_cli
+    /*
         use path_to_enlightenment::cli::{Command, handle_command};
         // Parse the command-line arguments.
         let command = <Command as paw::ParseArgs>::parse_args()?;
         handle_command(&mut ticket_store, command)?;
+    */
 
     // Uncomment these lines after 03_cli/01_persistence
+    /*
         // Save the store state to disk after we have completed our action.
         save(&ticket_store, &data_store_filename());
+    */
     Ok(())
 }
 

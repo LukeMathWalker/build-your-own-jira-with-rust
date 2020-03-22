@@ -50,28 +50,6 @@ mod delete_and_update {
             self.data.values().collect()
         }
 
-        pub fn update(&mut self, id: &TicketId, patch: TicketPatch) -> Option<&Ticket> {
-            if let Some(ticket) = self.data.get_mut(id) {
-                if let Some(title) = patch.title { ticket.title = title }
-                if let Some(description) = patch.description { ticket.description = description }
-                if let Some(status) = patch.status { ticket.status = status }
-
-                ticket.updated_at = Utc::now();
-
-                Some(ticket)
-            } else {
-                None
-            }
-        }
-
-        pub fn delete(&mut self, id: &TicketId) -> Option<DeletedTicket> {
-            self.data.remove(id).map(|ticket| DeletedTicket {
-                ticket,
-                deleted_at: Utc::now(),
-            })
-        }
-
-        /*
         /// We take in an `id` and a `patch` struct: this allows us to constrain which
         /// of the fields in a `Ticket` can actually be updated.
         /// For example, we don't want users to be able to update the `id` or the `created_at` field.
@@ -93,7 +71,6 @@ mod delete_and_update {
         pub fn delete(&mut self, id: &TicketId) -> Option<DeletedTicket> {
             todo!()
         }
-        */
 
         fn generate_id(&mut self) -> TicketId {
             self.current_id += 1;
