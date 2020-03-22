@@ -35,7 +35,7 @@ mod id_generation {
         /// We have enforced with a test our expectation: the second ticket overwrites the first.
         /// The other option would have been to error out.
         ///
-        /// This isn't our JIRA works: you don't get to choose the id of your ticket,
+        /// This isn't how JIRA works: you don't get to choose the id of your ticket,
         /// it's generated for you and its uniqueness is guaranteed.
         /// There is also another peculiarity: ids are integers and they are monotonically
         /// increasing (the first ticket on a board will be `BOARDNAME-1`, the second
