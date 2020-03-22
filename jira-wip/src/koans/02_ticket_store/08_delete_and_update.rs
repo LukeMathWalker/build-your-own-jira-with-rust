@@ -194,6 +194,7 @@ mod delete_and_update {
     mod tests {
         use super::*;
         use fake::{Faker, Fake};
+        use std::time::Duration;
 
         #[test]
         fn updating_nothing_leaves_the_updatable_fields_unchanged()
@@ -232,6 +233,9 @@ mod delete_and_update {
             let patch = generate_ticket_patch(Status::Done);
             let ticket_id = store.save(draft.clone());
 
+            // Let's wait a bit, otherwise `created_at` and `updated_at`
+            // might turn out identical (ᴗ˳ᴗ)
+            std::thread::sleep(Duration::from_millis(100));
             let updated_ticket = store.update(&ticket_id, patch.clone()).unwrap();
 
             assert_eq!(patch.title.unwrap(), updated_ticket.title);
