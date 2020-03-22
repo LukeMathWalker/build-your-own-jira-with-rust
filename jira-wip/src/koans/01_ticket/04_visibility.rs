@@ -20,20 +20,20 @@ mod visibility {
         /// (e.g. `create_ticket` can create a `Ticket` by specifying its fields),
         /// Outside of the module, those fields are inaccessible because they are considered private by default,
         /// unless prefixed with pub.
-        pub enum Status {
+        enum Status {
             ToDo,
             InProgress,
             Blocked,
             Done
         }
 
-        pub struct Ticket {
+        struct Ticket {
             title: String,
             description: String,
             status: Status
         }
 
-        pub fn create_ticket(title: String, description: String, status: Status) -> Ticket {
+        fn create_ticket(title: String, description: String, status: Status) -> Ticket {
             if title.is_empty() {
                 panic!("Title cannot be empty!");
             }
@@ -72,7 +72,8 @@ mod visibility {
             // 99 |              assert_eq!(ticket.description, "A description");
             //    |                         ^^^^^^^^^^^^^^^^^^
             //
-            // If that is the case, comment the next line out and move on to the next koan!
+            // Once you have verified that the below does not compile,
+            // comment the line out to move on to the next koan!
             assert_eq!(ticket.description, "A description");
         }
 
@@ -84,7 +85,8 @@ mod visibility {
             // This proves that `create_ticket` is now the only way to get a `Ticket` instance.
             // It's impossible to create a ticket with an illegal title or description!
             //
-            // Once you have verified that it does not compile, comment it out and move on to the next koan!
+            // Once you have verified that the below does not compile,
+            // comment the lines out to move on to the next koan!
             let ticket = Ticket {
                title: "A title".into(),
                description: "A description".into(),
