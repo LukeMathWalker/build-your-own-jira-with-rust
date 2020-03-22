@@ -4,12 +4,35 @@ It's out pleasure to welcome you to the Rust London Code Dojo!
 
 You will be working through a series of test-driven exercises, or koans, to learn Rust while building your own JIRA clone!
 
-You can get started with
+This workshop is designed for people who have experience using other programming languages and are just getting
+started with Rust.  
+If you run into any issue with the assumed level of Rust knowledge, please ping us and we'll sort it together!
+
+## Requirements
+
+- **Rust** (follow instructions [here](https://www.rust-lang.org/tools/install)).  
+    If Rust is already installed on your system, make sure you are running on the latest compiler version, `1.42` (`cargo --version`).  
+    If not, update using `rustup update` (or another appropriate command depending on how you installed Rust on your system).
+- _(Optional)_ An IDE with Rust autocompletion support. 
+    We recommend one of the following:
+    - [IntelliJ IDEA](https://www.jetbrains.com/idea/) with the [`intellij-rust`](https://intellij-rust.github.io) plugin;
+    - [Visual Studio Code](https://code.visualstudio.com) with the [`rust-analyzer`](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer) extension.  
+        Checkout the [`rust-in-peace`](https://marketplace.visualstudio.com/items?itemName=gilescope.rust-in-peace) extension for a battery-included Rust setup on VS Code.
+  
+## Getting started 
+
 ```bash
 git clone git@github.com:LukeMathWalker/build-your-own-jira-with-rust.git
 cd build-your-own-jira-with-rust
+
+# Our `koans` CLI, you will need it to work through the exercises. 
+# You can run `koans --help` to check that everything is running properly
 cargo install -f --path koans-framework
+
+# Work on your solution in a branch. 
 git checkout -b my-solution
+
+# Get started!
 koans --path jira-wip
 ```
 
@@ -22,31 +45,6 @@ koans --path jira-wip
 to verify your current solutions and move forward in the workshop.
 
 Enjoy!
-
-## Requirements
-
-### Software
-
-- **Install Rust** (follow instructions [here](https://www.rust-lang.org/tools/install))
-  If Rust is already installed on your system, make sure you are running on the latest compiler version, `1.41` (`cargo --version`).
-  If not, update using `rustup update` (or another appropriate command depending on how you installed Rust on your system).
-
-- **Install our `koans` CLI**: you will need it to work through the exercises.
-  You can install `koans` system-wide from the top-level directory using:
-  ```bash
-  cargo install -f --path koans-framework
-  ```
-  You can verify that everything is working properly running the command:
-  ```bash
-  koans --help
-  ```
-
-### Knowledge
-
-This workshop is designed for people who have experience using other programming languages and are just getting
-started with Rust.
-
-If you run into any issue with the assumed level of Rust knowledge, please ping me and we'll sort it together!
 
 ## References
 
