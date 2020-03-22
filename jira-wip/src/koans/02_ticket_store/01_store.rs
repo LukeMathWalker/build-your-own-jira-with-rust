@@ -14,13 +14,6 @@ mod store {
     /// Let's import what we worked on in the previous set of exercises.
     use super::recap::Ticket;
 
-    /*
-    pub struct TicketStore {
-        /// The collection of stored tickets.
-        data: __,
-    }
-    */
-
     /// First we will create a TicketStore struct, with a `data` field of type HashMap.
     ///
     /// HashMap is a *generic* struct: we need to specify two types, one for the key, and one for the stored value - HashMap<K, V>.
@@ -45,7 +38,7 @@ mod store {
         }
 
         /// We take `&mut self` because we will have to mutate our HashMap to insert a new key/value pair.
-        pub fn save(&mut self, ticket: Ticket, id: u32) -> TicketStore
+        pub fn save(&mut self, ticket: Ticket, id: u32)
         {
             todo!()
         }
