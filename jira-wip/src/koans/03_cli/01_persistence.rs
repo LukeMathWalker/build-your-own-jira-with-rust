@@ -73,11 +73,6 @@ pub mod persistence {
             assert_eq!(store, loaded_store);
         }
 
-        #[test]
-        fn return_default_if_the_file_is_missing() {
-
-        }
-
         fn generate_ticket_draft() -> TicketDraft {
             let description = TicketDescription::new((0..3000).fake()).unwrap();
             let title = TicketTitle::new((1..50).fake()).unwrap();
