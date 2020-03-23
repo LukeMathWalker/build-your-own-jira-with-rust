@@ -9,7 +9,7 @@ mod type_as_constraints {
     ///
     /// The approach we followed in the previous koan has its limitations: every time we
     /// access `id` and `created_at` we need to keep track of the "life stage" of our ticket.
-    /// Has it been saved yet? Is it safe to unwrap whose `Option`s?
+    /// Has it been saved yet? Is it safe to unwrap those `Option`s?
     /// That is unnecessary cognitive load and leads to errors down the line,
     /// when writing new code or refactoring existing functionality.
     ///
