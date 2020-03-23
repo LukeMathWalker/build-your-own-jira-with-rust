@@ -3,23 +3,24 @@ mod visibility {
     /// `mod` stands for module: it's one of the tools Rust gives you to organise your code.
     /// In particular, modules have an impact on the visibility of your structs, enums and functions.
     ///
-    /// We want to use this koan to explore the impact that modules have on the structure of your projects
-    /// and how you can leverage them to enforce encapsulation.
+    /// We want to use this koan to explore the impact that modules have on the structure of your
+    /// projects and how you can leverage them to enforce encapsulation.
     ///
     /// You can find out more about modules and visibility in the Rust book:
     /// https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
     pub mod ticket {
-        /// Structs, enums and functions defined in a module are visible to all other structs, enums and functions
-        /// in the same module - e.g. we can use `Ticket` in the signature of `create_ticket` as our return type.
+        /// Structs, enums and functions defined in a module are visible to all other structs,
+        /// enums and functions in the same module - e.g. we can use `Ticket` in the signature
+        /// of `create_ticket` as our return type.
         ///
-        /// That is no longer the case outside of the module where they are defined: all entities in Rust
-        /// are private by default, unless they prefixed with `pub`.
+        /// That is no longer the case outside of the module where they are defined: all entities
+        /// in Rust are private by default, unless they prefixed with `pub`.
         ///
         /// The same applies to fields in a struct.
-        /// Functions defined within the same module of a struct have access to all the fields of the struct.
-        /// (e.g. `create_ticket` can create a `Ticket` by specifying its fields),
-        /// Outside of the module, those fields are inaccessible because they are considered private by default,
-        /// unless prefixed with pub.
+        /// Functions defined within the same module of a struct have access to all the fields of
+        /// the struct (e.g. `create_ticket` can create a `Ticket` by specifying its fields).
+        /// Outside of the module, those fields are inaccessible because they are considered
+        /// private by default, unless prefixed with pub.
         enum Status {
             ToDo,
             InProgress,
@@ -58,8 +59,8 @@ mod visibility {
         /// complaining about this use statement.
         use super::ticket::{create_ticket, Status, Ticket};
 
-        /// Be careful though! We don't want this function to compile after you have changed visibility to make
-        /// the use statement compile!
+        /// Be careful though! We don't want this function to compile after you have changed
+        /// visibility to make the use statement compile!
         /// Once you have verified that it indeed doesn't compile, comment it out.
         fn should_not_be_possible() {
             let ticket: Ticket =
