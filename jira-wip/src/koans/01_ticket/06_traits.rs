@@ -1,12 +1,10 @@
 mod traits {
     use crate::path_to_enlightenment::visibility::ticket::Status;
 
-    /// You might have noticed that in the test for the previous koan
-    /// we haven't checked if the status returned by `.status()` matched
-    /// the status we passed to `create_ticket`.
+    /// You might have noticed that in the test for the previous koan we haven't checked if
+    /// the status returned by `.status()` matched the status we passed to `create_ticket`.
     /// 
-    /// That's because `assert_eq!(ticket.status(), Status::ToDo)` would have
-    /// thrown a compiler error:
+    /// That's because `assert_eq!(ticket.status(), Status::ToDo)` would have failed to compiled:
     /// 
     /// error[E0369]: binary operation `==` cannot be applied to type `&path_to_enlightenment::visibility::ticket::Status`
     ///    --> jira-wip/src/koans/01_ticket/05_ownership.rs:128:13
@@ -20,7 +18,7 @@ mod traits {
     ///    = note: an implementation of `std::cmp::PartialEq` might be missing for `&path_to_enlightenment::visibility::ticket::Status`
     ///
     /// `assert_eq` requires that its arguments implement the `PartialEq` trait.
-    /// What is trait?
+    /// What is a trait?
     /// Traits in Rust are very similar to interfaces in other programming languages: 
     /// a trait describes a behaviour/capability.
     /// For example:
@@ -33,7 +31,7 @@ mod traits {
     ///
     /// In practical terms, a trait defines the signature of a collection of methods.
     /// To implement a trait, a struct or an enum have to implement those methods
-    /// in `impl Trait` block:
+    /// in an `impl Trait` block:
     /// 
     /// ```
     /// impl Pay for TaxPayer {
