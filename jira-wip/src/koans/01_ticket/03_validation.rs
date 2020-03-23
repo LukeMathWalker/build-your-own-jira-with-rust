@@ -13,17 +13,19 @@ mod validation {
     }
 
     /// So far we have allowed any string as a valid title and description.
-    /// That's not what would happen in JIRA: we wouldn't allow tickets with an empty title, for an example.
-    /// Both title and description would also have length limitations: the Divine Comedy probably shouldn't be allowed
-    /// as a ticket description.
+    /// That's not what would happen in JIRA: we wouldn't allow tickets with an empty title,
+    /// for example.
+    /// Both title and description would also have length limitations: the Divine Comedy probably
+    /// shouldn't be allowed as a ticket description.
     ///
-    /// We want to define a function that takes in a title, a description and a status and performs validation:
-    /// it panics if validation fails, it returns a `Ticket` if validation succeeds.
+    /// We want to define a function that takes in a title, a description and a status and
+    /// performs validation: it panics if validation fails, it returns a `Ticket` if validation
+    /// succeeds.
     ///
-    /// We will learn a better way to handle recoverable errors such as this one further along, but let's rely
-    /// on panic for the time being.
+    /// We will learn a better way to handle recoverable errors such as this one further along,
+    /// but let's rely on panic for the time being.
     fn create_ticket(title: String, description: String, status: Status) -> Ticket {
-
+        __
     }
 
     #[cfg(test)]
@@ -31,11 +33,11 @@ mod validation {
         use super::*;
         use fake::Fake;
 
-        /// The #[should_panic] attribute inverts the usual behaviour for tests: if execution of the test's
-        /// function body causes a panic, the test is green; otherwise, it's red.
+        /// The #[should_panic] attribute inverts the usual behaviour for tests: if execution of
+        /// the test's function body causes a panic, the test is green; otherwise, it's red.
         ///
-        /// This is quite handy to test unhappy path: in our case, what happens when invalid input is passed to
-        /// `create_ticket`.
+        /// This is quite handy to test unhappy path: in our case, what happens when invalid input
+        /// is passed to `create_ticket`.
         #[test]
         #[should_panic]
         fn title_cannot_be_empty() {
@@ -43,7 +45,8 @@ mod validation {
             // Hence we generate a random string, with length between 0 and 3000 characters
             // using `fake`, a handy crate to generate random test data.
             //
-            // We are using Rust's range syntax, 0..3000 - the lower-bound is included, the upper-bound is excluded.
+            // We are using Rust's range syntax, 0..3000 - the lower-bound is included, the
+            // upper-bound is excluded.
             // You can include the upper-bound using 0..=3000.
             let description = (0..3000).fake();
 
