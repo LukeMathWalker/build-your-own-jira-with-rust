@@ -17,17 +17,18 @@ mod option {
             self.data.insert(id, ticket);
         }
 
-        /// Trying to implement `get` in the previous koan might have caused you
-        /// some issues due to a signature mismatch: `get` on a HashMap returns
-        /// an `Option<&Ticket>`, not a `&Ticket`.
+        /// Trying to implement `get` in the previous koan might have caused you some issues due
+        /// to a signature mismatch: `get` on a HashMap returns an `Option<&Ticket>`,
+        /// not a `&Ticket`.
         ///
         /// What is an Option?
         ///
-        /// In a nutshell, Rust does not have `null`: if a function returns a `Ticket`
-        /// there is no way for that `Ticket` not to be there.
+        /// In a nutshell, Rust does not have `null`: if a function returns a `Ticket` there is
+        /// no way for that `Ticket` not to be there.
         /// If there is indeed the possibility of the function not being able to return a `Ticket`,
         /// we need to express it in its return type.
-        /// That's where `Option` comes in (`Option` as in `Option`al, or at least that how I think about it).
+        /// That's where `Option` comes in (`Option` as in `Option`al, or at least that how
+        /// I think about it).
         /// `Option` is an enum:
         ///
         /// ```
@@ -36,8 +37,8 @@ mod option {
         ///     None
         /// }
         /// ```
-        /// `T` is a generic type parameter here: as we saw for HashMap, Rust allows you to be generic over the types
-        /// in your container.
+        /// `T` is a generic type parameter here: as we saw for HashMap, Rust allows you to be
+        /// generic over the types in your container.
         /// The `None` variant means that the value is missing.
         /// The `Some` variant instead tells you that you have a value.
         ///
@@ -58,11 +59,6 @@ mod option {
         use super::*;
         use fake::{Fake, Faker};
 
-        /// Now let's put our TicketStore to use
-        ///
-        /// We are going to create a ticket as we have previously done
-        /// then store it in our TicketStore, and finally validate that
-        /// the ticket we have saved in our store is indeed the same ticket
         #[test]
         fn a_ticket_with_a_home() {
             let ticket = generate_ticket(Status::ToDo);
@@ -76,8 +72,8 @@ mod option {
             assert_eq!(store.get(&ticket_id), Some(&ticket));
         }
 
-        /// We want our `get` method to return None now, instead of panicking
-        /// when looking for an id to which there is no ticket associated.
+        /// We want our `get` method to return `None` now, instead of panicking when looking for
+        /// an id to which there is no ticket associated.
         #[test]
         fn a_missing_ticket() {
             let ticket_store = TicketStore::new();
@@ -86,8 +82,6 @@ mod option {
             assert_eq!(ticket_store.get(&ticket_id), None);
         }
 
-        /// This is not our desired behaviour for the final version of the ticket store
-        /// but it will do for now.
         #[test]
         fn inserting_a_ticket_with_an_existing_id_overwrites_previous_ticket() {
             let first_ticket = generate_ticket(Status::ToDo);
