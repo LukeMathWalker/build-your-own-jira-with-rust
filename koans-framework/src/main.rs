@@ -119,7 +119,7 @@ fn run_tests(manifest_path: &Path, filter: Option<&str>) -> TestOutcome {
         manifest_path.into(),
         "-q".into(),
         "--color".into(),
-        color_option.into()
+        color_option.into(),
     ];
 
     if let Some(test_filter) = filter {
