@@ -106,11 +106,20 @@ fn seek_the_path(koans: &KoanCollection) -> TestOutcome {
 }
 
 fn run_tests(manifest_path: &Path, filter: Option<&str>) -> TestOutcome {
+    // Tell cargo to return colored output, unless we are on Windows and the terminal
+    // doesn't support it.
+    let mut color_option = "always";
+    if cfg!(windows) && !Paint::enable_windows_ascii() {
+        color_option = "never";
+    }
+
     let mut args: Vec<OsString> = vec![
         "test".into(),
         "--manifest-path".into(),
         manifest_path.into(),
         "-q".into(),
+        "--color".into(),
+        color_option.into()
     ];
 
     if let Some(test_filter) = filter {
