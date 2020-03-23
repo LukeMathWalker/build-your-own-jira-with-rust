@@ -21,7 +21,7 @@ mod status {
     /// Check out the Rust book for more details on enums: https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html
     ///
     /// Let's create a variant for each of the allowed statuses of our tickets.
-    pub struct Status {
+    pub enum Status {
         ToDo,
         __
     }
