@@ -47,14 +47,14 @@ mod delete_and_update {
             self.data.values().collect()
         }
 
-        /// We take in an `id` and a `patch` struct: this allows us to constrain which
-        /// of the fields in a `Ticket` can actually be updated.
-        /// For example, we don't want users to be able to update the `id` or the `created_at` field.
+        /// We take in an `id` and a `patch` struct: this allows us to constrain which of the
+        /// fields in a `Ticket` can actually be updated.
+        /// For example, we don't want users to be able to update the `id` or
+        /// the `created_at` field.
         ///
         /// If we had chosen a different strategy, e.g. implementing a `get_mut` method
         /// to retrieve a mutable reference to a ticket and give the caller the possibility to edit
-        /// it as they wanted, we wouldn't have been able to keep the same guarantees
-        /// of immutability.
+        /// it as they wanted, we wouldn't have been able to uphold the same guarantees.
         ///
         /// If the `id` passed in matches a ticket in the store, we return the edited ticket.
         /// If it doesn't, we return `None`.
@@ -62,7 +62,7 @@ mod delete_and_update {
             todo!()
         }
 
-        /// If the `id` passed in matches a ticket in the store, we return the deleted ticket,
+        /// If the `id` passed in matches a ticket in the store, we return the deleted ticket
         /// with some additional metadata.
         /// If it doesn't, we return `None`.
         pub fn delete(&mut self, id: &TicketId) -> Option<DeletedTicket> {
@@ -75,13 +75,13 @@ mod delete_and_update {
         }
     }
 
-    /// We don't want to relax our constraints on what is an acceptable title
-    /// or an acceptable description for a ticket.
-    /// This means that we need to validate the `title` and the `description` in
-    /// our `TicketPatch` using the same rules we use for our `TicketDraft`.
+    /// We don't want to relax our constraints on what is an acceptable title or an acceptable
+    /// description for a ticket.
+    /// This means that we need to validate the `title` and the `description` in our `TicketPatch`
+    /// using the same rules we use for our `TicketDraft`.
     ///
-    /// To keep it DRY, we introduce two new types whose constructors guarantee
-    /// the invariant we care about.
+    /// To keep it DRY, we introduce two new types whose constructors guarantee the invariants
+    /// we care about.
     #[derive(Debug, Clone, PartialEq)]
     pub struct TicketTitle(String);
 
@@ -127,10 +127,11 @@ mod delete_and_update {
 
     /// With validation baked in our types, we don't have to worry anymore about the visibility
     /// of those fields.
-    /// Our `TicketPatch` and our `TicketDraft` don't have an identity, an id, like a `Ticket` saved in the store.
+    /// Our `TicketPatch` and our `TicketDraft` don't have an identity, an id, like a `Ticket`
+    /// saved in the store.
     /// They are value objects, not entities, to borrow some terminology from Domain Driven Design.
     ///
-    /// As long as we know that our invariants are holding, we can let the user modify them
+    /// As long as we know that our invariants are upheld, we can let the user modify them
     /// as much as they please.
     /// We can thus get rid of the constructor and all the accessor methods. Pretty sweet, uh?
     #[derive(Debug, Clone, PartialEq)]
@@ -139,7 +140,7 @@ mod delete_and_update {
         pub description: TicketDescription,
     }
 
-    /// A light wrapper around a deleted ticket, to store some metadata (the deletion timestamp).
+    /// A light wrapper around a deleted ticket to store some metadata (the deletion timestamp).
     /// If we had a user system in place, we would also store the identity of the user
     /// who performed the deletion.
     #[derive(Debug, Clone, PartialEq)]
