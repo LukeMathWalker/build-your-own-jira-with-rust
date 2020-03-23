@@ -1,8 +1,7 @@
-/// The core work is now complete: we have implemented the functionality
-/// we wanted to have in our JIRA clone.
+/// The core work is now complete: we have implemented the functionality we wanted to have in
+/// our JIRA clone.
 ///
-/// Nonetheless, we still can't probe our system interactively:
-/// there is no user interface.
+/// Nonetheless, we still can't probe our system interactively: there is no user interface.
 /// That will be the focus of the next (and last) section.
 ///
 /// Take your time to review what you did - you have come a long way!
@@ -203,8 +202,7 @@ pub mod store_recap {
     mod tests {
         #[test]
         fn the_next_step_of_your_journey() {
-            // let i_am_ready_to_continue = __;
-            let i_am_ready_to_continue = true;
+            let i_am_ready_to_continue = __;
 
             assert!(i_am_ready_to_continue);
         }
