@@ -1,8 +1,8 @@
 mod result {
-    use std::collections::HashMap;
-    use chrono::{DateTime, Utc};
-    use super::recap::Status;
     use super::id_generation::TicketId;
+    use super::recap::Status;
+    use chrono::{DateTime, Utc};
+    use std::collections::HashMap;
     use std::error::Error;
 
     /// The structure of our code is coming along quite nicely: it looks and feels like idiomatic
@@ -47,8 +47,12 @@ mod result {
     }
 
     impl TicketDraft {
-        pub fn title(&self) -> &String { &self.title }
-        pub fn description(&self) -> &String { &self.description }
+        pub fn title(&self) -> &String {
+            &self.title
+        }
+        pub fn description(&self) -> &String {
+            &self.description
+        }
 
         pub fn new(title: String, description: String) -> Result<TicketDraft, ValidationError> {
             if title.is_empty() {
@@ -61,10 +65,7 @@ mod result {
                 __
             }
 
-            let draft = TicketDraft {
-                title,
-                description,
-            };
+            let draft = TicketDraft { title, description };
             Ok(draft)
         }
     }
@@ -90,7 +91,7 @@ mod result {
     /// We can derive `Debug`, but `Display` has to be implemented explicitly:
     /// `Display` rules how your struct is printed out for user-facing input, hence it cannot be
     /// derived.
-    impl Error for ValidationError { }
+    impl Error for ValidationError {}
 
     impl std::fmt::Display for ValidationError {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -113,16 +114,14 @@ mod result {
     }
 
     impl TicketStore {
-        pub fn new() -> TicketStore
-        {
+        pub fn new() -> TicketStore {
             TicketStore {
                 data: HashMap::new(),
                 current_id: 0,
             }
         }
 
-        pub fn save(&mut self, draft: TicketDraft) -> TicketId
-        {
+        pub fn save(&mut self, draft: TicketDraft) -> TicketId {
             let id = self.generate_id();
             let ticket = Ticket {
                 id,
@@ -146,18 +145,27 @@ mod result {
     }
 
     impl Ticket {
-        pub fn title(&self) -> &String { &self.title }
-        pub fn description(&self) -> &String { &self.description }
-        pub fn status(&self) -> &Status { &self.status }
-        pub fn created_at(&self) -> &DateTime<Utc> { &self.created_at }
-        pub fn id(&self) -> &TicketId { &self.id }
+        pub fn title(&self) -> &String {
+            &self.title
+        }
+        pub fn description(&self) -> &String {
+            &self.description
+        }
+        pub fn status(&self) -> &Status {
+            &self.status
+        }
+        pub fn created_at(&self) -> &DateTime<Utc> {
+            &self.created_at
+        }
+        pub fn id(&self) -> &TicketId {
+            &self.id
+        }
     }
-
 
     #[cfg(test)]
     mod tests {
         use super::*;
-        use fake::{Faker, Fake};
+        use fake::{Fake, Faker};
 
         #[test]
         fn title_cannot_be_empty() {
@@ -187,8 +195,7 @@ mod result {
         }
 
         #[test]
-        fn a_ticket_with_a_home()
-        {
+        fn a_ticket_with_a_home() {
             let draft = generate_ticket_draft();
             let mut store = TicketStore::new();
 
@@ -202,8 +209,7 @@ mod result {
         }
 
         #[test]
-        fn a_missing_ticket()
-        {
+        fn a_missing_ticket() {
             let ticket_store = TicketStore::new();
             let ticket_id = Faker.fake();
 
@@ -211,8 +217,7 @@ mod result {
         }
 
         #[test]
-        fn id_generation_is_monotonic()
-        {
+        fn id_generation_is_monotonic() {
             let n_tickets = 100;
             let mut store = TicketStore::new();
 

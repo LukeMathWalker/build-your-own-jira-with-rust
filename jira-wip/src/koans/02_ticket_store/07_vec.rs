@@ -1,10 +1,9 @@
 mod vec {
-    use std::collections::HashMap;
-    use chrono::{DateTime, Utc};
-    use super::recap::Status;
     use super::id_generation::TicketId;
+    use super::recap::Status;
+    use chrono::{DateTime, Utc};
+    use std::collections::HashMap;
     use std::error::Error;
-
 
     /// Let's turn our attention again to our `TicketStore`.
     /// We can create a ticket, we can retrieve a ticket.
@@ -16,16 +15,14 @@ mod vec {
     }
 
     impl TicketStore {
-        pub fn new() -> TicketStore
-        {
+        pub fn new() -> TicketStore {
             TicketStore {
                 data: HashMap::new(),
                 current_id: 0,
             }
         }
 
-        pub fn save(&mut self, draft: TicketDraft) -> TicketId
-        {
+        pub fn save(&mut self, draft: TicketDraft) -> TicketId {
             let id = self.generate_id();
             let ticket = Ticket {
                 id,
@@ -62,24 +59,29 @@ mod vec {
     }
 
     impl TicketDraft {
-        pub fn title(&self) -> &String { &self.title }
-        pub fn description(&self) -> &String { &self.description }
+        pub fn title(&self) -> &String {
+            &self.title
+        }
+        pub fn description(&self) -> &String {
+            &self.description
+        }
 
         pub fn new(title: String, description: String) -> Result<TicketDraft, ValidationError> {
             if title.is_empty() {
                 return Err(ValidationError("Title cannot be empty!".to_string()));
             }
             if title.len() > 50 {
-                return Err(ValidationError("A title cannot be longer than 50 characters!".to_string()));
+                return Err(ValidationError(
+                    "A title cannot be longer than 50 characters!".to_string(),
+                ));
             }
             if description.len() > 3000 {
-                return Err(ValidationError("A description cannot be longer than 3000 characters!".to_string()));
+                return Err(ValidationError(
+                    "A description cannot be longer than 3000 characters!".to_string(),
+                ));
             }
 
-            let draft = TicketDraft {
-                title,
-                description,
-            };
+            let draft = TicketDraft { title, description };
             Ok(draft)
         }
     }
@@ -93,7 +95,7 @@ mod vec {
         }
     }
 
-    impl Error for ValidationError { }
+    impl Error for ValidationError {}
 
     impl std::fmt::Display for ValidationError {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -111,22 +113,30 @@ mod vec {
     }
 
     impl Ticket {
-        pub fn title(&self) -> &String { &self.title }
-        pub fn description(&self) -> &String { &self.description }
-        pub fn status(&self) -> &Status { &self.status }
-        pub fn created_at(&self) -> &DateTime<Utc> { &self.created_at }
-        pub fn id(&self) -> &TicketId { &self.id }
+        pub fn title(&self) -> &String {
+            &self.title
+        }
+        pub fn description(&self) -> &String {
+            &self.description
+        }
+        pub fn status(&self) -> &Status {
+            &self.status
+        }
+        pub fn created_at(&self) -> &DateTime<Utc> {
+            &self.created_at
+        }
+        pub fn id(&self) -> &TicketId {
+            &self.id
+        }
     }
-
 
     #[cfg(test)]
     mod tests {
         use super::*;
-        use fake::{Faker, Fake};
+        use fake::{Fake, Faker};
 
         #[test]
-        fn list_returns_all_tickets()
-        {
+        fn list_returns_all_tickets() {
             let n_tickets = 100;
             let mut store = TicketStore::new();
 
@@ -139,8 +149,7 @@ mod vec {
         }
 
         #[test]
-        fn on_a_single_ticket_list_and_get_agree()
-        {
+        fn on_a_single_ticket_list_and_get_agree() {
             let mut store = TicketStore::new();
 
             let draft = generate_ticket_draft();
@@ -150,8 +159,7 @@ mod vec {
         }
 
         #[test]
-        fn list_returns_an_empty_vec_on_an_empty_store()
-        {
+        fn list_returns_an_empty_vec_on_an_empty_store() {
             let store = TicketStore::new();
 
             assert!(store.list().is_empty());
@@ -185,8 +193,7 @@ mod vec {
         }
 
         #[test]
-        fn a_ticket_with_a_home()
-        {
+        fn a_ticket_with_a_home() {
             let draft = generate_ticket_draft();
             let mut store = TicketStore::new();
 
@@ -200,8 +207,7 @@ mod vec {
         }
 
         #[test]
-        fn a_missing_ticket()
-        {
+        fn a_missing_ticket() {
             let ticket_store = TicketStore::new();
             let ticket_id = Faker.fake();
 
@@ -209,8 +215,7 @@ mod vec {
         }
 
         #[test]
-        fn id_generation_is_monotonic()
-        {
+        fn id_generation_is_monotonic() {
             let n_tickets = 100;
             let mut store = TicketStore::new();
 

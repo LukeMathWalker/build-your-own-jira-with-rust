@@ -3,13 +3,13 @@ mod validation {
         ToDo,
         InProgress,
         Blocked,
-        Done
+        Done,
     }
 
     struct Ticket {
         title: String,
         description: String,
-        status: Status
+        status: Status,
     }
 
     /// So far we have allowed any string as a valid title and description.

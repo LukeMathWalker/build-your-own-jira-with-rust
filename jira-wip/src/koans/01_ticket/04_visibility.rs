@@ -24,13 +24,13 @@ mod visibility {
             ToDo,
             InProgress,
             Blocked,
-            Done
+            Done,
         }
 
         struct Ticket {
             title: String,
             description: String,
-            status: Status
+            status: Status,
         }
 
         fn create_ticket(title: String, description: String, status: Status) -> Ticket {
@@ -56,13 +56,14 @@ mod visibility {
     mod tests {
         /// Add the necessary `pub` modifiers in the code above to avoid having the compiler
         /// complaining about this use statement.
-        use super::ticket::{Ticket, Status, create_ticket};
+        use super::ticket::{create_ticket, Status, Ticket};
 
         /// Be careful though! We don't want this function to compile after you have changed visibility to make
         /// the use statement compile!
         /// Once you have verified that it indeed doesn't compile, comment it out.
         fn should_not_be_possible() {
-            let ticket: Ticket = create_ticket("A title".into(), "A description".into(), Status::ToDo);
+            let ticket: Ticket =
+                create_ticket("A title".into(), "A description".into(), Status::ToDo);
 
             // You should be seeing this error when trying to run this koan:
             //
@@ -88,9 +89,9 @@ mod visibility {
             // Once you have verified that the below does not compile,
             // comment the lines out to move on to the next koan!
             let ticket = Ticket {
-               title: "A title".into(),
-               description: "A description".into(),
-               status: Status::ToDo
+                title: "A title".into(),
+                description: "A description".into(),
+                status: Status::ToDo,
             };
         }
     }

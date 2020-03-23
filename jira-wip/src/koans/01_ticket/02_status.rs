@@ -10,7 +10,7 @@ mod status {
     struct Ticket {
         title: String,
         description: String,
-        status: Status
+        status: Status,
     }
 
     /// Rust's enums are perfect for this usecase.
