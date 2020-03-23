@@ -2,8 +2,7 @@ mod metadata {
     use super::id_generation::TicketId;
     use super::recap::Status;
     /// `chrono` is the go-to crate in the Rust ecosystem when working with time.
-    /// `DateTime` deals with timezone-aware datetimes - it takes the timezone
-    /// as a type parameter.
+    /// `DateTime` deals with timezone-aware datetimes - it takes the timezone as a type parameter.
     /// `DateTime<Utc>` is the type for datetimes expressed in the coordinated universal time.
     /// See:
     /// - https://en.wikipedia.org/wiki/Coordinated_Universal_Time
@@ -20,8 +19,8 @@ mod metadata {
     /// - the generated id;
     /// - the datetime of its creation.
     ///
-    /// Make the necessary changes without touching the types of the inputs
-    /// and the returned objects in our methods!
+    /// Make the necessary changes without touching the types of the inputs and the returned
+    /// objects in our methods!
     /// You can make inputs mutable, if needed.
     impl TicketStore {
         pub fn new() -> TicketStore {
@@ -69,12 +68,12 @@ mod metadata {
 
         // The datetime when the ticket was saved in the store, if it was saved.
         pub fn created_at(&self) -> __ {
-            __
+           todo!()
         }
 
         // The id associated with the ticket when it was saved in the store, if it was saved.
         pub fn id(&self) -> __ {
-            __
+           todo!()
         }
     }
 
