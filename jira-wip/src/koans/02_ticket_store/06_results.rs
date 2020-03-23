@@ -14,14 +14,14 @@ mod result {
     /// the description failed our validation checks.
     /// The caller has no idea that this can happen - the function signature looks quite innocent:
     /// ```
-    /// pub fn create_ticket_draft(title: String, description: String, status: Status) -> TicketDraft {
+    /// pub fn create_ticket_draft(title: String, description: String, status: Status) -> TicketDraft
     /// ```
     /// Panics are generally not "caught" by the caller: they are meant to be used for states
     /// that your program cannot recover from.
     ///
     /// For expected error scenarios, we can do a better job using `Result`:
     /// ```
-    /// pub fn create_ticket_draft(title: String, description: String, status: Status) -> Result<TicketDraft, ValidationError> {
+    /// pub fn create_ticket_draft(title: String, description: String, status: Status) -> Result<TicketDraft, ValidationError>
     /// ```
     /// `Result` is an enum defined in the standard library, just like `Option`.
     /// While `Option` encodes the possibility that some data might be missing, `Result`
@@ -59,10 +59,10 @@ mod result {
                 return Err(ValidationError("Title cannot be empty!".to_string()));
             }
             if title.len() > 50 {
-                __
+                todo!()
             }
             if description.len() > 3000 {
-                __
+                todo!()
             }
 
             let draft = TicketDraft { title, description };
@@ -72,7 +72,8 @@ mod result {
 
     /// Our error struct, to be returned when validation fails.
     /// It's a wrapper around a string, the validation error message.
-    /// Structs without field names are called tuple structs, you can read more about them in the Rust book:
+    /// Structs without field names are called tuple structs, you can read more about them
+    /// in the Rust book:
     /// https://doc.rust-lang.org/book/ch05-01-defining-structs.html#using-tuple-structs-without-named-fields-to-create-different-types
     #[derive(PartialEq, Debug, Clone)]
     pub struct ValidationError(String);
@@ -90,7 +91,7 @@ mod result {
     /// because errors might be bubbled up all the way until they are shown to the end user.
     /// We can derive `Debug`, but `Display` has to be implemented explicitly:
     /// `Display` rules how your struct is printed out for user-facing input, hence it cannot be
-    /// derived.
+    /// derived automatically.
     impl Error for ValidationError {}
 
     impl std::fmt::Display for ValidationError {
