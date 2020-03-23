@@ -25,7 +25,7 @@ mod validation {
     /// We will learn a better way to handle recoverable errors such as this one further along,
     /// but let's rely on panic for the time being.
     fn create_ticket(title: String, description: String, status: Status) -> Ticket {
-        __
+       todo!()
     }
 
     #[cfg(test)]

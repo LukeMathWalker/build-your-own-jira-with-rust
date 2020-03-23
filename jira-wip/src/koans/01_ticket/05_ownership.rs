@@ -77,11 +77,11 @@ mod ownership {
         /// If you are asking yourself why we are returning &str instead of &String, check out:
         /// https://blog.thoughtram.io/string-vs-str-in-rust/
         pub fn description(__) -> __ {
-            __
+           todo!()
         }
 
         pub fn status(__) -> __ {
-            __
+           todo!()
         }
     }
 

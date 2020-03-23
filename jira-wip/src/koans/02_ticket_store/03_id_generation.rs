@@ -2,18 +2,19 @@ mod id_generation {
     use std::collections::HashMap;
     use super::recap::Ticket;
 
-    /// Let's define a type-alias for our TicketId.
+    /// Let's define a type-alias for our ticket id.
+    /// It's a lightweight technique to add a semantic layer to the underlying data type.
     ///
-    /// The underlying type remains u32.
+    /// The underlying type remains `u32`.
     /// This remains valid code:
     /// ```
     /// let number: u32 = 1;
     /// let ticket_id: TicketId = number;
     /// ```
-    /// It's a lightweight technique to add a semantic layer to the underlying data type.
-    /// If we want to be sure we weren't mixing up ticket ids and `u32` variables with
-    /// a different semantic meaning, we would have to create a new type, e.g. `struct TicketId(u32)`.
-    /// For now this doesn't feel necessary - we don't have many u32 flying around.
+    /// If we want to be sure we aren't mixing up ticket ids and `u32` variables with
+    /// a different semantic meaning, we would have to create a new type,
+    /// e.g. `struct TicketId(u32)`.
+    /// For now this doesn't feel necessary - we don't have many `u32`s flying around.
     pub type TicketId = u32;
 
     // Feel free to add more fields to `TicketStore` to solve this koan!
@@ -42,7 +43,7 @@ mod id_generation {
         /// `BOARDNAME-2` and so on).
         ///
         /// We want the same behaviour in our clone, IronJira.
-        /// `TicketStore` will take of generating an id for our ticket and the id
+        /// `TicketStore` will take care of generating an id for our ticket and the id
         /// will be returned by `save` after insertion.
         pub fn save(&mut self, ticket: Ticket) -> TicketId
         {
@@ -56,7 +57,7 @@ mod id_generation {
         }
 
         fn generate_id(__) -> TicketId {
-            __
+           todo!()
         }
     }
 
