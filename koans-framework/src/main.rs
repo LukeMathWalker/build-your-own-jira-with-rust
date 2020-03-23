@@ -89,8 +89,8 @@ fn parse_bool(s: &str) -> Option<bool> {
 
 fn seek_the_path(koans: &KoanCollection) -> TestOutcome {
     print!(" \n\n");
+    println!("{}", info_style().dimmed().paint("Running tests...\n"));
     for koan in koans.opened() {
-        println!("{}", info_style().dimmed().paint("Running tests...\n"));
         let koan_outcome = run_tests(&koans.configuration().manifest_path(), Some(&koan.name));
         match koan_outcome {
             TestOutcome::Success => {
