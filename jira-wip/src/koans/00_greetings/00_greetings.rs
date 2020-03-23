@@ -1,5 +1,5 @@
-/// It's out pleasure to welcome you to the Rust London Code Dojo!
-/// You will be working through a series of test-driven exercises, or koans, to learn Rust while building your own JIRA clone!
+/// It's our pleasure to welcome you to the Rust London Code Dojo!
+/// You will be learning Rust while building your own JIRA clone!
 ///
 /// The material is structured as a series of exercises, or koans.
 ///
@@ -8,7 +8,7 @@
 ///
 /// Will you get the chance to unveil deeper insights about yourself during this session?
 /// Maybe, maybe not.
-/// But I'll try my best to take you from "what is this Rust thing?"
+/// But we'll try out best to take you from "what is this Rust thing?"
 /// to "Look, ma! I can do this programming thing with it!".
 ///
 /// If everything goes well, at the end of the session you will:
@@ -32,7 +32,7 @@ mod greetings {
     #[test]
     /// This is your starting block!
     ///
-    /// In each test, you are expected to replace __ in order to make test pass.
+    /// In each test, you are expected to replace __ or todo!() in order to make test pass.
     ///
     /// Sometimes a one-liner (or a literal value) will be enough.
     /// Sometimes you will have to write a bit more to get the job done.
