@@ -12,6 +12,8 @@
 ///
 /// You don't need to implement this manually: just add `#[derive(Serialize, Deserialize)]`
 /// where needed in `store_recap` - the `load` and `save` functions should just work afterwards!
+///
+/// Update `src/main.rs` appropriately afterwards to use the fruit of your labor!
 pub mod persistence {
     use super::store_recap::TicketStore;
     use std::fs::read_to_string;
