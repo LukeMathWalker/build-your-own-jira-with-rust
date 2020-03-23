@@ -4,19 +4,19 @@ mod recap {
     /// Take a deep breath, stretch a bit, review what we have done.
     ///
     /// Then get ready to dive in the next section!
-    
+
     #[derive(PartialEq, Debug)]
     pub enum Status {
         ToDo,
         InProgress,
         Blocked,
-        Done
+        Done,
     }
 
     pub struct Ticket {
         title: String,
         description: String,
-        status: Status
+        status: Status,
     }
 
     impl Ticket {
@@ -50,7 +50,6 @@ mod recap {
             status,
         }
     }
-
 
     #[cfg(test)]
     mod tests {

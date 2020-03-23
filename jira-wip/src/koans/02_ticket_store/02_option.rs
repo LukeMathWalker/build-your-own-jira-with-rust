@@ -1,26 +1,24 @@
 mod option {
-    use std::collections::HashMap;
     use super::recap::Ticket;
+    use std::collections::HashMap;
 
     struct TicketStore {
         data: HashMap<u32, Ticket>,
     }
 
     impl TicketStore {
-        pub fn new() -> TicketStore
-        {
+        pub fn new() -> TicketStore {
             TicketStore {
-                data: HashMap::new()
+                data: HashMap::new(),
             }
         }
 
-        pub fn save(&mut self, ticket: Ticket, id: u32)
-        {
+        pub fn save(&mut self, ticket: Ticket, id: u32) {
             self.data.insert(id, ticket);
         }
 
         /// Trying to implement `get` in the previous koan might have caused you
-        /// some issues due to a signature mismatch: `get` on a HashMap returns 
+        /// some issues due to a signature mismatch: `get` on a HashMap returns
         /// an `Option<&Ticket>`, not a `&Ticket`.
         ///
         /// What is an Option?
@@ -31,7 +29,7 @@ mod option {
         /// we need to express it in its return type.
         /// That's where `Option` comes in (`Option` as in `Option`al, or at least that how I think about it).
         /// `Option` is an enum:
-        /// 
+        ///
         /// ```
         /// enum Option<T> {
         ///     Some(T),
@@ -39,15 +37,15 @@ mod option {
         /// }
         /// ```
         /// `T` is a generic type parameter here: as we saw for HashMap, Rust allows you to be generic over the types
-        /// in your container. 
+        /// in your container.
         /// The `None` variant means that the value is missing.
         /// The `Some` variant instead tells you that you have a value.
-        /// 
+        ///
         /// There is no way you can use the value in an `Option` without first checking the variant,
         /// hence it is impossible to "forget" to handle `None` when writing code.
         /// The compiler obliges you to handle both the happy and the unhappy case.
         ///
-        /// For more details on `Option`, there is an exhaustive introduction in the Rust book: 
+        /// For more details on `Option`, there is an exhaustive introduction in the Rust book:
         /// https://doc.rust-lang.org/1.29.0/book/2018-edition/ch06-01-defining-an-enum.html#the-option-enum-and-its-advantages-over-null-values
         pub fn get(&self, id: &u32) -> Option<&Ticket> {
             todo!()
@@ -56,9 +54,9 @@ mod option {
 
     #[cfg(test)]
     mod tests {
-        use super::*;
         use super::super::recap::{create_ticket, Status};
-        use fake::{Faker, Fake};
+        use super::*;
+        use fake::{Fake, Faker};
 
         /// Now let's put our TicketStore to use
         ///
@@ -66,8 +64,7 @@ mod option {
         /// then store it in our TicketStore, and finally validate that
         /// the ticket we have saved in our store is indeed the same ticket
         #[test]
-        fn a_ticket_with_a_home()
-        {
+        fn a_ticket_with_a_home() {
             let ticket = generate_ticket(Status::ToDo);
             let mut store = TicketStore::new();
             let ticket_id = Faker.fake();
@@ -79,11 +76,10 @@ mod option {
             assert_eq!(store.get(&ticket_id), Some(&ticket));
         }
 
-        /// We want our `get` method to return None now, instead of panicking 
+        /// We want our `get` method to return None now, instead of panicking
         /// when looking for an id to which there is no ticket associated.
         #[test]
-        fn a_missing_ticket()
-        {
+        fn a_missing_ticket() {
             let ticket_store = TicketStore::new();
             let ticket_id = Faker.fake();
 
@@ -93,8 +89,7 @@ mod option {
         /// This is not our desired behaviour for the final version of the ticket store
         /// but it will do for now.
         #[test]
-        fn inserting_a_ticket_with_an_existing_id_overwrites_previous_ticket()
-        {
+        fn inserting_a_ticket_with_an_existing_id_overwrites_previous_ticket() {
             let first_ticket = generate_ticket(Status::ToDo);
             let second_ticket = generate_ticket(Status::ToDo);
             let mut store = TicketStore::new();

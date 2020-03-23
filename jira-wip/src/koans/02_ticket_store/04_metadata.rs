@@ -1,5 +1,6 @@
 mod metadata {
-    use std::collections::HashMap;
+    use super::id_generation::TicketId;
+    use super::recap::Status;
     /// `chrono` is the go-to crate in the Rust ecosystem when working with time.
     /// `DateTime` deals with timezone-aware datetimes - it takes the timezone
     /// as a type parameter.
@@ -8,8 +9,7 @@ mod metadata {
     /// - https://en.wikipedia.org/wiki/Coordinated_Universal_Time
     /// - https://docs.rs/chrono/0.4.11/chrono/
     use chrono::{DateTime, Utc};
-    use super::recap::Status;
-    use super::id_generation::TicketId;
+    use std::collections::HashMap;
 
     struct TicketStore {
         data: HashMap<TicketId, Ticket>,
@@ -24,16 +24,14 @@ mod metadata {
     /// and the returned objects in our methods!
     /// You can make inputs mutable, if needed.
     impl TicketStore {
-        pub fn new() -> TicketStore
-        {
+        pub fn new() -> TicketStore {
             TicketStore {
                 data: HashMap::new(),
                 current_id: 0,
             }
         }
 
-        pub fn save(&mut self, ticket: Ticket) -> TicketId
-        {
+        pub fn save(&mut self, ticket: Ticket) -> TicketId {
             let id = self.generate_id();
             self.data.insert(id, ticket);
             id
@@ -53,7 +51,7 @@ mod metadata {
     pub struct Ticket {
         title: String,
         description: String,
-        status: Status
+        status: Status,
     }
 
     impl Ticket {
@@ -101,7 +99,7 @@ mod metadata {
     #[cfg(test)]
     mod tests {
         use super::*;
-        use fake::{Faker, Fake};
+        use fake::{Fake, Faker};
 
         #[test]
         fn ticket_creation() {
@@ -112,8 +110,7 @@ mod metadata {
         }
 
         #[test]
-        fn a_ticket_with_a_home()
-        {
+        fn a_ticket_with_a_home() {
             let ticket = generate_ticket(Status::ToDo);
             let mut store = TicketStore::new();
 
@@ -128,8 +125,7 @@ mod metadata {
         }
 
         #[test]
-        fn a_missing_ticket()
-        {
+        fn a_missing_ticket() {
             let ticket_store = TicketStore::new();
             let ticket_id = Faker.fake();
 
@@ -137,8 +133,7 @@ mod metadata {
         }
 
         #[test]
-        fn id_generation_is_monotonic()
-        {
+        fn id_generation_is_monotonic() {
             let n_tickets = 100;
             let mut store = TicketStore::new();
 

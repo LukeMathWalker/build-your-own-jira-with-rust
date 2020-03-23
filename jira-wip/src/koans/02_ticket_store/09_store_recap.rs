@@ -7,11 +7,11 @@
 ///
 /// Take your time to review what you did - you have come a long way!
 pub mod store_recap {
-    use std::collections::HashMap;
-    use chrono::{DateTime, Utc};
     use super::id_generation::TicketId;
+    use chrono::{DateTime, Utc};
+    use serde::{Deserialize, Serialize};
+    use std::collections::HashMap;
     use std::error::Error;
-    use serde::{Serialize, Deserialize};
 
     #[derive(Debug, PartialEq)]
     pub struct TicketStore {
@@ -20,16 +20,14 @@ pub mod store_recap {
     }
 
     impl TicketStore {
-        pub fn new() -> TicketStore
-        {
+        pub fn new() -> TicketStore {
             TicketStore {
                 data: HashMap::new(),
                 current_id: 0,
             }
         }
 
-        pub fn save(&mut self, draft: TicketDraft) -> TicketId
-        {
+        pub fn save(&mut self, draft: TicketDraft) -> TicketId {
             let id = self.generate_id();
             let timestamp = Utc::now();
             let ticket = Ticket {
@@ -54,9 +52,15 @@ pub mod store_recap {
 
         pub fn update(&mut self, id: &TicketId, patch: TicketPatch) -> Option<&Ticket> {
             if let Some(ticket) = self.data.get_mut(id) {
-                if let Some(title) = patch.title { ticket.title = title }
-                if let Some(description) = patch.description { ticket.description = description }
-                if let Some(status) = patch.status { ticket.status = status }
+                if let Some(title) = patch.title {
+                    ticket.title = title
+                }
+                if let Some(description) = patch.description {
+                    ticket.description = description
+                }
+                if let Some(status) = patch.status {
+                    ticket.status = status
+                }
 
                 ticket.updated_at = Utc::now();
 
@@ -88,7 +92,9 @@ pub mod store_recap {
                 return Err(ValidationError("Title cannot be empty!".to_string()));
             }
             if title.len() > 50 {
-                return Err(ValidationError("A title cannot be longer than 50 characters!".to_string()));
+                return Err(ValidationError(
+                    "A title cannot be longer than 50 characters!".to_string(),
+                ));
             }
             Ok(Self(title))
         }
@@ -100,7 +106,9 @@ pub mod store_recap {
     impl TicketDescription {
         pub fn new(description: String) -> Result<Self, ValidationError> {
             if description.len() > 3000 {
-                Err(ValidationError("A description cannot be longer than 3000 characters!".to_string()))
+                Err(ValidationError(
+                    "A description cannot be longer than 3000 characters!".to_string(),
+                ))
             } else {
                 Ok(Self(description))
             }
@@ -127,8 +135,12 @@ pub mod store_recap {
     }
 
     impl DeletedTicket {
-        pub fn ticket(&self) -> &Ticket { &self.ticket }
-        pub fn deleted_at(&self) -> &DateTime<Utc> { &self.deleted_at }
+        pub fn ticket(&self) -> &Ticket {
+            &self.ticket
+        }
+        pub fn deleted_at(&self) -> &DateTime<Utc> {
+            &self.deleted_at
+        }
     }
 
     #[derive(PartialEq, Debug, Clone)]
@@ -140,7 +152,7 @@ pub mod store_recap {
         }
     }
 
-    impl Error for ValidationError { }
+    impl Error for ValidationError {}
 
     impl std::fmt::Display for ValidationError {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -153,7 +165,7 @@ pub mod store_recap {
         ToDo,
         InProgress,
         Blocked,
-        Done
+        Done,
     }
 
     #[derive(Debug, Clone, PartialEq)]
@@ -167,14 +179,25 @@ pub mod store_recap {
     }
 
     impl Ticket {
-        pub fn title(&self) -> &TicketTitle { &self.title }
-        pub fn description(&self) -> &TicketDescription { &self.description }
-        pub fn status(&self) -> &Status { &self.status }
-        pub fn created_at(&self) -> &DateTime<Utc> { &self.created_at }
-        pub fn id(&self) -> &TicketId { &self.id }
-        pub fn updated_at(&self) -> &DateTime<Utc> { &self.updated_at }
+        pub fn title(&self) -> &TicketTitle {
+            &self.title
+        }
+        pub fn description(&self) -> &TicketDescription {
+            &self.description
+        }
+        pub fn status(&self) -> &Status {
+            &self.status
+        }
+        pub fn created_at(&self) -> &DateTime<Utc> {
+            &self.created_at
+        }
+        pub fn id(&self) -> &TicketId {
+            &self.id
+        }
+        pub fn updated_at(&self) -> &DateTime<Utc> {
+            &self.updated_at
+        }
     }
-
 
     #[cfg(test)]
     mod tests {

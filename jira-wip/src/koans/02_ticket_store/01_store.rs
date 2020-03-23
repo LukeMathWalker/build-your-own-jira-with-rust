@@ -6,7 +6,7 @@ mod store {
     /// JIRA users rely heavily on ticket identifiers, e.g. RUST-2018 or COVID-19.
     /// It's a unique label that identifies univocally a single ticket, generally `<board name>-<ticket number>`.
     /// We don't have the concept of a board yet, so we'll roll with a simple numerical id.
-    /// 
+    ///
     /// What is the simplest data structure that allows us to fetch a ticket given its id?
     /// It makes sense for us to use a HashMap, also known as a dictionary in other languages.
     /// You can read more about the HashMap in rust here: https://doc.rust-lang.org/std/collections/struct.HashMap.html
@@ -28,18 +28,16 @@ mod store {
         /// Methods do not have to take self as a parameter.
         /// This is the equivalent of a class/static method in other programming languages.
         /// It can be invoked using `TicketStore::new()`.
-        pub fn new() -> TicketStore
-        {
+        pub fn new() -> TicketStore {
             TicketStore {
                 // Note that the compiler can infer the
                 // types for our HashMaps' key value pairs.
-                data: HashMap::new()
+                data: HashMap::new(),
             }
         }
 
         /// We take `&mut self` because we will have to mutate our HashMap to insert a new key/value pair.
-        pub fn save(&mut self, ticket: Ticket, id: u32)
-        {
+        pub fn save(&mut self, ticket: Ticket, id: u32) {
             todo!()
         }
 
@@ -50,8 +48,8 @@ mod store {
 
     #[cfg(test)]
     mod tests {
-        use super::*;
         use super::super::recap::{create_ticket, Status};
+        use super::*;
         use fake::{Fake, Faker};
 
         /// Now let's put our TicketStore to use
@@ -60,8 +58,7 @@ mod store {
         /// then store it in our TicketStore, and finally validate that
         /// the ticket we have saved in our store is indeed the same ticket
         #[test]
-        fn a_ticket_with_a_home()
-        {
+        fn a_ticket_with_a_home() {
             let ticket = generate_ticket(Status::ToDo);
 
             // Pay special attention to the 'mut' keyword here: variables are immutable by default in Rust.
@@ -70,7 +67,7 @@ mod store {
             let mut store = TicketStore::new();
             let ticket_id = Faker.fake();
 
-            // Here we need to create a clone of our `ticket` because `save` takes the `ticket` argument as value, 
+            // Here we need to create a clone of our `ticket` because `save` takes the `ticket` argument as value,
             // thus taking ownership of its value out of the caller function into the method.
             // But we need `ticket`'s value after this method call, to verify it matches what we retrieve.
             // Hence the need to clone it, creating a copy of the value and passing that copy to the `save` method.
@@ -86,8 +83,7 @@ mod store {
         /// Rust has a way to handle this failure mode more gracefully, we will take a look at it later.
         #[test]
         #[should_panic]
-        fn a_missing_ticket()
-        {
+        fn a_missing_ticket() {
             let ticket_store = TicketStore::new();
             let ticket_id = Faker.fake();
 
@@ -97,8 +93,7 @@ mod store {
         /// This is not our desired behaviour for the final version of the ticket store
         /// but it will do for now.
         #[test]
-        fn inserting_a_ticket_with_an_existing_id_overwrites_previous_ticket()
-        {
+        fn inserting_a_ticket_with_an_existing_id_overwrites_previous_ticket() {
             let first_ticket = generate_ticket(Status::ToDo);
             let second_ticket = generate_ticket(Status::ToDo);
             let ticket_id = Faker.fake();

@@ -13,9 +13,9 @@
 /// You don't need to implement this manually: just add `#[derive(Serialize, Deserialize)]`
 /// where needed in `store_recap` - the `load` and `save` functions should just work afterwards!
 pub mod persistence {
+    use super::store_recap::TicketStore;
     use std::fs::read_to_string;
     use std::path::Path;
-    use super::store_recap::TicketStore;
 
     /// Fetch authentication parameters from a configuration file, if available.
     pub fn load(path: &Path) -> TicketStore {
@@ -49,8 +49,10 @@ pub mod persistence {
 
     #[cfg(test)]
     mod tests {
+        use super::super::store_recap::{
+            Status, TicketDescription, TicketDraft, TicketStore, TicketTitle,
+        };
         use super::*;
-        use super::super::store_recap::{TicketStore, Status, TicketDraft, TicketDescription, TicketTitle};
         use fake::Fake;
         use tempfile::NamedTempFile;
 
@@ -80,10 +82,7 @@ pub mod persistence {
             let description = TicketDescription::new((0..3000).fake()).unwrap();
             let title = TicketTitle::new((1..50).fake()).unwrap();
 
-            TicketDraft {
-                title,
-                description,
-            }
+            TicketDraft { title, description }
         }
     }
 }
