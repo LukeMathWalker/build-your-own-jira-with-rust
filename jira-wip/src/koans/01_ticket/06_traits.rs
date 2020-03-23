@@ -31,7 +31,7 @@ mod traits {
     /// }
     /// ```
     ///
-    /// In pratical terms, a trait defines the signature of a collection of methods.
+    /// In practical terms, a trait defines the signature of a collection of methods.
     /// To implement a trait, a struct or an enum have to implement those methods
     /// in `impl Trait` block:
     /// 
