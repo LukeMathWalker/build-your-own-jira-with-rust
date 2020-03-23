@@ -87,7 +87,7 @@ pub mod cli {
     /// `dyn Error` is the syntax of a trait object, a more advanced topic that we will not be
     /// touching in this workshop.
     /// Check its section in the Rust book if you are curious: https://doc.rust-lang.org/book/ch17-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types
-    fn handle_command(ticket_store: &mut TicketStore, command: Command) -> Result<(), Box<dyn Error>> {
+    pub fn handle_command(ticket_store: &mut TicketStore, command: Command) -> Result<(), Box<dyn Error>> {
         match command {
             Command::Create { description, title } => {
                 // The ? operator can be used in functions that returns `Result` to return early
