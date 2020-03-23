@@ -32,19 +32,22 @@ pub mod cli {
     pub enum Command {
         /// Create a ticket on your board.
         Create {
-            /// Description of the ticket.
-            #[structopt(long)]
-            description: String,
-            /// Title of your ticket - it cannot be empty!
-            #[structopt(long)]
-            title: String,
+            __
         },
         /// Edit the details of an existing ticket.
         Edit {
-            /// Status of the new ticket.
+            /// Id of the ticket you want to edit.
             #[structopt(long)]
-            status: Status,
-            __
+            id: TicketId,
+            /// New status of the ticket.
+            #[structopt(long)]
+            status: Option<Status>,
+            /// New description of the ticket.
+            #[structopt(long)]
+            description: Option<TicketDescription>,
+            /// New title for your ticket.
+            #[structopt(long)]
+            title: Option<TicketTitle>,
         },
         /// Delete a ticket from the store passing the ticket id.
         Delete {
@@ -65,6 +68,14 @@ pub mod cli {
         fn from_str(s: &str) -> Result<Self, Self::Err> {
             __
         }
+    }
+
+    impl FromStr for TicketTitle {
+        __
+    }
+
+    impl FromStr for TicketDescription {
+        __
     }
 
     /// Our error struct for parsing failures.
@@ -90,22 +101,10 @@ pub mod cli {
     pub fn handle_command(ticket_store: &mut TicketStore, command: Command) -> Result<(), Box<dyn Error>> {
         match command {
             Command::Create { description, title } => {
-                // The ? operator can be used in functions that returns `Result` to return early
-                // if a fallible operation didn't succeed.
-                // It saves a bunch of lines of code as well as some visual branching.
-                //
-                // It might take a bit to get used to, but it will eventually become second-nature
-                // if you keep writing and reading Rust code.
-                // See https://doc.rust-lang.org/1.29.0/book/2018-edition/ch09-02-recoverable-errors-with-result.html#the--operator-can-only-be-used-in-functions-that-return-result
-                // for more details.
-                let draft = TicketDraft {
-                    title: TicketTitle::new(title)?,
-                    description: TicketDescription::new(description)?,
-                };
-                ticket_store.save(draft);
+                __
             }
             Command::Edit {
-                ticket_id,
+                id,
                 title,
                 description,
                 status,
