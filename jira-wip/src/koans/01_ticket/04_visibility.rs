@@ -45,6 +45,8 @@ mod visibility {
                 panic!("A description cannot be longer than 3000 characters!");
             }
 
+            // Functions implicitly return the result of their last expression so we can omit
+            // the `return` keyword here.
             Ticket {
                 title,
                 description,
