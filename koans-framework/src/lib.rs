@@ -87,6 +87,7 @@ impl KoanCollection {
             Ok(f) => BufReader::new(&f)
                 .lines()
                 .filter(|l| !l.as_ref().unwrap().is_empty())
+                .filter(|l| &l.as_ref().unwrap().trim()[..2] != "//") // Ignores comments
                 .count(),
             Err(e) => {
                 match e.kind() {
