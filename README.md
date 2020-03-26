@@ -1,6 +1,6 @@
 # Build your own JIRA with Rust (Rust London Code Dojo)
 
-It's out pleasure to welcome you to the Rust London Code Dojo!
+It's our pleasure to welcome you to the Rust London Code Dojo!
 
 You will be working through a series of test-driven exercises, or koans, to learn Rust while building your own JIRA clone!
 
@@ -50,8 +50,8 @@ Enjoy!
 
 Throughout the workshop, the following resources might turn out to be useful:
 
-* The [Rust Book](https://doc.rust-lang.org/book/);
-* The [Rust documentation](https://doc.rust-lang.org/std/) (you can also open the documentation offline with `rustup doc`!).
+* [Rust Book](https://doc.rust-lang.org/book/)
+* [Rust documentation](https://doc.rust-lang.org/std/) (you can also open the documentation offline with `rustup doc`!)
 
 
 ## Solutions
