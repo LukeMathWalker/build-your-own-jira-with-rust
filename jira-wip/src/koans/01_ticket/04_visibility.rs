@@ -71,9 +71,9 @@ mod visibility {
             // You should be seeing this error when trying to run this koan:
             //
             // error[E0616]: field `description` of struct `path_to_enlightenment::visibility::ticket::Ticket` is private
-            // --> jira-wip/src/koans/01_ticket/04_visibility.rs:99:25
+            // --> jira-wip/src/koans/01_ticket/04_visibility.rs:81:24
             //    |
-            // 99 |              assert_eq!(ticket.description, "A description");
+            // 81 |              assert_eq!(ticket.description, "A description");
             //    |                         ^^^^^^^^^^^^^^^^^^
             //
             // Once you have verified that the below does not compile,
