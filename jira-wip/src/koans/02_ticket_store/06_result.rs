@@ -78,12 +78,6 @@ mod result {
     #[derive(PartialEq, Debug, Clone)]
     pub struct ValidationError(String);
 
-    impl ValidationError {
-        fn new(msg: &str) -> Self {
-            Self(msg.to_string())
-        }
-    }
-
     /// To use `ValidationError` as the `Err` variant in a `Result` we need to implement
     /// the `Error` trait.
     ///
