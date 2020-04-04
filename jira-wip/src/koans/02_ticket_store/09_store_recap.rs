@@ -145,12 +145,6 @@ pub mod store_recap {
     #[derive(PartialEq, Debug, Clone)]
     pub struct ValidationError(String);
 
-    impl ValidationError {
-        fn new(msg: &str) -> Self {
-            Self(msg.to_string())
-        }
-    }
-
     impl Error for ValidationError {}
 
     impl std::fmt::Display for ValidationError {
