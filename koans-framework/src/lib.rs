@@ -88,7 +88,15 @@ impl KoanCollection {
                 .lines()
                 .filter(|l| !l.as_ref().unwrap().is_empty())
                 .filter(|l| &l.as_ref().unwrap().trim()[..2] != "//") // Ignores comments
-                .count(),
+                .map(|l| {
+                    if l.unwrap().contains("mod") {
+                        // Count the number of module declarations
+                        1
+                    } else {
+                        0
+                    }
+                })
+                .sum(),
             Err(e) => {
                 match e.kind() {
                     ErrorKind::NotFound => {
@@ -131,7 +139,11 @@ impl KoanCollection {
         let koan = self.next();
         if let Some(koan) = koan {
             let koan_filename: String = koan.into();
-            writeln!(file, "include!(\"koans/{:}.rs\");", koan_filename).unwrap();
+            let include = format!(
+                "#[path = \"koans/{}.rs\"]\nmod {};\n",
+                koan_filename, koan.name
+            );
+            writeln!(file, "{}", include).unwrap();
             Ok(koan)
         } else {
             Err(())

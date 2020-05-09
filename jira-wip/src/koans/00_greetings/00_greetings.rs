@@ -28,7 +28,7 @@
 /// ~ Enjoy! ~
 ///
 #[cfg(test)]
-mod greetings {
+mod tests {
     #[test]
     /// This is your starting block!
     ///
