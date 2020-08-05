@@ -11,7 +11,7 @@ If you run into any issue with the assumed level of Rust knowledge, please ping 
 ## Requirements
 
 - **Rust** (follow instructions [here](https://www.rust-lang.org/tools/install)).  
-    If Rust is already installed on your system, make sure you are running on the latest compiler version, `1.42` (`cargo --version`).  
+    If Rust is already installed on your system, make sure you are running on the latest compiler version (`cargo --version`).  
     If not, update using `rustup update` (or another appropriate command depending on how you installed Rust on your system).
 - _(Optional)_ An IDE with Rust autocompletion support. 
     We recommend one of the following:
