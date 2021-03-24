@@ -1,6 +1,4 @@
-# Build your own JIRA with Rust (Rust London Code Dojo)
-
-It's our pleasure to welcome you to the Rust London Code Dojo!
+# Build your own JIRA with Rust
 
 You will be working through a series of test-driven exercises, or koans, to learn Rust while building your own JIRA clone!
 
