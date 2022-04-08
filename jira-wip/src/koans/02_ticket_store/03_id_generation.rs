@@ -52,12 +52,12 @@ impl TicketStore {
     }
 
     pub fn get(&self, id: &TicketId) -> Option<&Ticket> {
-                                                      self.data.get(id)
-                                                                       }
+        self.data.get(id)
+    }
 
     fn generate_id(__) -> TicketId {
-                                 todo!()
-                                        }
+        todo!()
+    }
 }
 
 #[cfg(test)]

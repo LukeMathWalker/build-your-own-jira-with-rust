@@ -40,12 +40,12 @@ impl TicketStore {
     /// We take `&mut self` because we will have to mutate our HashMap to insert a new
     /// key-value pair.
     pub fn save(&mut self, ticket: Ticket, id: u32) {
-                                                  todo!()
-                                                         }
+        todo!()
+    }
 
     pub fn get(&self, id: &u32) -> &Ticket {
-                                         todo!()
-                                                }
+        todo!()
+    }
 }
 
 #[cfg(test)]
