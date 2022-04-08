@@ -20,16 +20,16 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn title(&self) -> &String {
-                                 &self.title
-                                            }
+        &self.title
+    }
 
     pub fn description(&self) -> &String {
-                                       &self.description
-                                                        }
+        &self.description
+    }
 
     pub fn status(&self) -> &Status {
-                                  &self.status
-                                              }
+        &self.status
+    }
 }
 
 pub fn create_ticket(title: String, description: String, status: Status) -> Ticket {
