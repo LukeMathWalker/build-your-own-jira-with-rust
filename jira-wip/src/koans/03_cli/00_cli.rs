@@ -68,8 +68,8 @@ impl FromStr for Status {
     type Err = ParsingError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-                                                  __
-                                                    }
+        __
+    }
 }
 
 impl FromStr for TicketTitle {

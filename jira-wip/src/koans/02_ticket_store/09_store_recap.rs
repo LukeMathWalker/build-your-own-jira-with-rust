@@ -41,12 +41,12 @@ impl TicketStore {
     }
 
     pub fn get(&self, id: &TicketId) -> Option<&Ticket> {
-                                                      self.data.get(id)
-                                                                       }
+        self.data.get(id)
+    }
 
     pub fn list(&self) -> Vec<&Ticket> {
-                                     self.data.values().collect()
-                                                                 }
+        self.data.values().collect()
+    }
 
     pub fn update(&mut self, id: &TicketId, patch: TicketPatch) -> Option<&Ticket> {
         if let Some(ticket) = self.data.get_mut(id) {
@@ -134,11 +134,11 @@ pub struct DeletedTicket {
 
 impl DeletedTicket {
     pub fn ticket(&self) -> &Ticket {
-                                  &self.ticket
-                                              }
+        &self.ticket
+    }
     pub fn deleted_at(&self) -> &DateTime<Utc> {
-                                             &self.deleted_at
-                                                             }
+        &self.deleted_at
+    }
 }
 
 #[derive(PartialEq, Debug, Clone)]
@@ -148,8 +148,8 @@ impl Error for ValidationError {}
 
 impl std::fmt::Display for ValidationError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-                                                                 write!(f, "{}", self.0)
-                                                                                        }
+        write!(f, "{}", self.0)
+    }
 }
 
 #[derive(PartialEq, Debug, Clone)]
@@ -172,23 +172,23 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn title(&self) -> &TicketTitle {
-                                      &self.title
-                                                 }
+        &self.title
+    }
     pub fn description(&self) -> &TicketDescription {
-                                                  &self.description
-                                                                   }
+        &self.description
+    }
     pub fn status(&self) -> &Status {
-                                  &self.status
-                                              }
+        &self.status
+    }
     pub fn created_at(&self) -> &DateTime<Utc> {
-                                             &self.created_at
-                                                             }
+        &self.created_at
+    }
     pub fn id(&self) -> &TicketId {
-                                &self.id
-                                        }
+        &self.id
+    }
     pub fn updated_at(&self) -> &DateTime<Utc> {
-                                             &self.updated_at
-                                                             }
+        &self.updated_at
+    }
 }
 
 #[cfg(test)]
