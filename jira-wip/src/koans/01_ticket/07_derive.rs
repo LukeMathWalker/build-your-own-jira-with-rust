@@ -14,6 +14,7 @@
 /// https://github.com/dtolnay/cargo-expand
 ///
 /// ```sh
+/// cargo install cargo-expand
 /// cargo expand -p jira-wip path_to_enlightenment::derive
 /// ```
 ///
