@@ -23,6 +23,9 @@ pub struct Command {
     /// collection.
     #[structopt(long, parse(from_os_str))]
     pub path: PathBuf,
+    /// Move to the next koan automatically if the tests pass
+    #[structopt(long)]
+    pub auto_move: bool,
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -39,16 +42,19 @@ fn main() -> Result<(), Box<dyn Error>> {
                 Some(next_koan) => {
                     println!("\t{}\n", info_style().paint("Eternity lies ahead of us, and behind. Your path is not yet finished. 🍂"));
 
-                    let open_next = input::<String>()
-                        .repeat_msg(format!(
-                            "Do you want to open the next koan, {}? [y/n] ",
-                            next_koan
-                        ))
-                        .err("Please answer either yes or no.")
-                        .add_test(|s| parse_bool(s).is_some())
-                        .get();
+                    let open_next = command.auto_move || {
+                        let open_next = input::<String>()
+                            .repeat_msg(format!(
+                                "Do you want to open the next koan, {}? [y/n] ",
+                                next_koan
+                            ))
+                            .err("Please answer either yes or no.")
+                            .add_test(|s| parse_bool(s).is_some())
+                            .get();
 
-                    if parse_bool(&open_next).unwrap() {
+                        parse_bool(&open_next).unwrap()
+                    };
+                    if open_next {
                         let next_koan = koans.open_next().expect("Failed to open the next koan");
                         println!(
                             "{} {}",
