@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+
 use super::recap::Ticket;
 
 /// Let's define a type-alias for our ticket id.
@@ -22,8 +23,7 @@ struct TicketStore {
 }
 
 impl TicketStore {
-    pub fn new() -> TicketStore
-    {
+    pub fn new() -> TicketStore {
         TicketStore {
             data: HashMap::new(),
         }
@@ -44,8 +44,7 @@ impl TicketStore {
     /// We want the same behaviour in our clone, IronJira.
     /// `TicketStore` will take care of generating an id for our ticket and the id
     /// will be returned by `save` after insertion.
-    pub fn save(&mut self, ticket: Ticket) -> TicketId
-    {
+    pub fn save(&mut self, ticket: Ticket) -> TicketId {
         let id = self.generate_id();
         self.data.insert(id, ticket);
         id
@@ -55,20 +54,22 @@ impl TicketStore {
         self.data.get(id)
     }
 
-    fn generate_id(__) -> TicketId {
-        todo!()
+    fn generate_id(&self) -> TicketId {
+        match self.data.keys().max() {
+            None => 1,
+            Some(key) => *key + 1,
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use super::super::recap::{create_ticket, Status};
-    use fake::{Faker, Fake};
+    use super::*;
+    use fake::{Fake, Faker};
 
     #[test]
-    fn a_ticket_with_a_home()
-    {
+    fn a_ticket_with_a_home() {
         let ticket = generate_ticket(Status::ToDo);
         let mut store = TicketStore::new();
 
@@ -79,8 +80,7 @@ mod tests {
     }
 
     #[test]
-    fn a_missing_ticket()
-    {
+    fn a_missing_ticket() {
         let ticket_store = TicketStore::new();
         let ticket_id = Faker.fake();
 
@@ -88,8 +88,7 @@ mod tests {
     }
 
     #[test]
-    fn id_generation_is_monotonic()
-    {
+    fn id_generation_is_monotonic() {
         let n_tickets = 100;
         let mut store = TicketStore::new();
 

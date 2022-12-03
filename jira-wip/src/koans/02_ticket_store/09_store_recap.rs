@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::error::Error;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct TicketStore {
     data: HashMap<TicketId, Ticket>,
     current_id: TicketId,
@@ -81,7 +81,7 @@ impl TicketStore {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct TicketTitle(String);
 
 impl TicketTitle {
@@ -98,7 +98,7 @@ impl TicketTitle {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct TicketDescription(String);
 
 impl TicketDescription {
@@ -152,7 +152,7 @@ impl std::fmt::Display for ValidationError {
     }
 }
 
-#[derive(PartialEq, Debug, Clone)]
+#[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
 pub enum Status {
     ToDo,
     InProgress,
@@ -160,7 +160,7 @@ pub enum Status {
     Done,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Ticket {
     id: TicketId,
     title: TicketTitle,
@@ -195,7 +195,7 @@ impl Ticket {
 mod tests {
     #[test]
     fn the_next_step_of_your_journey() {
-        let i_am_ready_to_continue = __;
+        let i_am_ready_to_continue = true;
 
         assert!(i_am_ready_to_continue);
     }

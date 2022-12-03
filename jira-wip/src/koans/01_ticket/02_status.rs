@@ -25,9 +25,10 @@ struct Ticket {
 /// Let's create a variant for each of the allowed statuses of our tickets.
 pub enum Status {
     ToDo,
-    __
+    InProgress,
+    Done,
+    Blocked,
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -39,7 +40,7 @@ mod tests {
         let ticket = Ticket {
             title: "A ticket title".into(),
             description: "A heart-breaking description".into(),
-            status: __
+            status: Status::Blocked,
         };
 
         // Let's check that the status corresponds to what we expect.
@@ -64,7 +65,9 @@ mod tests {
             //
             // We are panicking in this case, thus making the test fail if this branch of our
             // match statement gets executed.
-            Status::ToDo | Status::InProgress | Status::Done => panic!("The ticket is not blocked!")
+            Status::ToDo | Status::InProgress | Status::Done => {
+                panic!("The ticket is not blocked!")
+            }
         }
     }
 }

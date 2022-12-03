@@ -4,7 +4,7 @@
 ///
 /// Then get ready to dive in the next section!
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub enum Status {
     ToDo,
     InProgress,
@@ -12,6 +12,7 @@ pub enum Status {
     Done,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Ticket {
     title: String,
     description: String,
@@ -54,7 +55,7 @@ pub fn create_ticket(title: String, description: String, status: Status) -> Tick
 mod tests {
     #[test]
     fn the_next_step_of_your_journey() {
-        let i_am_ready_to_continue = __;
+        let i_am_ready_to_continue = true;
 
         assert!(i_am_ready_to_continue);
     }

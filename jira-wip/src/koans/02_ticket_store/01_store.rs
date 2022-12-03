@@ -1,3 +1,5 @@
+/// Let's import what we worked on in the previous set of exercises.
+use super::recap::Ticket;
 /// It's time to shift focus: our tickets are doing well, but they need a home.
 /// A place where we can store them, search for them, retrieve them.
 ///
@@ -12,8 +14,6 @@
 /// You can read more about the HashMap in Rust here:
 /// https://doc.rust-lang.org/std/collections/struct.HashMap.html
 use std::collections::HashMap;
-/// Let's import what we worked on in the previous set of exercises.
-use super::recap::Ticket;
 
 /// First we will create a TicketStore struct, with a `data` field of type HashMap.
 ///
@@ -40,11 +40,14 @@ impl TicketStore {
     /// We take `&mut self` because we will have to mutate our HashMap to insert a new
     /// key-value pair.
     pub fn save(&mut self, ticket: Ticket, id: u32) {
-        todo!()
+        self.data.insert(id, ticket);
     }
 
     pub fn get(&self, id: &u32) -> &Ticket {
-        todo!()
+        match self.data.get(id) {
+            None => panic!(),
+            Some(ticket) => ticket,
+        }
     }
 }
 
