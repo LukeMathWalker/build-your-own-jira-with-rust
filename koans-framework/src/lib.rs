@@ -60,9 +60,16 @@ impl KoanCollection {
                     &configuration.koans_path()
                 );
                 let directory_name = entry.file_name();
-                read_dir(entry.path())
-                    .unwrap()
-                    .map(move |f| (directory_name.to_owned(), f.unwrap().file_name()))
+                read_dir(entry.path()).unwrap().filter_map(move |f| {
+                    let name = f.unwrap().file_name();
+                    let name_str = name.clone().into_string().unwrap();
+                    if name_str.ends_with(".rs") && u32::from_str_radix(&name_str[..2], 10).is_ok()
+                    {
+                        Some((directory_name.to_owned(), name))
+                    } else {
+                        None
+                    }
+                })
             })
             .flatten()
             .collect();
